@@ -128,7 +128,7 @@ namespace KursovaWork.Controllers
                 _userService.AddUser(_curUser);
                 _curUser = null;
                 _logger.LogInformation("Успішно зареєстровано користувача, перехід на головну сторінку");
-                return RedirectToAction("Index", "Home");
+                return View("~/Views/SignUp/Congratulations.cshtml");
             }
 
             _logger.LogInformation("Дані не пройшли валідацію");
