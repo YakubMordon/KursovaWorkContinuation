@@ -72,6 +72,9 @@ namespace KursovaWork.Controllers
         /// <returns>Перенаправлення на сторінку списку моделей автомобілів.</returns>
         public IActionResult ModelList()
         {
+            _logger.LogInformation("Зачищення лишніх конфігурацій");
+            ConfiguratorController.options = null;
+
             _logger.LogInformation("Перехід до списку моделей");
             return RedirectToAction("ModelList", "ModelList");
         }
