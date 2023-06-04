@@ -37,6 +37,7 @@ namespace KursovaWork.Models
         /// </summary>
         [Required(ErrorMessage = "Поле Термін дії(місяць) є обов'язковим")]
         [StringLength(2, MinimumLength = 2, ErrorMessage = "Довжина Терміну дії(місяць) повинна бути мінімум 2")]
+        [Range(1,12, ErrorMessage = "Введений місяць не є корректним")]
         [FutureMonth(ErrorMessage = "Дата повинна бути або такою ж або більшою")]
         public string ExpirationMonth { get; set; }
 
