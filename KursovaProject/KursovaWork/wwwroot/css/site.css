@@ -90,6 +90,12 @@ body {
     height: 40px;
 }
 
+.logo-login {
+	color: black;
+	width: 120px;
+	height: 120px;
+}
+
 .user-section{
     margin-right: 75px;
 }
@@ -141,6 +147,10 @@ body {
     height: 60px;
     text-align: center;
     color: white;
+}
+
+.btn-color :hover {
+	color: white;
 }
 
 .dealer-section {
@@ -321,6 +331,7 @@ html .themeMenuBottom__item--last .themeMenuBottom__link:after {
 
 .btn:hover {
     background-color: rgba(0, 0, 0, 0.9);
+	color: white;
 }
 
 .customLogInHeader {

@@ -1,5 +1,6 @@
 ﻿@using KursovaWorkDAL.Entity.Entities.Car;
 @using KursovaWorkBLL.Services.AdditionalServices;
+@using Microsoft.IdentityModel.Tokens
 
 @{
     ViewBag.Title = "Моделі";
@@ -52,49 +53,55 @@
                             <div class="modal-body d-flex flex-column justify-content-between">
                                 <form asp-controller="ModelList" asp-action="ApplyFilters" method="get">
                                     <div class="mb-2">
-                                        <h6>
-                                            Ціна:
-                                        </h6>
+                                        <h6>Ціна:</h6>
                                         <div class="form-group">
                                             <label for="priceFrom">Від:</label>
-                                            <input type="number" class="form-control" id="priceFrom" name="PriceFrom">
+                                            <input type="number" class="form-control" id="priceFrom" name="PriceFrom" value="@Model.PriceFrom">
                                         </div>
                                         <div class="form-group">
                                             <label for="priceTo">До:</label>
-                                            <input type="number" class="form-control" id="priceTo" name="PriceTo">
+                                            <input type="number" class="form-control" id="priceTo" name="PriceTo" value="@Model.PriceTo">
                                         </div>
                                     </div>
                                     <div class="mb-2">
-                                        <h6>
-                                            Рік виробництва:
-                                        </h6>
+                                        <h6>Рік виробництва:</h6>
                                         <div class="form-group">
                                             <label for="yearFrom">Від:</label>
-                                            <input type="number" class="form-control" id="yearFrom" name="YearFrom">
+                                            <input type="number" class="form-control" id="yearFrom" name="YearFrom" value="@Model.YearFrom">
                                         </div>
                                         <div class="form-group">
                                             <label for="yearTo">До:</label>
-                                            <input type="number" class="form-control" id="yearTo" name="YearTo">
+                                            <input type="number" class="form-control" id="yearTo" name="YearTo" value="@Model.YearTo">
                                         </div>
                                     </div>
                                     <div class="mb-2">
-                                        <h6>
-                                            Тип палива:
-                                        </h6>
+                                        <h6>Тип палива:</h6>
                                         <div class="form-check">
-                                            <input class="form-check-input cursor" type="checkbox" name="SelectedFuelTypes" id="gasoline" value="Бензин">
+                                            <input class="form-check-input cursor" type="checkbox" name="SelectedFuelTypes" id="gasoline" value="Бензин" @if (!Model.SelectedFuelTypes.IsNullOrEmpty())
+                                            {
+                                                @(Model.SelectedFuelTypes.Contains("Бензин") ? "checked" : "")
+                                            }>
                                             <label class="form-check-label cursor" for="gasoline">Бензин</label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input cursor" type="checkbox" name="SelectedFuelTypes" id="diesel" value="Дизель">
+                                            <input class="form-check-input cursor" type="checkbox" name="SelectedFuelTypes" id="diesel" value="Дизель" @if (!Model.SelectedFuelTypes.IsNullOrEmpty())
+                                            {
+                                                @(Model.SelectedFuelTypes.Contains("Дизель") ? "checked" : "")
+                                            }>
                                             <label class="form-check-label cursor" for="diesel">Дизель</label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input cursor" type="checkbox" name="SelectedFuelTypes" id="electric" value="Електричний">
+                                            <input class="form-check-input cursor" type="checkbox" name="SelectedFuelTypes" id="electric" value="Електричний" @if (!Model.SelectedFuelTypes.IsNullOrEmpty())
+                                            {
+                                                @(Model.SelectedFuelTypes.Contains("Електричний") ? "checked" : "")
+                                            }>
                                             <label class="form-check-label cursor" for="electric">Електричний</label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input cursor" type="checkbox" name="SelectedFuelTypes" id="hybrid" value="Гибрид">
+                                            <input class="form-check-input cursor" type="checkbox" name="SelectedFuelTypes" id="hybrid" value="Гибрид" @if (!Model.SelectedFuelTypes.IsNullOrEmpty())
+                                            {
+                                                @(Model.SelectedFuelTypes.Contains("Гибрид") ? "checked" : "")
+                                            }>
                                             <label class="form-check-label cursor" for="hybrid">Гибрид</label>
                                         </div>
                                     </div>
@@ -103,15 +110,24 @@
                                             Тип коробки передач:
                                         </h6>
                                         <div class="form-check">
-                                            <input class="form-check-input cursor" type="checkbox" name="SelectedTransmissionTypes" id="automatic" value="Автоматична">
+                                            <input class="form-check-input cursor" type="checkbox" name="SelectedTransmissionTypes" id="automatic" value="Автоматична" @if (!Model.SelectedTransmissionTypes.IsNullOrEmpty())
+                                            {
+                                                @(Model.SelectedTransmissionTypes.Contains("Автоматична") ? "checked" : "")
+                                            }>
                                             <label class="form-check-label cursor" for="automatic">Автоматична</label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input cursor" type="checkbox" name="SelectedTransmissionTypes" id="robotic" value="Роботична">
+                                            <input class="form-check-input cursor" type="checkbox" name="SelectedTransmissionTypes" id="robotic" value="Роботична" @if (!Model.SelectedTransmissionTypes.IsNullOrEmpty())
+                                            {
+                                                @(Model.SelectedTransmissionTypes.Contains("Роботична") ? "checked" : "")
+                                            }>
                                             <label class="form-check-label cursor" for="robotic">Роботична</label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input cursor" type="checkbox" name="SelectedTransmissionTypes" id="mechanic" value="Механічна">
+                                            <input class="form-check-input cursor" type="checkbox" name="SelectedTransmissionTypes" id="mechanic" value="Механічна" @if (!Model.SelectedTransmissionTypes.IsNullOrEmpty())
+                                            {
+                                                @(Model.SelectedTransmissionTypes.Contains("Механічна") ? "checked" : "")
+                                            }>
                                             <label class="form-check-label cursor" for="mechanic">Механічна</label>
                                         </div>
                                     </div>
@@ -122,7 +138,10 @@
                                         @foreach (var make in FilterViewModel.origCars.Select(x => x.Make).Distinct())
                                         {
                                             <div class="form-check">
-                                                <input class="form-check-input cursor" type="checkbox" name="SelectedMakes" id="@make" value="@make">
+                                                <input class="form-check-input cursor" type="checkbox" name="SelectedMakes" id="@make" value="@make" @if (!Model.SelectedMakes.IsNullOrEmpty())
+                                                {
+                                                    @(Model.SelectedMakes.Contains(@make) ? "checked" : "")
+                                                }>
                                                 <label class="form-check-label cursor" for="@make">@make</label>
                                             </div>
                                         }
@@ -165,6 +184,7 @@
 
                         var transmission = document.querySelectorAll('input[name="SelectedTransmissionTypes"]');
                         var fuel = document.querySelectorAll('input[name="SelectedFuelTypes"]');
+                        var makes = document.querySelectorAll('input[name="SelectedMakes"]');
 
                         transmission.forEach(function (checkbox) {
                             checkbox.addEventListener('change', function () {
@@ -185,6 +205,16 @@
                                 });
                             });
                         });
+
+                        makes.forEach(function (checkbox) {
+                            checkbox.addEventListener('change', function () {
+                                makes.forEach(function (otherCheckbox) {
+                                    if (otherCheckbox !== checkbox) {
+                                        otherCheckbox.checked = false;
+                                    }
+                                });
+                            });
+                        });
                     });
                 </script>
             </div>
@@ -193,7 +223,8 @@
     <div class="modelList mt-2">
         <div class="container card-background">
             <div class="row card-background">
-                @if(Model.cars.Any()){
+                @if (Model.cars.Any())
+                {
                     @foreach (var car in Model.cars)
                     {
                         <div class="col-md-4 mb-2 card-background">
@@ -219,7 +250,7 @@
                 }
                 else
                 {
-                <p class="ordersNotFound fs-3">Машин не було знайдено.</p>
+                    <p class="ordersNotFound fs-3">Машин не було знайдено.</p>
                 }
             </div>
         </div>
