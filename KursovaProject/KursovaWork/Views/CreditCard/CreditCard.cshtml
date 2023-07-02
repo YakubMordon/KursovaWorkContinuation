@@ -32,43 +32,45 @@
                             </div>
                         </div>
                     </div>
-                    <a class="btn btn-primary btn-block text-decoration-none fw-bold mt-2" id="addCreditCardLink" asp-controller="CreditCard" asp-action="DeleteCreditCard">
+                    <a class="btn btn-primary btn-block text-decoration-none fw-bold mt-2" id="deleteCreditCardLink">
                         <i class="fas fa-trash"></i>Відв'язати кредитну карту
                     </a>
                 </div>
                 <div id="creditCardForm" style="display: none;">
-                    @using (Html.BeginForm("CreditCard", "CreditCard", FormMethod.Post))
+
+
+                    @using (Html.BeginForm("CreditCard", "CreditCard", FormMethod.Post, new { id = "creditCardFormAjax" })) 
                     {
                         @Html.AntiForgeryToken();
+
                         <div class="form-group mb-3">
                             <label class="fs-6" for="fullName">Ім'я та прізвище:</label>
                             @Html.TextBoxFor(model => model.CardHolderName, new { @class = "form-control-custom" })
-                            @Html.ValidationMessageFor(model => model.CardHolderName, "", new { @class = "text-danger" })
+                            <span class="text-danger" id="CardHolderNameError"></span> 
                         </div>
 
                         <div class="form-group mb-3">
                             <label class="fs-6" for="cardNumber">Номер карти:</label>
                             @Html.TextBoxFor(model => model.CardNumber, new { @class = "form-control-custom" })
-                            @Html.ValidationMessageFor(model => model.CardNumber, "", new { @class = "text-danger" })
+                            <span class="text-danger" id="CardNumberError"></span>
                         </div>
-
 
                         <div class="form-group mb-3">
                             <label class="fs-6" for="expirationMonth">Термін дії (місяць):</label>
                             @Html.TextBoxFor(model => model.ExpirationMonth, new { @class = "form-control-custom" })
-                            @Html.ValidationMessageFor(model => model.ExpirationMonth, "", new { @class = "text-danger" })
+                            <span class="text-danger" id="ExpirationMonthError"></span>
                         </div>
 
                         <div class="form-group mb-3">
                             <label class="fs-6" for="expirationYear">Термін дії (рік):</label>
                             @Html.TextBoxFor(model => model.ExpirationYear, new { @class = "form-control-custom" })
-                            @Html.ValidationMessageFor(model => model.ExpirationYear, "", new { @class = "text-danger" })
+                            <span class="text-danger" id="ExpirationYearError"></span>
                         </div>
 
                         <div class="form-group mb-3">
                             <label class="fs-6" for="cvc">Код безпеки CVC:</label>
                             @Html.TextBoxFor(model => model.CVV, new { @class = "form-control-custom" })
-                            @Html.ValidationMessageFor(model => model.CVV, "", new { @class = "text-danger" })
+                            <span class="text-danger" id="CVVError"></span>
                         </div>
 
                         <button type="submit" class="btn btn-primary" id="saveButton">Зберегти</button>
@@ -80,30 +82,94 @@
 </div>
 
 <script>
-
     var addCreditCardLink = document.getElementById("addCreditCardLink");
+    var deleteCreditCardLink = document.getElementById("deleteCreditCardLink");
     var creditCardForm = document.getElementById("creditCardForm");
+
     document.addEventListener("DOMContentLoaded", function () {
-      
         addCreditCardLink.addEventListener("click", function () {
             addCreditCardLink.style.display = "none";
             creditCardForm.style.display = "block";
         });
+
+        deleteCreditCardLink.addEventListener("click", function () {
+            // Handle the delete credit card logic via AJAX
+            deleteCreditCard();
+        });
+
+        // Submit the form via AJAX when the "Зберегти" button is clicked
+        document.getElementById("saveButton").addEventListener("click", function (event) {
+            event.preventDefault(); // Prevent the default form submission behavior
+            saveCreditCard();
+        });
     });
 
-    if("@ViewBag.Input" == "True"){
+    if ("@ViewBag.Input" === "True") {
         addCreditCardLink.style.display = "none";
         creditCardForm.style.display = "block";
     }
 
-    if ("@ViewBag.Card" == "True"){
+    if ("@ViewBag.Card" === "True") {
         addCreditCardLink.style.display = "none";
         creditCardForm.style.display = "none";
         document.getElementById('creditCard').style.display = "block";
     }
 
-</script>
+    function deleteCreditCard() {
+        // Send an AJAX request to delete the credit card
+        fetch("@Url.Action("DeleteCreditCard", "CreditCard")")
+            .then(response => response.text())
+            .then(data => {
+                // Update the view
+                addCreditCardLink.style.display = "block";
+                creditCardForm.style.display = "none";
+                document.getElementById('creditCard').style.display = "none";
+            })
+            .catch(error => console.log(error));
+    }
 
+    function saveCreditCard() {
+        var form = document.getElementById("creditCardFormAjax");
+        var formData = new FormData(form);
+
+        // Надсилаємо AJAX запит, щоб підтвердити форму
+        fetch(form.action, {
+            method: form.method,
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Форма успішно підтверджена
+                    // Обновляємо дані на сторінці
+                    addCreditCardLink.style.display = "none";
+                    creditCardForm.style.display = "none";
+                    document.getElementById('creditCard').style.display = "block";
+
+                    document.querySelector(".card-number").value = document.getElementById("CardNumber").value;
+                    document.querySelector(".card-holder").value = document.getElementById("CardHolderName").value;
+                    document.querySelector(".card-expiry-value").value = document.getElementById("ExpirationMonth").value + " / " + document.getElementById("ExpirationYear").value;
+                } else {
+
+                    if (data.errors) {
+                        Object.keys(data.errors).forEach(function (key) {
+                            if (key !== "") {
+
+                                let element = key.charAt(0).toUpperCase() + key.slice(1) + "Error";
+                                if (key === "cvv") {
+                                    element = key.toUpperCase() + "Error";
+                                }
+
+                                document.getElementById(element).innerText = data.errors[key];
+                            }
+
+                        });
+                    }
+                }
+            })
+            .catch(error => console.log(error));
+    }
+</script>
 
 
 <footer class="footer">

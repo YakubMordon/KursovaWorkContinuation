@@ -2,6 +2,7 @@
 using KursovaWork.Models;
 using KursovaWorkBLL.Services.MainServices.CardService;
 using Microsoft.AspNetCore.Mvc;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace KursovaWork.Controllers
 {
@@ -75,15 +76,24 @@ namespace KursovaWork.Controllers
             if (ModelState.IsValid)
             {
                 _cardService.AddCard(model.ToCard());
-                return RedirectToAction("Index", "Home");
 
+                return Json(new { success = true }); 
             }
 
             _logger.LogInformation("Дані не пройшли верифікацію");
+            
+            var errors = new
+            {
+                CardHolderName = ModelState[nameof(CreditCardViewModel.CardHolderName)].Errors.FirstOrDefault()?.ErrorMessage ?? "",
+                CardNumber = ModelState[nameof(CreditCardViewModel.CardNumber)].Errors.FirstOrDefault()?.ErrorMessage ?? "",
+                ExpirationMonth = ModelState[nameof(CreditCardViewModel.ExpirationMonth)].Errors.FirstOrDefault()?.ErrorMessage ?? "",
+                ExpirationYear = ModelState[nameof(CreditCardViewModel.ExpirationYear)].Errors.FirstOrDefault()?.ErrorMessage ?? "",
+                CVV = ModelState[nameof(CreditCardViewModel.CVV)].Errors.FirstOrDefault()?.ErrorMessage ?? ""
+            };
 
             _logger.LogInformation("Показуємо поля введення зразу ж після прогрузки");
             ViewBag.Input = true;
-            return View(model);
+            return Json(new { success = false, errors });
         }
 
         /// <summary>
