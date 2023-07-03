@@ -116,11 +116,10 @@
     }
 
     function deleteCreditCard() {
-        // Send an AJAX request to delete the credit card
+
         fetch("@Url.Action("DeleteCreditCard", "CreditCard")")
             .then(response => response.text())
             .then(data => {
-                // Update the view
                 addCreditCardLink.style.display = "block";
                 creditCardForm.style.display = "none";
                 document.getElementById('creditCard').style.display = "none";
@@ -132,7 +131,7 @@
         var form = document.getElementById("creditCardFormAjax");
         var formData = new FormData(form);
 
-        // Надсилаємо AJAX запит, щоб підтвердити форму
+
         fetch(form.action, {
             method: form.method,
             body: formData
@@ -146,9 +145,24 @@
                     creditCardForm.style.display = "none";
                     document.getElementById('creditCard').style.display = "block";
 
-                    document.querySelector(".card-number").value = document.getElementById("CardNumber").value;
-                    document.querySelector(".card-holder").value = document.getElementById("CardHolderName").value;
-                    document.querySelector(".card-expiry-value").value = document.getElementById("ExpirationMonth").value + " / " + document.getElementById("ExpirationYear").value;
+                    const cardNumber = document.getElementById("CardNumber").value;
+                    const lastFourDigits = cardNumber.substring(cardNumber.length - 4);
+
+                    document.querySelector(".card-number").innerHTML = "···· ···· ···· " + lastFourDigits;
+                    document.querySelector(".card-holder").innerHTML = document.getElementById("CardHolderName").value;
+                    document.querySelector(".card-expiry-value").innerHTML = document.getElementById("ExpirationMonth").value + " / " + document.getElementById("ExpirationYear").value;
+
+                    document.getElementById("CardHolderName").value = "";
+                    document.getElementById("CardNumber").value = "";
+                    document.getElementById("ExpirationMonth").value = "";
+                    document.getElementById("ExpirationYear").value = "";
+                    document.getElementById("CVV").value = "";
+
+                    document.getElementById("CardHolderNameError").innerText = "";
+                    document.getElementById("CardNumberError").innerText = "";
+                    document.getElementById("ExpirationMonthError").innerText = "";
+                    document.getElementById("ExpirationYearError").innerText = "";
+                    document.getElementById("CVVError").innerText = "";
                 } else {
 
                     if (data.errors) {
