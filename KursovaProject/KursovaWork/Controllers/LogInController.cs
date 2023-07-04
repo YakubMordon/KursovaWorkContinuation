@@ -89,16 +89,24 @@ namespace KursovaWork.Controllers
 
                     _logger.LogInformation("Користувач успішно ввійшов в обліковий запис");
 
-                    return RedirectToAction("Index", "Home");
+                    return Json(new { success = true });
                 }
 
                 _logger.LogInformation("Електронну пошту або пароль введено неправильно");
-                ModelState.AddModelError("", "Invalid email or password.");
-                
+                var error = "Неправильна електронна пошта або пароль.";
+
+                return Json(new { success = false, error  });
+
             }
 
+            var errors = new
+            {
+                emailError = ModelState[nameof(LogInViewModel.Email)].Errors.FirstOrDefault()?.ErrorMessage ?? "",
+                passwordError = ModelState[nameof(LogInViewModel.Password)].Errors.FirstOrDefault()?.ErrorMessage ?? "",
+            };
+
             _logger.LogInformation("Дані не пройшли валідацію");
-            return View(model);
+            return Json(new { success = false, errors });
         }
 
     }

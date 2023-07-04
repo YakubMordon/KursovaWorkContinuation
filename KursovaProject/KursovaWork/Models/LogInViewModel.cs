@@ -20,6 +20,7 @@ namespace KursovaWork.Models
         /// </summary>
         [Required(ErrorMessage = "Поле паролю є потрібне.")]
         [DataType(DataType.Password)]
+        [StringLength(100, MinimumLength = 6, ErrorMessage = "Пароль повинен містити мінімум 6 символів")]
         [Display(Name = "Пароль")]
         public string Password { get; set; }
 
