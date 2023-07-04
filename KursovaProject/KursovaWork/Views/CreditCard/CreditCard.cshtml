@@ -93,13 +93,11 @@
         });
 
         deleteCreditCardLink.addEventListener("click", function () {
-            // Handle the delete credit card logic via AJAX
             deleteCreditCard();
         });
 
-        // Submit the form via AJAX when the "Зберегти" button is clicked
         document.getElementById("saveButton").addEventListener("click", function (event) {
-            event.preventDefault(); // Prevent the default form submission behavior
+            event.preventDefault(); 
             saveCreditCard();
         });
     });

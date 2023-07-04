@@ -22,7 +22,7 @@
 </div>
 
 <div class="carBody d-flex flex-column">
-    <form asp-action="Submit" asp-controller="Configurator" method="post">
+    <form asp-action="Submit" asp-controller="Configurator" method="post" id="configuratorForm">
         <div class="form-group">
             <h4>Колір</h4>
             <div class="radio-buttons flex-row justify-content-between">
@@ -52,10 +52,8 @@
                     Сріблястий
                 </label>
             </div>
-            @if (ViewData["ColorError"] != null)
-            {
-                <p class="text-danger">@ViewData["ColorError"]</p>
-            }
+            <p id="colorError" class="text-danger"></p>
+            
         </div>
 
         <div class="form-group">
@@ -77,10 +75,8 @@
                     Роботична
                 </label>
             </div>
-            @if (ViewData["TransmissionError"] != null)
-            {
-                <p class="text-danger">@ViewData["TransmissionError"]</p>
-            }
+            <p id="transmissionError" class="text-danger"></p>
+            
         </div>
 
         <div class="form-group">
@@ -107,15 +103,60 @@
                     Гибрид
                 </label>
             </div>
-            @if (ViewData["FuelTypeError"] != null)
-            {
-                <p class="text-danger">@ViewData["FuelTypeError"]</p>
-            }
+            <p id="fuelTypeError" class="text-danger"></p>
+            
         </div>
 
-        <button type="submit" class="btn btn-primary">Зберегти</button>
+        <button id="submitButton" type="submit" class="btn btn-primary">Зберегти</button>
     </form>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("configuratorForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+            submitConfiguratorForm();
+        });
+    });
+
+    function submitConfiguratorForm() {
+        var form = document.getElementById("configuratorForm");
+        var formData = new FormData(form);
+
+        fetch(form.action, {
+                method: form.method,
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.redirect) {
+                    window.location.href = data.redirect;
+                } else {
+                    if (data.errors) {
+                        if (data.errors.color) {
+                            document.getElementById("colorError").innerHTML = data.errors.color;
+                        } else {
+                            document.getElementById("colorError").innerHTML = "";
+                        }
+
+                        if (data.errors.transmission) {
+                            document.getElementById("transmissionError").innerHTML = data.errors.transmission;
+                        } else {
+                            document.getElementById("transmissionError").innerHTML = "";
+                        }
+
+                        if (data.errors.fuelType) {
+                            document.getElementById("fuelTypeError").innerHTML = data.errors.fuelType;
+                        } else {
+                            document.getElementById("fuelTypeError").innerHTML = "";
+                        }
+                    }
+                }
+            })
+            .catch(error => console.log(error));
+    }
+
+</script>
 
 <footer class="footer">
     <div class="LinksContainer">

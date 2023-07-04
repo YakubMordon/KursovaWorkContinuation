@@ -85,22 +85,30 @@ namespace KursovaWork.Controllers
         {
             _logger.LogInformation("Вхід у функцію підтвердження конфігурації автомобіля");
 
+            var errors = new Dictionary<string, string>();
+
             if (string.IsNullOrEmpty(color))
             {
-                ViewData["ColorError"] = "Виберіть колір";
+                errors["color"] = "Виберіть колір";
                 _logger.LogInformation("Колір не було обрано");
             }
 
             if (string.IsNullOrEmpty(transmission))
             {
-                ViewData["TransmissionError"] = "Виберіть тип коробки передач";
+                errors["transmission"] = "Виберіть тип коробки передач";
                 _logger.LogInformation("Тип коробки передач не було обрано");
             }
 
             if (string.IsNullOrEmpty(fuelType))
             {
-                ViewData["FuelTypeError"] = "Виберіть тип палива";
+                errors["fuelType"] = "Виберіть тип палива";
                 _logger.LogInformation("Тип палива не було обрано");
+            }
+
+            if (errors.Count > 0)
+            {
+                _logger.LogInformation("Один або більше параметрів не було обрано в конфігураторі");
+                return Json(new { errors });
             }
 
             options = new ConfiguratorOptions()
@@ -110,19 +118,8 @@ namespace KursovaWork.Controllers
                 FuelType = fuelType
             };
 
-            if(string.IsNullOrEmpty(color) || string.IsNullOrEmpty(transmission) || string.IsNullOrEmpty(fuelType))
-            {
-                _logger.LogInformation("Один або більше параметрів не було обрано в конфігураторі");
-                return View("~/Views/Configurator/Configurator.cshtml", _curCar);
-            }
-
             _logger.LogInformation("Перехід на сторінку оплати автомобіля");
-            return RedirectToAction("Payment", "Payment", new
-            {
-                param1 = _param[0],
-                param2 = _param[1],
-                param3 = _param[2]
-            });
+            return Json(new { redirect = Url.Action("Payment", "Payment", new { param1 = _param[0], param2 = _param[1], param3 = _param[2] }) });
         }
     }
 }
