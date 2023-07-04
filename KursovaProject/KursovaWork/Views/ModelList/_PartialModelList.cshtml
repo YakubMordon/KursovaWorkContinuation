@@ -1,0 +1,31 @@
+﻿@model FilterViewModel
+
+@if (Model.cars.Any())
+{
+    @foreach (var car in Model.cars)
+    {
+        <div class="col-md-4 mb-2 card-background">
+            <a class="text-decoration-none" asp-action="Car" asp-controller="Car" asp-route-param1="@car.Make" asp-route-param2="@car.Model" asp-route-param3="@car.Year">
+                <div class="card">
+                    <img src="@car.Images.FirstOrDefault()?.ImageUrl" class="card-img-top" alt="Car Image">
+                    <div class="card-body">
+                        <h5 class="card-title-car">@car.Make @car.Model</h5>
+                        <p class="card-text text-color">@car.Description</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Рік: @car.Year</li>
+                        <li class="list-group-item">Ціна: @car.Price грн.</li>
+                        <li class="list-group-item">Колір: @car.Detail?.Color</li>
+                        <li class="list-group-item">Коробка передач: @car.Detail?.Transmission</li>
+                        <li class="list-group-item">Тип палива: @car.Detail?.FuelType</li>
+                    </ul>
+                </div>
+            </a>
+        </div>
+
+    }
+}
+else
+{
+    <p class="ordersNotFound fs-3">Машин не було знайдено.</p>
+}

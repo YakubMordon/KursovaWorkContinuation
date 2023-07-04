@@ -71,7 +71,7 @@ namespace KursovaWork.Controllers
 
             _logger.LogInformation("Перехід на сторінку списку моделів");
 
-            return View("~/Views/ModelList/ModelList.cshtml", model);
+            return PartialView("~/Views/ModelList/_PartialModelList.cshtml", model);
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace KursovaWork.Controllers
 
             _logger.LogInformation("Перехід на сторінку списку моделів");
 
-            return View("~/Views/ModelList/ModelList.cshtml", model);
+            return PartialView("~/Views/ModelList/_PartialModelList.cshtml", model);
         }
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace KursovaWork.Controllers
 
             _logger.LogInformation("Перехід на сторінку списку моделів");
 
-            return View("~/Views/ModelList/ModelList.cshtml", model);
+            return PartialView("~/Views/ModelList/_PartialModelList.cshtml", model);
         }
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace KursovaWork.Controllers
 
             _logger.LogInformation("Перехід на сторінку списку моделів");
 
-            return View("~/Views/ModelList/ModelList.cshtml", filter);
+            return PartialView("~/Views/ModelList/_PartialModelList.cshtml", filter);
         }
 
     }

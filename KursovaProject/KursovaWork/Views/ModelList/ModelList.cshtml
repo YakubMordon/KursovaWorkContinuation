@@ -1,5 +1,4 @@
-﻿@using KursovaWorkDAL.Entity.Entities.Car;
-@using KursovaWorkBLL.Services.AdditionalServices;
+﻿@using KursovaWorkBLL.Services.AdditionalServices;
 @using Microsoft.IdentityModel.Tokens
 
 @{
@@ -21,16 +20,16 @@
                         <div class="dropdown-menu dropdown-menu-relocate" aria-labelledby="sortDropdownButton">
                             <ul class="dropdown-container">
                                 <li class="dropdown-item" role="button">
-                                    <a class="dropdown-item" asp-controller="ModelList" asp-action="SortByAlphabet">По алфавіту</a>
+                                    <a class="dropdown-item" asp-controller="ModelList" asp-action="SortByAlphabet" id="SortByAlphabet">По алфавіту</a>
                                 </li>
                                 <li class="dropdown-item " role="button">
-                                    <a class="dropdown-item" asp-controller="ModelList" asp-action="SortByPrice" asp-route-param1="cheap">Від дешевих до дорогих</a>
+                                    <a class="dropdown-item" asp-controller="ModelList" asp-action="SortByPrice" asp-route-param1="cheap" id="SortByPriceCheap">Від дешевих до дорогих</a>
                                 </li>
                                 <li class="dropdown-item" role="button">
-                                    <a class="dropdown-item" asp-controller="ModelList" asp-action="SortByPrice" asp-route-param1="expensive">Від дорогих до дешевих</a>
+                                    <a class="dropdown-item" asp-controller="ModelList" asp-action="SortByPrice" asp-route-param1="expensive" id="SortByPriceExpensive">Від дорогих до дешевих</a>
                                 </li>
                                 <li class="dropdown-item" role="button">
-                                    <a class="dropdown-item" asp-controller="ModelList" asp-action="SortByNovelty">Новинки</a>
+                                    <a class="dropdown-item" asp-controller="ModelList" asp-action="SortByNovelty" id="SortByNovelty">Новинки</a>
                                 </li>
                             </ul>
                         </div>
@@ -51,7 +50,7 @@
                                 </a>
                             </div>
                             <div class="modal-body d-flex flex-column justify-content-between">
-                                <form asp-controller="ModelList" asp-action="ApplyFilters" method="get">
+                                <form asp-controller="ModelList" asp-action="ApplyFilters" id="filterForm" method="get">
                                     <div class="mb-2">
                                         <h6>Ціна:</h6>
                                         <div class="form-group">
@@ -78,30 +77,30 @@
                                         <h6>Тип палива:</h6>
                                         <div class="form-check">
                                             <input class="form-check-input cursor" type="checkbox" name="SelectedFuelTypes" id="gasoline" value="Бензин" @if (!Model.SelectedFuelTypes.IsNullOrEmpty())
-                                            {
-                                                @(Model.SelectedFuelTypes.Contains("Бензин") ? "checked" : "")
-                                            }>
+                                                                                                                                                         {
+                                                                                                                                                             @(Model.SelectedFuelTypes.Contains("Бензин") ? "checked" : "")
+                                                                                                                                                         }>
                                             <label class="form-check-label cursor" for="gasoline">Бензин</label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input cursor" type="checkbox" name="SelectedFuelTypes" id="diesel" value="Дизель" @if (!Model.SelectedFuelTypes.IsNullOrEmpty())
-                                            {
-                                                @(Model.SelectedFuelTypes.Contains("Дизель") ? "checked" : "")
-                                            }>
+                                                                                                                                                       {
+                                                                                                                                                           @(Model.SelectedFuelTypes.Contains("Дизель") ? "checked" : "")
+                                                                                                                                                       }>
                                             <label class="form-check-label cursor" for="diesel">Дизель</label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input cursor" type="checkbox" name="SelectedFuelTypes" id="electric" value="Електричний" @if (!Model.SelectedFuelTypes.IsNullOrEmpty())
-                                            {
-                                                @(Model.SelectedFuelTypes.Contains("Електричний") ? "checked" : "")
-                                            }>
+                                                                                                                                                              {
+                                                                                                                                                                  @(Model.SelectedFuelTypes.Contains("Електричний") ? "checked" : "")
+                                                                                                                                                              }>
                                             <label class="form-check-label cursor" for="electric">Електричний</label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input cursor" type="checkbox" name="SelectedFuelTypes" id="hybrid" value="Гибрид" @if (!Model.SelectedFuelTypes.IsNullOrEmpty())
-                                            {
-                                                @(Model.SelectedFuelTypes.Contains("Гибрид") ? "checked" : "")
-                                            }>
+                                                                                                                                                       {
+                                                                                                                                                           @(Model.SelectedFuelTypes.Contains("Гибрид") ? "checked" : "")
+                                                                                                                                                       }>
                                             <label class="form-check-label cursor" for="hybrid">Гибрид</label>
                                         </div>
                                     </div>
@@ -111,23 +110,23 @@
                                         </h6>
                                         <div class="form-check">
                                             <input class="form-check-input cursor" type="checkbox" name="SelectedTransmissionTypes" id="automatic" value="Автоматична" @if (!Model.SelectedTransmissionTypes.IsNullOrEmpty())
-                                            {
-                                                @(Model.SelectedTransmissionTypes.Contains("Автоматична") ? "checked" : "")
-                                            }>
+                                                                                                                                                                       {
+                                                                                                                                                                           @(Model.SelectedTransmissionTypes.Contains("Автоматична") ? "checked" : "")
+                                                                                                                                                                       }>
                                             <label class="form-check-label cursor" for="automatic">Автоматична</label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input cursor" type="checkbox" name="SelectedTransmissionTypes" id="robotic" value="Роботична" @if (!Model.SelectedTransmissionTypes.IsNullOrEmpty())
-                                            {
-                                                @(Model.SelectedTransmissionTypes.Contains("Роботична") ? "checked" : "")
-                                            }>
+                                                                                                                                                                   {
+                                                                                                                                                                       @(Model.SelectedTransmissionTypes.Contains("Роботична") ? "checked" : "")
+                                                                                                                                                                   }>
                                             <label class="form-check-label cursor" for="robotic">Роботична</label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input cursor" type="checkbox" name="SelectedTransmissionTypes" id="mechanic" value="Механічна" @if (!Model.SelectedTransmissionTypes.IsNullOrEmpty())
-                                            {
-                                                @(Model.SelectedTransmissionTypes.Contains("Механічна") ? "checked" : "")
-                                            }>
+                                                                                                                                                                    {
+                                                                                                                                                                        @(Model.SelectedTransmissionTypes.Contains("Механічна") ? "checked" : "")
+                                                                                                                                                                    }>
                                             <label class="form-check-label cursor" for="mechanic">Механічна</label>
                                         </div>
                                     </div>
@@ -139,9 +138,9 @@
                                         {
                                             <div class="form-check">
                                                 <input class="form-check-input cursor" type="checkbox" name="SelectedMakes" id="@make" value="@make" @if (!Model.SelectedMakes.IsNullOrEmpty())
-                                                {
-                                                    @(Model.SelectedMakes.Contains(@make) ? "checked" : "")
-                                                }>
+                                                                                                                                                     {
+                                                                                                                                                         @(Model.SelectedMakes.Contains(@make) ? "checked" : "")
+                                                                                                                                                     }>
                                                 <label class="form-check-label cursor" for="@make">@make</label>
                                             </div>
                                         }
@@ -223,40 +222,94 @@
     <div class="modelList mt-2">
         <div class="container card-background">
             <div class="row card-background">
-                @if (Model.cars.Any())
-                {
-                    @foreach (var car in Model.cars)
-                    {
-                        <div class="col-md-4 mb-2 card-background">
-                            <a class="text-decoration-none" asp-action="Car" asp-controller="Car" asp-route-param1="@car.Make" asp-route-param2="@car.Model" asp-route-param3="@car.Year">
-                                <div class="card">
-                                    <img src="@car.Images.FirstOrDefault()?.ImageUrl" class="card-img-top" alt="Car Image">
-                                    <div class="card-body">
-                                        <h5 class="card-title-car">@car.Make @car.Model</h5>
-                                        <p class="card-text text-color">@car.Description</p>
-                                    </div>
-                                    <ul class="list-group list-group-flush">
-                                        <li class="list-group-item">Рік: @car.Year</li>
-                                        <li class="list-group-item">Ціна: @car.Price грн.</li>
-                                        <li class="list-group-item">Колір: @car.Detail?.Color</li>
-                                        <li class="list-group-item">Коробка передач: @car.Detail?.Transmission</li>
-                                        <li class="list-group-item">Тип палива: @car.Detail?.FuelType</li>
-                                    </ul>
-                                </div>
-                            </a>
-                        </div>
-
-                    }
-                }
-                else
-                {
-                    <p class="ordersNotFound fs-3">Машин не було знайдено.</p>
-                }
+                @Html.Partial("~/Views/ModelList/_PartialModelList.cshtml", Model)
             </div>
         </div>
-
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("SortByAlphabet").addEventListener("click", function (event) {
+            event.preventDefault();
+            sortByAlphabet();
+        });
+
+        document.getElementById("SortByPriceCheap").addEventListener("click", function (event) {
+            event.preventDefault();
+            sortByPrice("cheap");
+        });
+
+        document.getElementById("SortByPriceExpensive").addEventListener("click", function (event) {
+            event.preventDefault();
+            sortByPrice("expensive");
+        });
+
+        document.getElementById("SortByNovelty").addEventListener("click", function (event) {
+            event.preventDefault();
+            sortByNovelty();
+        });
+
+        document.getElementById("filterForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+            applyFilters();
+        });
+    });
+
+    function updateModelList(html) {
+        document.querySelector(".modelList .container .row").innerHTML = html;
+    }
+
+    function sortByAlphabet() {
+        fetch("/ModelList/SortByAlphabet", {
+                method: "GET"
+            })
+            .then(response => response.text())
+            .then(html => {
+                updateModelList(html);
+            })
+            .catch(error => console.log(error));
+    }
+
+    function sortByPrice(param1) {
+        fetch(`/ModelList/SortByPrice?param1=${param1}`, {
+                method: "GET"
+            })
+            .then(response => response.text())
+            .then(html => {
+                updateModelList(html);
+            })
+            .catch(error => console.log(error));
+    }
+
+    function sortByNovelty() {
+        fetch("/ModelList/SortByNovelty", {
+                method: "GET"
+            })
+            .then(response => response.text())
+            .then(html => {
+                updateModelList(html);
+            })
+            .catch(error => console.log(error));
+    }
+
+    function applyFilters() {
+        const form = document.getElementById("filterForm");
+        const formData = new FormData(form);
+
+        fetch("/ModelList/ApplyFilters", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.text())
+            .then(html => {
+                updateModelList(html);
+                document.getElementById('close').dispatchEvent(new Event("click"));
+            })
+            .catch(error => console.log(error));
+    }
+
+</script>
 
 <footer class="footer">
     <div class="LinksContainer">
