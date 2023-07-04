@@ -44,36 +44,36 @@
                         </div>
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                        @using (Html.BeginForm("SignUp", "SignUp", FormMethod.Post, new { @class = "needs-validation", novalidate = "novalidate" }))
+                        @using (Html.BeginForm("SignUp", "SignUp", FormMethod.Post, new { @class = "needs-validation", @id = "signupForm", novalidate = "novalidate" }))
                         {
                             <div class="form-group">
                                 <p class="fs-6">Ім'я</p>
                                 @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control-custom", placeholder = "Ім\'я", required = "required", autofocus = "autofocus" })
-                                @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+                                @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger", @id = "firstNameError"})
                             </div>
 
                             <div class="form-group">
                                 <p class="fs-6">Прізвище</p>
                                 @Html.TextBoxFor(m => m.LastName, new { @class = "form-control-custom", placeholder = "Прізвище", required = "required" })
-                                @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+                                @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger", @id = "lastNameError" })
                             </div>
 
                             <div class="form-group">
                                 <p class="fs-6">Електронна пошта</p>
                                 @Html.TextBoxFor(m => m.Email, new { @class = "form-control-custom", placeholder = "Електронна пошта", required = "required" })
-                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger", @id = "emailError" })
                             </div>
 
                             <div class="form-group">
                                 <p class="fs-6">Пароль</p>
                                 @Html.PasswordFor(m => m.Password, new { @class = "form-control-custom", placeholder = "Пароль", required = "required" })
-                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger", @id = "passwordError" })
                             </div>
 
                             <div class="form-group">
                                 <p class="fs-6">Підтвердіть пароль</p>
                                 @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control-custom", placeholder = "Підтвердіть пароль", required = "required" })
-                                @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                                @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger", @id = "confirmPasswordError" })
                             </div>
 
                             <div class="form-group login-button">
@@ -88,3 +88,64 @@
     <div class="right-side"></div>
     <div class="right-side-mobile"></div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded",
+        function () {
+            document.getElementById("signupForm").addEventListener("submit",
+                function (event) {
+                    event.preventDefault();
+                    signUp();
+                });
+        });
+
+    function signUp() {
+        var form = document.getElementById("signupForm");
+        var formData = new FormData(form);
+
+        fetch(form.action,
+            {
+                method: form.method,
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = "@Url.Action("SendVerificationCode", "SignUp")";
+                } else {
+
+                    if (data.errors.firstNameError) {
+                        document.getElementById("firstNameError").innerText = data.errors.firstNameError;
+                    } else {
+                        document.getElementById("firstNameError").innerText = "";
+                    }
+
+                    if (data.errors.lastNameError) {
+                        document.getElementById("lastNameError").innerText = data.errors.lastNameError;
+                    } else {
+                        document.getElementById("lastNameError").innerText = "";
+                    }
+
+                    if (data.errors.emailError) {
+                        document.getElementById("emailError").innerText = data.errors.emailError;
+                    } else {
+                        document.getElementById("emailError").innerText = "";
+                    }
+
+                    if (data.errors.passwordError) {
+                        document.getElementById("passwordError").innerText = data.errors.passwordError;
+                    } else {
+                        document.getElementById("passwordError").innerText = "";
+                    }
+
+                    if (data.errors.confirmPasswordError) {
+                        document.getElementById("confirmPasswordError").innerText = data.errors.confirmPasswordError;
+                    } else {
+                        document.getElementById("confirmPasswordError").innerText = "";
+                    }
+                }
+            })
+            .catch(error => console.log(error));
+    }
+
+</script>

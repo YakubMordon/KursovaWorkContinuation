@@ -24,7 +24,7 @@
                         </div>
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                        @using (Html.BeginForm("Submit", "SignUp", FormMethod.Post, new { @class = "needs-validation", novalidate = "novalidate" }))
+                        @using (Html.BeginForm("Submit", "SignUp", FormMethod.Post, new { @class = "needs-validation", @id = "verificationDigitsForm", novalidate = "novalidate" }))
                         {
                             <div class="form-group">
                                 <p class="fs-6">Код підтвердження</p>
@@ -34,7 +34,7 @@
                                         <input type="text" class="verification-digit border-2 text-center" name="VerificationDigits[@i]" maxlength="1" required="required" oninput="moveToNextInput(this, @i)" />
                                     }
                                 </div>
-                                @Html.ValidationMessageFor(m => m.VerificationDigits, "", new { @class = "text-danger" })
+                                @Html.ValidationMessageFor(m => m.VerificationDigits, "", new { @class = "text-danger", @id = "verificationDigitsError"})
                             </div>
 
                             <div class="form-group login-button">
@@ -54,9 +54,62 @@
                         }
                         <div class="customLogInHeader fs-5">
                             <p>
-                                Нажміть <a asp-action="SendVerificationCode" asp-controller="SignUp">тут</a>, якщо хочете повторно получити код на пошту
+                                Нажміть <a asp-action="ReSendVerificationCode" asp-controller="SignUp" id="resendButton">тут</a>, якщо хочете повторно получити код на пошту
                             </p>
                         </div>
+
+                        <script>
+                            document.addEventListener("DOMContentLoaded",
+                                function () {
+                                    document.getElementById("verificationDigitsForm").addEventListener("submit",
+                                        function (event) {
+                                            event.preventDefault();
+                                            submit();
+                                        });
+
+                                    document.getElementById("resendButton").addEventListener("click",
+                                        function(event) {
+                                            event.preventDefault();
+                                            resend();
+                                        });
+                                });
+
+                            function submit() {
+                                var form = document.getElementById("verificationDigitsForm");
+                                var formData = new FormData(form);
+
+                                fetch(form.action,
+                                    {
+                                        method: form.method,
+                                        body: formData
+                                    })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.success) {
+                                            window.location.href = "@Url.Action("Congratulations", "SignUp")";
+                                        } else {
+                                            if (data.error) {
+                                                document.getElementById("verificationDigitsError").innerText = data.error;
+                                            } else {
+                                                document.getElementById("verificationDigitsError").innerText = "";
+                                            }
+                                        }
+                                    })
+                                    .catch(error => console.log(error));
+                            }
+
+                            function resend() {
+
+                                fetch("/SignUp/ReSendVerificationCode",
+                                        {
+                                            method: "GET"
+                                        })
+                                    .then(response => response.json())
+                                    .then(data => console.log(data.message))
+                                    .catch(error => console.log(error));
+                            }
+
+                        </script>
                     </div>
                 </div>
             </div>

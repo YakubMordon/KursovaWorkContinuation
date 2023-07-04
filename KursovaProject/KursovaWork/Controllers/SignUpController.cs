@@ -72,67 +72,97 @@ namespace KursovaWork.Controllers
         public IActionResult SignUp(SignUpViewModel model)
         {
             _logger.LogInformation("Вхід у метод верифікації даних реєстрації");
+
+            var errors = new Dictionary<string, string>();
+
             if (ModelState.IsValid)
             {
                 User user = _userService.GetUserByEmail(model.Email);
 
                 if (user != null)
                 {
+                    errors["emailError"] = "Користувач з такою ж елекронною поштою існує";
                     ModelState.AddModelError("Email", "User with this email already exists.");
                     _logger.LogInformation("Користувач з такою ж елекронною поштою існує");
-                    return View(model);
+                    return Json(new { success = false, errors });
                 }
                 _curUser = model.ToUser();
+
                 _logger.LogInformation("Успішно перевірено чи є така ж електронна пошта");
-                return SendVerificationCode();
+
+                SendCode();
+
+                return Json(new { success = true });
 
             }
+
+            errors["firstNameError"] = ModelState[nameof(SignUpViewModel.FirstName)].Errors.FirstOrDefault()?.ErrorMessage ?? "";
+            errors["lastNameError"] = ModelState[nameof(SignUpViewModel.LastName)].Errors.FirstOrDefault()?.ErrorMessage ?? "";
+            errors["emailError"] = ModelState[nameof(SignUpViewModel.Email)].Errors.FirstOrDefault()?.ErrorMessage ?? "";
+            errors["passwordError"] = ModelState[nameof(SignUpViewModel.Password)].Errors.FirstOrDefault()?.ErrorMessage ?? "";
+            errors["confirmPasswordError"] = ModelState[nameof(SignUpViewModel.ConfirmPassword)].Errors.FirstOrDefault()?.ErrorMessage ?? "";
+
+
             _logger.LogInformation("Дані не пройшли валідацію");
-            return View(model);
+            return Json(new { success = false, errors });
         }
 
         /// <summary>
         /// Обробляє введений користувачем верифікаційний код та здійснює підтвердження реєстрації.
         /// </summary>
         /// <param name="verification">Модель, що містить введений користувачем верифікаційний код.</param>
-        /// <returns>Сторінка головного меню або сторінка введення верифікаційного коду з повідомленням про помилку.</returns>
+        /// <returns>Сторінка привітання або сторінка введення верифікаційного коду з повідомленням про помилку.</returns>
         [HttpPost]
         public IActionResult Submit(VerificationViewModel verification)
         {
             _logger.LogInformation("Вхід у метод підтвердження реєстрації та перевірки валідаційного коду");
 
+
             if (ModelState.IsValid)
             {
                 StringBuilder stringBuilder = new StringBuilder();
                 _logger.LogInformation("Переходимо в цикл утворення цілісного рядка з 4 підрядків");
+
                 foreach (var digit in verification.VerificationDigits)
                 {
                     if (string.IsNullOrEmpty(digit))
                     {
-                        ModelState.AddModelError("VerificationDigits", "Не введено всіх цифр");
                         _logger.LogInformation("Не введено всіх цифр");
-                        return View("~/Views/SignUp/Submit.cshtml", verification);
+                        return Json(new { success = false, error = "Не введено всіх цифр" });
                     }
                     stringBuilder.Append(digit);
                 }
 
                 string temp = stringBuilder.ToString();
 
-                if(int.Parse(temp) != _verificationCode)
+                if (int.Parse(temp) != _verificationCode)
                 {
-                    ModelState.AddModelError("VerificationDigits", "Неправильний код підтвердження");
                     _logger.LogInformation("Неправильний код підтвердження");
-                    return View("~/Views/SignUp/Submit.cshtml", verification);
+
+                    return Json(new { success = false, error = "Неправильний код підтвердження" });
                 }
 
                 _userService.AddUser(_curUser);
                 _curUser = null;
                 _logger.LogInformation("Успішно зареєстровано користувача, перехід на головну сторінку");
-                return View("~/Views/SignUp/Congratulations.cshtml");
+
+                return Json(new { success = true });
             }
 
+            string error = ModelState[nameof(VerificationViewModel.VerificationDigits)].Errors.FirstOrDefault()?.ErrorMessage ?? "";
+
             _logger.LogInformation("Дані не пройшли валідацію");
-            return View("~/Views/SignUp/Submit.cshtml", verification);
+            return Json(new { success = false, error });
+        }
+
+        /// <summary>
+        /// Метод переходу на сторінку привітання
+        /// </summary>
+        /// <returns>Сторінка привітання</returns>
+        [HttpGet]
+        public IActionResult Congratulations()
+        {
+            return View("~/Views/SignUp/Congratulations.cshtml");
         }
 
         /// <summary>
@@ -140,6 +170,26 @@ namespace KursovaWork.Controllers
         /// </summary>
         /// <returns>Сторінка введення верифікаційного коду.</returns>
         public IActionResult SendVerificationCode()
+        {
+            _logger.LogInformation("Переходимо на сторінку з введенням коду");
+
+            return View("~/Views/SignUp/Submit.cshtml");
+        }
+
+        /// <summary>
+        /// Відправляє заново електронний лист з новим верифікаційним кодом.
+        /// </summary>
+        /// <returns>Повідомлення про успішне надіслання коду</returns>
+        public IActionResult ReSendVerificationCode()
+        {
+            SendCode();
+            return Json(new { message = "Успішно надіслано код" });
+        }
+
+        /// <summary>
+        /// Метод генерування коду та відправки листа
+        /// </summary>
+        public void SendCode()
         {
             _logger.LogInformation("Вхід у метод надсилання верифікаційного коду");
 
@@ -149,11 +199,9 @@ namespace KursovaWork.Controllers
 
             string body = EmailBodyTemplate.BodyTemp(_curUser.FirstName, _curUser.LastName, _verificationCode, "реєстрації");
 
-            _logger.LogInformation("Надсилаємо повідомлення на електронну пошту користувача та переходимо на сторінку з введенням коду");
+            _logger.LogInformation("Надсилаємо повідомлення на електронну пошту користувача");
 
             EmailSender.SendEmail(_curUser.Email, subject, body);
-
-            return View("~/Views/SignUp/Submit.cshtml");
         }
     }
 }
