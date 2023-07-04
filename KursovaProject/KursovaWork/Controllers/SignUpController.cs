@@ -117,7 +117,6 @@ namespace KursovaWork.Controllers
         {
             _logger.LogInformation("Вхід у метод підтвердження реєстрації та перевірки валідаційного коду");
 
-
             if (ModelState.IsValid)
             {
                 StringBuilder stringBuilder = new StringBuilder();

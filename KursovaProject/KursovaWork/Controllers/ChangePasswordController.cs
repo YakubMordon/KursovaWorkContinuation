@@ -67,14 +67,18 @@ namespace KursovaWork.Controllers
                 if (_curUser != null)
                 {
                     _logger.LogInformation("Пошту знайдено");
-                    return SendVerificationCode();
+                    SendCode();
+                    return Json(new { success = true });
                 }
-                ModelState.AddModelError("", "Така електронна пошта не є зареєстрованою");
                 _logger.LogInformation("Електронна пошта не є зареєстрованою");
+
+                return Json(new {success = false, error = "Така електронна пошта не є зареєстрованою" });
             }
 
+            string error = ModelState[nameof(EmailViewModel.Email)].Errors.FirstOrDefault()?.ErrorMessage ?? "";
+
             _logger.LogInformation("Дані не пройшли валідацію");
-            return View("~/Views/ForgotPassword/UserFinder.cshtml", model);
+            return Json(new { success = false, error });
         }
 
         /// <summary>
@@ -87,17 +91,15 @@ namespace KursovaWork.Controllers
             _logger.LogInformation("Вхід у метод верифікації коду");
             if (ModelState.IsValid)
             {
-                _logger.LogInformation("Дані пройшли валідацію");
                 StringBuilder stringBuilder = new StringBuilder();
-
                 _logger.LogInformation("Переходимо в цикл утворення цілісного рядка з 4 підрядків");
+
                 foreach (var digit in model.VerificationDigits)
                 {
                     if (string.IsNullOrEmpty(digit))
                     {
-                        ModelState.AddModelError("VerificationDigits", "Не введено всіх цифр");
                         _logger.LogInformation("Не введено всіх цифр");
-                        return View("~/Views/ForgotPassword/ForgotPassword.cshtml", model);
+                        return Json(new { success = false, error = "Не введено всіх цифр" });
                     }
                     stringBuilder.Append(digit);
                 }
@@ -106,17 +108,30 @@ namespace KursovaWork.Controllers
 
                 if (int.Parse(temp) != _verificationCode)
                 {
-                    ModelState.AddModelError("VerificationDigits", "Неправильний код підтвердження");
-                    _logger.LogInformation("Неправильний код підтвердженння");
-                    return View("~/Views/ForgotPassword/ForgotPassword.cshtml", model);
+                    _logger.LogInformation("Неправильний код підтвердження");
+
+                    return Json(new { success = false, error = "Неправильний код підтвердження" });
                 }
 
-                _logger.LogInformation("Переходимо на сторінку введення нового паролю");
-                return View("~/Views/ForgotPassword/ChangePassword.cshtml");
-            }
-            _logger.LogInformation("Дані не пройшли валідацію");
+                _logger.LogInformation("Успішно підтверджено можливість для користувача на зміну паролю");
 
-            return View("~/Views/ForgotPassword/ForgotPassword.cshtml", model);
+                return Json(new { success = true });
+            }
+
+            string error = ModelState[nameof(VerificationViewModel.VerificationDigits)].Errors.FirstOrDefault()?.ErrorMessage ?? "";
+
+            _logger.LogInformation("Дані не пройшли валідацію");
+            return Json(new { success = false, error });
+        }
+
+        /// <summary>
+        /// Метод переходу на сторінку зміни паролю
+        /// </summary>
+        /// <returns>Сторінка зміни паролю</returns>
+        public IActionResult UpdatePassword()
+        {
+            _logger.LogInformation("Перехід на сторінку зміни паролю");
+            return View("~/Views/ForgotPassword/ChangePassword.cshtml");
         }
 
         /// <summary>
@@ -136,13 +151,19 @@ namespace KursovaWork.Controllers
 
                 _logger.LogInformation("Успішно змінено пароль, переходимо на головну сторінку");
 
-                return RedirectToAction("Index", "Home");
+                return Json(new {success = true });
 
             }
 
+            var errors = new
+            {
+                passwordError = ModelState[nameof(ChangePasswordViewModel.Password)].Errors.FirstOrDefault()?.ErrorMessage ?? "",
+                confirmPasswordError = ModelState[nameof(ChangePasswordViewModel.ConfirmPassword)].Errors.FirstOrDefault()?.ErrorMessage ?? ""
+            };
+
             _logger.LogInformation("Дані не пройшли валідацію");
 
-            return View("~/Views/ForgotPassword/ChangePassword.cshtml", model);
+            return Json(new {success = false, errors });
         }
 
         /// <summary>
@@ -150,6 +171,26 @@ namespace KursovaWork.Controllers
         /// </summary>
         /// <returns>Сторінка введення верифікаційного коду.</returns>
         public IActionResult SendVerificationCode()
+        {
+            _logger.LogInformation("Переходимо на сторінку з введенням коду");
+
+            return View("~/Views/ForgotPassword/ForgotPassword.cshtml");
+        }
+
+        /// <summary>
+        /// Відправляє заново електронний лист з новим верифікаційним кодом.
+        /// </summary>
+        /// <returns>Повідомлення про успішне надіслання коду</returns>
+        public IActionResult ReSendVerificationCode()
+        {
+            SendCode();
+            return Json(new { message = "Успішно надіслано код" });
+        }
+
+        /// <summary>
+        /// Метод генерування коду та відправки листа
+        /// </summary>
+        public void SendCode()
         {
             _logger.LogInformation("Вхід у метод надсилання верифікаційного коду");
 
@@ -159,11 +200,9 @@ namespace KursovaWork.Controllers
 
             string body = EmailBodyTemplate.BodyTemp(_curUser.FirstName, _curUser.LastName, _verificationCode, "зміни паролю");
 
-            _logger.LogInformation("Надсилаємо повідомлення на електронну пошту користувача та переходимо на сторінку з введенням коду");
+            _logger.LogInformation("Надсилаємо повідомлення на електронну пошту користувача");
 
-            EmailSender.SendEmail(_curUser.Email, subject , body);
-
-            return View("~/Views/ForgotPassword/ForgotPassword.cshtml");
+            EmailSender.SendEmail(_curUser.Email, subject, body);
         }
     }
 }
