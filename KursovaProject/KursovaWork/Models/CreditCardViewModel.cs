@@ -85,27 +85,12 @@ namespace KursovaWork.Models
         /// <param name="value">Параметр, який перевіряється на валідність</param>
         /// <param name="validationContext">Описує контекст у якому валідація виконується</param>
         /// <returns>Успіх або провал валідації</returns>
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
-            if(value == null)
-            {
-                return new ValidationResult(ErrorMessage);
-            }
-
-            if (!int.TryParse(value.ToString(), out var _))
-            {
-                return new ValidationResult(ErrorMessage);
-            }
-
-            var year = Convert.ToInt32(value);
-            var currentYear = DateTime.Now.Year % 2000;
-
-            if (year < currentYear)
-            {
-                return new ValidationResult(ErrorMessage);
-            }
-
-            return ValidationResult.Success;
+            return 
+                value is null || !int.TryParse(value.ToString(), out int year) || year < DateTime.Now.Year % 2000
+                ? new ValidationResult(ErrorMessage)
+                : ValidationResult.Success;
         }
     }
 
@@ -120,50 +105,44 @@ namespace KursovaWork.Models
         /// <param name="value">Параметр, який перевіряється на валідність</param>
         /// <param name="validationContext">Описує контекст у якому валідація виконується</param>
         /// <returns>Успіх або провал валідації</returns>
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
         {
-            if(value == null)
-            {
-                return new ValidationResult(ErrorMessage);
-            }
-
-            if (!int.TryParse(value.ToString(), out var _))
-            {
-                return new ValidationResult(ErrorMessage);
-            }
-
-            var month = Convert.ToInt32(value);
-            var yearProperty = validationContext.ObjectType.GetProperty("ExpirationYear");
-            var yearValue = yearProperty.GetValue(validationContext.ObjectInstance);
-
-            if (yearValue == null)
-            {
-                return new ValidationResult(ErrorMessage);
-            }
-
-            if (!int.TryParse(yearValue.ToString(),out var year))
-            {
-                return new ValidationResult(ErrorMessage);
-            }
-
-            var currentYear = DateTime.Now.Year % 2000;
-            var currentMonth = DateTime.Now.Month;
-
-            if (year < currentYear)
-            {
-                return new ValidationResult(ErrorMessage);
-            }
-
-            if (year == currentYear && month < currentMonth)
+            if (value is not int month || !IsValidYear(validationContext, out int year) || !IsValidExpiration(month, year))
             {
                 return new ValidationResult(ErrorMessage);
             }
 
             return ValidationResult.Success;
-
-            
-
         }
+
+        /// <summary>
+        /// Метод перевірки чи рік є валідним
+        /// </summary>
+        /// <param name="validationContext">Описує контекст у якому валідація виконується</param>
+        /// <param name="year">Рік</param>
+        /// <returns>Успіх або провал валідації</returns>
+        private bool IsValidYear(ValidationContext validationContext, out int year)
+        {
+            year = 0;
+            var yearProperty = validationContext.ObjectType.GetProperty("ExpirationYear");
+            var yearValue = yearProperty?.GetValue(validationContext.ObjectInstance);
+            return yearValue is int yearInt && yearInt >= DateTime.Now.Year % 2000;
+        }
+
+        /// <summary>
+        /// Метод перевірки чи дата є у майбутньому або теперешньому
+        /// </summary>
+        /// <param name="month">Місяць</param>
+        /// <param name="year">Рік</param>
+        /// <returns>Успіх або провал валідації</returns>
+        private bool IsValidExpiration(int month, int year)
+        {
+            var currentYear = DateTime.Now.Year % 2000;
+            var currentMonth = DateTime.Now.Month;
+            return year > currentYear || (year == currentYear && month >= currentMonth);
+        }
+
+
     }
 
 }

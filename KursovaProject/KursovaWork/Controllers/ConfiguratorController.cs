@@ -57,21 +57,16 @@ namespace KursovaWork.Controllers
         {
             _logger.LogInformation("Вхід у функцію переходу на конфігуратор");
 
-            _param = new []{ param1,param2,param3};
+            _param = new[] { param1, param2, param3 };
 
             int year = int.Parse(param3);
 
             CarInfo car = _carService.GetCarByInfo(param1, param2, year);
-            if(car != null)
-            {
-                _curCar = car;
-                _logger.LogInformation("Машину знайдено, перехід на сторінку конфігуратора");
-                return View(car);
-            }
 
-            _logger.LogError("Машину не знайдено");
+            _curCar = car;
 
-            return View("Error");
+            _logger.LogInformation("Машину знайдено, перехід на сторінку конфігуратора");
+            return View(car);
         }
 
         /// <summary>

@@ -47,19 +47,27 @@ namespace KursovaWork.Controllers
             {
                 _logger.LogInformation("Метод оплати є підключеним у користувача");
 
-                _logger.LogInformation("Заполучення всіх даних про метод оплати користувача");
-
-                Card user = _cardService.GetByLoggedInUser();
-                string cardNumber = user.CardNumber;
-                ViewBag.CardNumber = "···· ···· ···· " + cardNumber.Substring(cardNumber.Length - 4);
-                ViewBag.CardHolderName = user.CardHolderName;
-                ViewBag.Month = user.ExpirationMonth;
-                ViewBag.Year = user.ExpirationYear;
-                ViewBag.Card = true;
+                SetCreditCardInfo();
             }
 
             _logger.LogInformation("Перехід на сторінку методів оплати");
             return View("~/Views/CreditCard/CreditCard.cshtml");
+        }
+
+        /// <summary>
+        /// Запис інформації кредитної карти у ViewBag
+        /// </summary>
+        public void SetCreditCardInfo()
+        {
+            Card user = _cardService.GetByLoggedInUser();
+            string cardNumber = user.CardNumber;
+            ViewBag.CardNumber = "···· ···· ···· " + cardNumber.Substring(cardNumber.Length - 4);
+            ViewBag.CardHolderName = user.CardHolderName;
+            ViewBag.Month = user.ExpirationMonth;
+            ViewBag.Year = user.ExpirationYear;
+            ViewBag.Card = true;
+
+            _logger.LogInformation("Заполучення всіх даних про метод оплати користувача");
         }
 
         /// <summary>

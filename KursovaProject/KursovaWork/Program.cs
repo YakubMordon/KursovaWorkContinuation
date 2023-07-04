@@ -21,12 +21,9 @@ builder.Services.AddDbContext<CarSaleContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("KursovaWorkContext"));
 });
 
-// Add services to the container.
+
 builder.Services.AddControllersWithViews();
-
 builder.Services.AddHttpContextAccessor();
-
-builder.Services.AddScoped<IDRetriever>();
 
 builder.Services.AddScoped<IUserRepository,UserRepository>();
 builder.Services.AddScoped<ICarRepository,CarRepository>();
@@ -37,6 +34,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICarService, CarService>();
 builder.Services.AddScoped<ICardService,CardService>();
 builder.Services.AddScoped<IOrderService,OrderService>();
+builder.Services.AddScoped<IDRetriever>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
 .AddCookie(options =>
