@@ -10,6 +10,7 @@
                 </ul>
         </li>
     </ol>
+    <br>
     <p>That's it! The website is ready for use.</p>
 </div>
 <hr>
