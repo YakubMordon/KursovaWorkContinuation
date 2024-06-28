@@ -1,24 +1,25 @@
 ﻿using KursovaWorkDAL.Entity;
 using KursovaWorkDAL.Entity.Entities;
+using KursovaWorkDAL.Repositories.Contracts;
 using Microsoft.EntityFrameworkCore;
 
-namespace KursovaWorkDAL.Repositories.UserRepository
+namespace KursovaWorkDAL.Repositories.Implementation
 {
     /// <summary>
     /// Implementation of the interface for handling user-related queries.
     /// </summary>
-    public class UserRepository : BaseRepository.BaseRepository<User>, IUserRepository
+    public class UserRepository : BaseRepository<User>, IUserRepository
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UserRepository"/> class.
         /// </summary>
         /// <param name="context">Context for database operations.</param>
         public UserRepository(CarSaleContext context) : base(context) { }
-        
+
         public new IEnumerable<User> GetAll()
         {
-           return _context.Users
-                .Include(u => u.CreditCard);
+            return _context.Users
+                 .Include(u => u.CreditCard);
         }
 
         public User GetByEmail(string email)

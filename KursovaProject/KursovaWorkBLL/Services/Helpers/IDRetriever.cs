@@ -5,35 +5,28 @@ using Microsoft.Extensions.Logging;
 namespace KursovaWorkBLL.Services.AdditionalServices
 {
     /// <summary>
-    /// Клас для отримання ідентифікатора користувача.
+    /// Class for retrieving user ID.
     /// </summary>
     public class IDRetriever
     {
-        /// <summary>
-        /// Об'єкт класу ILogger для логування подій 
-        /// </summary>
-        /// 
         private static readonly ILogger _logger = LoggerFactory.Create(builder => builder.AddConsole())
             .CreateLogger(typeof(IDRetriever));
 
-        /// <summary>
-        /// Об'єкт класу IHttpContextAccessor для получення даних про користувача з Cookie
-        /// </summary>
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         /// <summary>
-        /// Ініціалізує новий екземпляр класу IDRetriever.
+        /// Initializes a new instance of the IDRetriever class.
         /// </summary>
-        /// <param name="httpContextAccessor">Об'єкт IHttpContextAccessor.</param>
+        /// <param name="httpContextAccessor">The IHttpContextAccessor object.</param>
         public IDRetriever(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
         }
 
         /// <summary>
-        /// Отримує ідентифікатор ввійшовшого користувача.
+        /// Retrieves the ID of the logged-in user.
         /// </summary>
-        /// <returns>Ідентифікатор користувача, або 0, якщо користувач не ввійшов.</returns>
+        /// <returns>The user ID, or 0 if the user is not logged in.</returns>
         public int GetLoggedInUserId()
         {
             var claimsPrincipal = _httpContextAccessor.HttpContext.User;
@@ -41,13 +34,12 @@ namespace KursovaWorkBLL.Services.AdditionalServices
 
             if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int userId))
             {
-                _logger.LogInformation("Користувач є залогіненим");
+                _logger.LogInformation("User is logged in");
                 return userId;
             }
 
-            _logger.LogInformation("Користувач не є залогіненим");
+            _logger.LogInformation("User is not logged in");
             return 0;
         }
     }
-
 }

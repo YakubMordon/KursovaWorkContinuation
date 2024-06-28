@@ -1,7 +1,8 @@
 ﻿using KursovaWorkDAL.Entity;
 using KursovaWorkDAL.Entity.Entities;
+using KursovaWorkDAL.Repositories.Contracts;
 
-namespace KursovaWorkDAL.Repositories.BaseRepository
+namespace KursovaWorkDAL.Repositories.Implementation
 {
     /// <summary>
     /// Repository for entity of type <see cref="TEntity"/>.

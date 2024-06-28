@@ -1,7 +1,6 @@
 ﻿using KursovaWorkDAL.Entity.Entities.Car;
-using KursovaWorkDAL.Repositories.BaseRepository;
 
-namespace KursovaWorkDAL.Repositories.CarRepository
+namespace KursovaWorkDAL.Repositories.Contracts
 {
     /// <summary>
     /// Interface for handling car-related queries.

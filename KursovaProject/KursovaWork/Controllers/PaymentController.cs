@@ -2,10 +2,7 @@
 using KursovaWorkDAL.Entity.Entities;
 using KursovaWorkBLL.Services.AdditionalServices;
 using Microsoft.AspNetCore.Mvc;
-using KursovaWorkBLL.Services.MainServices.CarService;
-using KursovaWorkBLL.Services.MainServices.CardService;
-using KursovaWorkBLL.Services.MainServices.OrderService;
-using KursovaWorkBLL.Services.MainServices.UserService;
+using KursovaWorkBLL.Contracts;
 
 namespace KursovaWork.Controllers
 {
@@ -129,7 +126,7 @@ namespace KursovaWork.Controllers
             string userEmail = user.Email;
 
             string subject = $"Покупка автомобіля №{id}";
-            string body = EmailBodyTemplate.OrderBodyTemp(userName, _curCar.Make, _curCar.Model, _curCar.Year);
+            string body = EmailBodyHelper.OrderBodyTemp(userName, _curCar.Make, _curCar.Model, _curCar.Year);
 
             EmailSender.SendEmail(userEmail, subject, body);
 

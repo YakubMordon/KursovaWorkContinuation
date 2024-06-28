@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using KursovaWorkBLL.Services.MainServices.OrderService;
+using KursovaWorkBLL.Contracts;
 
 namespace KursovaWork.Controllers
 {

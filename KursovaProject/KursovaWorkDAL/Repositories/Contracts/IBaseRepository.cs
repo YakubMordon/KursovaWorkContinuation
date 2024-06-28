@@ -1,11 +1,11 @@
 ﻿using KursovaWorkDAL.Entity.Entities;
 
-namespace KursovaWorkDAL.Repositories.BaseRepository
+namespace KursovaWorkDAL.Repositories.Contracts
 {
     /// <summary>
     /// Contract for repository for entity of type <see cref="TEntity"/>.
     /// </summary>
-    public interface IBaseRepository<TEntity> 
+    public interface IBaseRepository<TEntity>
         where TEntity : BaseEntity
     {
         /// <summary>

@@ -3,7 +3,7 @@ using KursovaWork.Models;
 using KursovaWorkDAL.Entity.Entities;
 using KursovaWorkBLL.Services.AdditionalServices;
 using System.Text;
-using KursovaWorkBLL.Services.MainServices.UserService;
+using KursovaWorkBLL.Contracts;
 
 namespace KursovaWork.Controllers
 {
@@ -196,7 +196,7 @@ namespace KursovaWork.Controllers
 
             string subject = "Код підтвердження";
 
-            string body = EmailBodyTemplate.BodyTemp(_curUser.FirstName, _curUser.LastName, _verificationCode, "реєстрації");
+            string body = EmailBodyHelper.BodyTemp(_curUser.FirstName, _curUser.LastName, _verificationCode, "реєстрації");
 
             _logger.LogInformation("Надсилаємо повідомлення на електронну пошту користувача");
 

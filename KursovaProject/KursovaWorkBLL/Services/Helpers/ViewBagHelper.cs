@@ -4,25 +4,22 @@ using Microsoft.Extensions.Logging;
 namespace KursovaWorkBLL.Services.AdditionalServices
 {
     /// <summary>
-    /// Клас-допоміжник для роботи з ViewBag.
+    /// Helper class for working with ViewBag.
     /// </summary>
     public static class ViewBagHelper
     {
-        /// <summary>
-        /// Об'єкт класу ILogger для логування подій 
-        /// </summary>
         private static readonly ILogger _logger = LoggerFactory.Create(builder => builder.AddConsole())
             .CreateLogger(typeof(ViewBagHelper));
 
         /// <summary>
-        /// Встановлює значення IsLoggedIn в ViewBag на основі інформації про аутентифікацію користувача.
+        /// Sets the IsLoggedIn value in ViewBag based on user authentication information.
         /// </summary>
-        /// <param name="viewContext">Контекст перегляду ViewContext.</param>
+        /// <param name="viewContext">The ViewContext.</param>
         public static void SetIsLoggedInInViewBag(this ViewContext viewContext)
         {
             bool isLoggedIn = viewContext.HttpContext.User.Identity.IsAuthenticated;
             viewContext.ViewBag.IsLoggedIn = isLoggedIn;
-            _logger.LogInformation("Успішно перевірено чи користувач є залогіненим");
+            _logger.LogInformation("Successfully checked if the user is logged in");
         }
     }
 }

@@ -1,17 +1,13 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using KursovaWorkBLL.Services.AdditionalServices;
-using KursovaWorkBLL.Services.MainServices.CardService;
-using KursovaWorkBLL.Services.MainServices.CarService;
-using KursovaWorkBLL.Services.MainServices.OrderService;
-using KursovaWorkBLL.Services.MainServices.UserService;
 using KursovaWorkDAL.Entity;
-using KursovaWorkDAL.Repositories.UserRepository;
-using KursovaWorkDAL.Repositories.CarRepository;
-using KursovaWorkDAL.Repositories.CardRepository;
-using KursovaWorkDAL.Repositories.OrderRepository;
 using Microsoft.AspNetCore.ResponseCompression;
 using System.IO.Compression;
+using KursovaWorkDAL.Repositories.Contracts;
+using KursovaWorkDAL.Repositories.Implementation;
+using KursovaWorkBLL.Contracts;
+using KursovaWorkBLL.Services.Entities;
 
 
 System.Console.OutputEncoding = System.Text.Encoding.UTF8;

@@ -1,7 +1,6 @@
 ﻿using KursovaWorkDAL.Entity.Entities;
-using KursovaWorkDAL.Repositories.BaseRepository;
 
-namespace KursovaWorkDAL.Repositories.UserRepository
+namespace KursovaWorkDAL.Repositories.Contracts
 {
     /// <summary>
     /// Interface for handling user-related queries.

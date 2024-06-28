@@ -1,19 +1,20 @@
 ﻿using KursovaWorkDAL.Entity;
 using KursovaWorkDAL.Entity.Entities;
+using KursovaWorkDAL.Repositories.Contracts;
 using Microsoft.EntityFrameworkCore;
 
-namespace KursovaWorkDAL.Repositories.OrderRepository
+namespace KursovaWorkDAL.Repositories.Implementation
 {
     /// <summary>
     /// Implementation of the interface for handling order-related queries.
     /// </summary>
-    public class OrderRepository : BaseRepository.BaseRepository<Order>, IOrderRepository
+    public class OrderRepository : BaseRepository<Order>, IOrderRepository
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="OrderRepository"/> class.
         /// </summary>
         /// <param name="context">Context for database operations.</param>
-        public OrderRepository(CarSaleContext context) : base(context){}
+        public OrderRepository(CarSaleContext context) : base(context) { }
 
         public Order GetById(int id)
         {

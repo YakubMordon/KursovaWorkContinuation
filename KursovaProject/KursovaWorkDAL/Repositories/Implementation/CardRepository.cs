@@ -1,12 +1,13 @@
 ﻿using KursovaWorkDAL.Entity;
 using KursovaWorkDAL.Entity.Entities;
+using KursovaWorkDAL.Repositories.Contracts;
 
-namespace KursovaWorkDAL.Repositories.CardRepository
+namespace KursovaWorkDAL.Repositories.Implementation
 {
     /// <summary>
     /// Card repository.
     /// </summary>
-    public class CardRepository : BaseRepository.BaseRepository<Card>, ICardRepository
+    public class CardRepository : BaseRepository<Card>, ICardRepository
     {
         /// <summary>
         /// Initializes an instance of <see cref="CardRepository"/>.

@@ -1,13 +1,14 @@
 ﻿using KursovaWorkDAL.Entity;
 using KursovaWorkDAL.Entity.Entities.Car;
+using KursovaWorkDAL.Repositories.Contracts;
 using Microsoft.EntityFrameworkCore;
 
-namespace KursovaWorkDAL.Repositories.CarRepository
+namespace KursovaWorkDAL.Repositories.Implementation
 {
     /// <summary>
     /// Implementation of the interface for handling car-related queries.
     /// </summary>
-    public class CarRepository : BaseRepository.BaseRepository<CarInfo>, ICarRepository
+    public class CarRepository : BaseRepository<CarInfo>, ICarRepository
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CarRepository"/> class.

@@ -1,9 +1,9 @@
 ﻿using KursovaWorkDAL.Entity.Entities;
 using KursovaWork.Models;
 using KursovaWorkBLL.Services.AdditionalServices;
-using KursovaWorkBLL.Services.MainServices.UserService;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
+using KursovaWorkBLL.Contracts;
 
 namespace KursovaWork.Controllers
 {
@@ -198,7 +198,7 @@ namespace KursovaWork.Controllers
 
             string subject = "Код підтвердження";
 
-            string body = EmailBodyTemplate.BodyTemp(_curUser.FirstName, _curUser.LastName, _verificationCode, "зміни паролю");
+            string body = EmailBodyHelper.BodyTemp(_curUser.FirstName, _curUser.LastName, _verificationCode, "зміни паролю");
 
             _logger.LogInformation("Надсилаємо повідомлення на електронну пошту користувача");
 

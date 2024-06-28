@@ -6,33 +6,30 @@ using Microsoft.Extensions.Logging;
 namespace KursovaWorkBLL.Services.AdditionalServices
 {
     /// <summary>
-    /// Клас для відправки електронних листів.
+    /// Class for sending emails.
     /// </summary>
     public class EmailSender
     {
-        /// <summary>
-        /// Об'єкт класу ILogger для логування подій 
-        /// </summary>
-        /// 
         private static readonly ILogger _logger = LoggerFactory.Create(builder => builder.AddConsole())
             .CreateLogger(typeof(EmailSender));
+
         /// <summary>
-        /// Надсилає електронний лист.
+        /// Sends an email.
         /// </summary>
-        /// <param name="mail">Електронна адреса отримувача.</param>
-        /// <param name="subject">Тема листа.</param>
-        /// <param name="message">Тіло листа.</param>
+        /// <param name="mail">Recipient's email address.</param>
+        /// <param name="subject">Subject of the email.</param>
+        /// <param name="message">Body of the email.</param>
         public static void SendEmail(string mail, string subject, string message)
         {
-            _logger.LogInformation("Вхід в метод надсилання листа");
+            _logger.LogInformation("Entering the email sending method");
 
             MimeMessage email = new MimeMessage();
             email.From.Add(new MailboxAddress("VAG Dealer", "baryaroman@ukr.net"));
-            email.To.Add(new MailboxAddress("Шановний покупець", mail));
+            email.To.Add(new MailboxAddress("Dear customer", mail));
             email.Subject = subject;
             email.Body = new TextPart("html") { Text = message };
 
-            _logger.LogInformation("Дані для надсилання встановленні");
+            _logger.LogInformation("Email data set for sending");
 
             using (SmtpClient smtp = new SmtpClient())
             {
@@ -42,7 +39,7 @@ namespace KursovaWorkBLL.Services.AdditionalServices
                 smtp.Disconnect(true);
             }
 
-            _logger.LogInformation("Лист був успішно надісланий");
+            _logger.LogInformation("Email sent successfully");
         }
     }
 }

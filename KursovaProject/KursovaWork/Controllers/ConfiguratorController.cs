@@ -1,7 +1,7 @@
 ﻿using KursovaWorkDAL.Entity.Entities.Car;
 using Microsoft.AspNetCore.Mvc;
 using KursovaWorkDAL.Entity.Entities;
-using KursovaWorkBLL.Services.MainServices.CarService;
+using KursovaWorkBLL.Contracts;
 
 namespace KursovaWork.Controllers
 {

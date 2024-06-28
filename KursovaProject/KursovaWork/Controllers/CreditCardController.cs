@@ -1,8 +1,8 @@
 ﻿using KursovaWorkDAL.Entity.Entities;
 using KursovaWork.Models;
-using KursovaWorkBLL.Services.MainServices.CardService;
 using Microsoft.AspNetCore.Mvc;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using KursovaWorkBLL.Contracts;
 
 namespace KursovaWork.Controllers
 {
