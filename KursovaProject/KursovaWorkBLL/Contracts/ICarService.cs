@@ -50,36 +50,36 @@ namespace KursovaWorkBLL.Contracts
         /// <summary>
         /// Method to sort the list of models alphabetically.
         /// </summary>
-        /// <param name="_curList">List of cars</param>
+        /// <param name="curList">List of cars</param>
         /// <returns>Sorted list</returns>
-        IEnumerable<CarInfo> SortByAlphabet(IEnumerable<CarInfo> _curList);
+        IEnumerable<CarInfo> SortByAlphabet(IEnumerable<CarInfo> curList);
 
         /// <summary>
         /// Method to sort the list of models by price.
         /// </summary>
-        /// <param name="_curList">List of cars</param>
+        /// <param name="curList">List of cars</param>
         /// <param name="param">Sorting parameter (cheap or expensive).</param>
         /// <returns>Sorted list</returns>
-        IEnumerable<CarInfo> SortByPrice(IEnumerable<CarInfo> _curList, string param);
+        IEnumerable<CarInfo> SortByPrice(IEnumerable<CarInfo> curList, string param);
 
         /// <summary>
         /// Method to sort the list of models by novelty (year of manufacture).
         /// </summary>
-        /// <param name="_curList">List of cars</param>
+        /// <param name="curList">List of cars</param>
         /// <returns>Sorted list</returns>
-        IEnumerable<CarInfo> SortByNovelty(IEnumerable<CarInfo> _curList);
+        IEnumerable<CarInfo> SortByNovelty(IEnumerable<CarInfo> curList);
 
         /// <summary>
         /// Method to filter the list of models
         /// </summary>
-        /// <param name="PriceFrom">Minimum price.</param>
-        /// <param name="PriceTo">Maximum price.</param>
-        /// <param name="YearFrom">Minimum year of manufacture.</param>
-        /// <param name="YearTo">Maximum year of manufacture.</param>
-        /// <param name="SelectedFuelTypes">List of selected fuel types.</param>
-        /// <param name="SelectedTransmissionTypes">List of selected transmission types.</param>
-        /// <param name="SelectedMakes">List of selected car makes.</param>
+        /// <param name="priceFrom">Minimum price.</param>
+        /// <param name="priceTo">Maximum price.</param>
+        /// <param name="yearFrom">Minimum year of manufacture.</param>
+        /// <param name="yearTo">Maximum year of manufacture.</param>
+        /// <param name="selectedFuelTypes">List of selected fuel types.</param>
+        /// <param name="selectedTransmissionTypes">List of selected transmission types.</param>
+        /// <param name="selectedMakes">List of selected car makes.</param>
         /// <returns>Filtered list of models</returns>
-        IEnumerable<CarInfo> Filtering(int? PriceFrom, int? PriceTo, int? YearFrom, int? YearTo, string? SelectedFuelTypes, string? SelectedTransmissionTypes, string? SelectedMakes);
+        IEnumerable<CarInfo> Filtering(int? priceFrom, int? priceTo, int? yearFrom, int? yearTo, string? selectedFuelTypes, string? selectedTransmissionTypes, string? selectedMakes);
     }
 }

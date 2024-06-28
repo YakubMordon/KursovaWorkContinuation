@@ -17,11 +17,11 @@ namespace KursovaWorkDAL.Repositories.Implementation
 
         public Card GetById(int id)
         {
-            return _context.Cards.FirstOrDefault(c => c.UserId == id);
+            return Context.Cards.FirstOrDefault(c => c.UserId == id);
         }
         public bool IsExisting(int id)
         {
-            return _context.Cards.Any(u => u.UserId == id);
+            return Context.Cards.Any(u => u.UserId == id);
         }
     }
 }

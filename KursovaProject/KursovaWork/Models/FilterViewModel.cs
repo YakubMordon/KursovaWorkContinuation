@@ -45,11 +45,11 @@ namespace KursovaWork.Models
         /// <summary>
         /// List of current car models.
         /// </summary>
-        public List<CarInfo> cars { get; set; }
+        public List<CarInfo> Cars { get; set; }
 
         /// <summary>
         /// Initial list of car models.
         /// </summary>
-        public static List<CarInfo> origCars { get; set; }
+        public static List<CarInfo> OrigCars { get; set; }
     }
 }

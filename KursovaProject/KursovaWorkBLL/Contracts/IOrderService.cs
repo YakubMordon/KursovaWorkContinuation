@@ -24,10 +24,10 @@ namespace KursovaWorkBLL.Contracts
         /// <summary>
         /// Method to add an order to the database for a logged-in user
         /// </summary>
-        /// <param name="_curCar">Car chosen by the user</param>
+        /// <param name="curCar">Car chosen by the user</param>
         /// <param name="configurator">Car configuration options if chosen through configurator</param>
         /// <returns>Order number</returns>
-        int AddOrderLoggedIn(CarInfo _curCar, ConfiguratorOptions? configurator);
+        int AddOrderLoggedIn(CarInfo curCar, ConfiguratorOptions? configurator);
 
         /// <summary>
         /// Method to update an order in the database

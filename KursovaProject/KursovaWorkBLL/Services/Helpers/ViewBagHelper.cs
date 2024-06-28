@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace KursovaWorkBLL.Services.AdditionalServices
 {
@@ -8,18 +8,15 @@ namespace KursovaWorkBLL.Services.AdditionalServices
     /// </summary>
     public static class ViewBagHelper
     {
-        private static readonly ILogger _logger = LoggerFactory.Create(builder => builder.AddConsole())
-            .CreateLogger(typeof(ViewBagHelper));
-
         /// <summary>
         /// Sets the IsLoggedIn value in ViewBag based on user authentication information.
         /// </summary>
         /// <param name="viewContext">The ViewContext.</param>
         public static void SetIsLoggedInInViewBag(this ViewContext viewContext)
         {
-            bool isLoggedIn = viewContext.HttpContext.User.Identity.IsAuthenticated;
+            var isLoggedIn = viewContext.HttpContext.User.Identity.IsAuthenticated;
             viewContext.ViewBag.IsLoggedIn = isLoggedIn;
-            _logger.LogInformation("Successfully checked if the user is logged in");
+            Log.Information("Successfully checked if the user is logged in");
         }
     }
 }

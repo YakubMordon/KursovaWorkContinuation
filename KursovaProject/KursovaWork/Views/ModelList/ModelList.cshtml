@@ -134,7 +134,7 @@
                                         <h6>
                                             Марки:
                                         </h6>
-                                        @foreach (var make in FilterViewModel.origCars.Select(x => x.Make).Distinct())
+                                        @foreach (var make in FilterViewModel.OrigCars.Select(x => x.Make).Distinct())
                                         {
                                             <div class="form-check">
                                                 <input class="form-check-input cursor" type="checkbox" name="SelectedMakes" id="@make" value="@make" @if (!Model.SelectedMakes.IsNullOrEmpty())
@@ -222,7 +222,7 @@
     <div class="modelList mt-2">
         <div class="container card-background">
             <div class="row card-background">
-                @Html.Partial("~/Views/ModelList/_PartialModelList.cshtml", Model)
+                <partial name="~/Views/ModelList/_PartialModelList.cshtml" model="Model" />
             </div>
         </div>
     </div>
@@ -311,4 +311,4 @@
 
 </script>
 
-@Html.Partial("_Footer")
+<partial name="_Footer" />

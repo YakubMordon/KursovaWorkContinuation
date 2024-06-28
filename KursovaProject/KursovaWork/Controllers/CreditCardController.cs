@@ -1,6 +1,7 @@
 ﻿using KursovaWork.Models;
 using Microsoft.AspNetCore.Mvc;
 using KursovaWorkBLL.Contracts;
+using Serilog;
 
 namespace KursovaWork.Controllers
 {
@@ -10,17 +11,14 @@ namespace KursovaWork.Controllers
     public class CreditCardController : Controller
     {
         private readonly ICardService _cardService;
-        private readonly ILogger<CreditCardController> _logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CreditCardController"/> class.
         /// </summary>
         /// <param name="cardService">The service interface for handling requests.</param>
-        /// <param name="logger">ILogger object for logging events.</param>
-        public CreditCardController(ICardService cardService, ILogger<CreditCardController> logger)
+        public CreditCardController(ICardService cardService)
         {
             _cardService = cardService;
-            _logger = logger;
         }
 
         /// <summary>
@@ -29,19 +27,19 @@ namespace KursovaWork.Controllers
         /// <returns>The payment methods page.</returns>
         public IActionResult CreditCard()
         {
-            _logger.LogInformation("Transitioning to payment methods page method");
+            Log.Information("Transitioning to payment methods page method");
 
-            _logger.LogInformation("Fields for adding a card are excluded during loading");
+            Log.Information("Fields for adding a card are excluded during loading");
             ViewBag.Input = false;
 
             if (_cardService.CardExists())
             {
-                _logger.LogInformation("Payment method is connected to the user");
+                Log.Information("Payment method is connected to the user");
 
                 SetCreditCardInfo();
             }
 
-            _logger.LogInformation("Transitioning to payment methods page");
+            Log.Information("Transitioning to payment methods page");
             return View("~/Views/CreditCard/CreditCard.cshtml");
         }
 
@@ -59,7 +57,7 @@ namespace KursovaWork.Controllers
             ViewBag.Year = user.ExpirationYear;
             ViewBag.Card = true;
 
-            _logger.LogInformation("Retrieving all user payment method data");
+            Log.Information("Retrieving all user payment method data");
         }
 
         /// <summary>
@@ -71,7 +69,7 @@ namespace KursovaWork.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult CreditCard(CreditCardViewModel model)
         {
-            _logger.LogInformation("Entering payment method removal method");
+            Log.Information("Entering payment method removal method");
 
             if (ModelState.IsValid)
             {
@@ -80,7 +78,7 @@ namespace KursovaWork.Controllers
                 return Json(new { success = true });
             }
 
-            _logger.LogInformation("Data did not pass verification");
+            Log.Information("Data did not pass verification");
 
             var errors = new
             {
@@ -88,10 +86,10 @@ namespace KursovaWork.Controllers
                 CardNumber = ModelState[nameof(CreditCardViewModel.CardNumber)].Errors.FirstOrDefault()?.ErrorMessage ?? "",
                 ExpirationMonth = ModelState[nameof(CreditCardViewModel.ExpirationMonth)].Errors.FirstOrDefault()?.ErrorMessage ?? "",
                 ExpirationYear = ModelState[nameof(CreditCardViewModel.ExpirationYear)].Errors.FirstOrDefault()?.ErrorMessage ?? "",
-                CVV = ModelState[nameof(CreditCardViewModel.CVV)].Errors.FirstOrDefault()?.ErrorMessage ?? ""
+                CVV = ModelState[nameof(CreditCardViewModel.Cvv)].Errors.FirstOrDefault()?.ErrorMessage ?? ""
             };
 
-            _logger.LogInformation("Displaying input fields immediately after loading");
+            Log.Information("Displaying input fields immediately after loading");
             ViewBag.Input = true;
             return Json(new { success = false, errors });
         }
@@ -102,14 +100,14 @@ namespace KursovaWork.Controllers
         /// <returns>Redirects to the payment methods page.</returns>
         public IActionResult DeleteCreditCard()
         {
-            _logger.LogInformation("Entering payment method removal method");
+            Log.Information("Entering payment method removal method");
 
             _cardService.DeleteCard();
 
-            _logger.LogInformation("Fields for adding a card are excluded during loading");
+            Log.Information("Fields for adding a card are excluded during loading");
             ViewBag.Input = false;
 
-            _logger.LogInformation("Transitioning to payment methods page");
+            Log.Information("Transitioning to payment methods page");
             return View("~/Views/CreditCard/CreditCard.cshtml");
         }
     }

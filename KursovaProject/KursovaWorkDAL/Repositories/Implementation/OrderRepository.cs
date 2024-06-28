@@ -18,13 +18,13 @@ namespace KursovaWorkDAL.Repositories.Implementation
 
         public Order GetById(int id)
         {
-            return _context.Orders
+            return Context.Orders
                 .FirstOrDefault(o => o.Id == id);
         }
 
         public IEnumerable<Order> FindAll(int id)
         {
-            return _context.Orders
+            return Context.Orders
                 .Include(o => o.Car)
                     .ThenInclude(c => c.Detail)
                 .Include(o => o.ConfiguratorOptions)
@@ -32,7 +32,7 @@ namespace KursovaWorkDAL.Repositories.Implementation
         }
         public new IEnumerable<Order> GetAll()
         {
-            return _context.Orders
+            return Context.Orders
                .Include(o => o.Car)
                    .ThenInclude(c => c.Detail)
                .Include(o => o.ConfiguratorOptions);

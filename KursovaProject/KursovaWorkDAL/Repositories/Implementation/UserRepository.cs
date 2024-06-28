@@ -18,19 +18,19 @@ namespace KursovaWorkDAL.Repositories.Implementation
 
         public new IEnumerable<User> GetAll()
         {
-            return _context.Users
+            return Context.Users
                  .Include(u => u.CreditCard);
         }
 
         public User GetByEmail(string email)
         {
-            return _context.Users
+            return Context.Users
                 .FirstOrDefault(u => u.Email == email);
         }
 
         public User GetById(int id)
         {
-            return _context.Users
+            return Context.Users
                 .FirstOrDefault(u => u.Id == id);
         }
     }

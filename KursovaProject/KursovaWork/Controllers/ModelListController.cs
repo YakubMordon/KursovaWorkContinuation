@@ -2,6 +2,7 @@
 using KursovaWork.Models;
 using Microsoft.AspNetCore.Mvc;
 using KursovaWorkBLL.Contracts;
+using Serilog;
 
 namespace KursovaWork.Controllers
 {
@@ -11,18 +12,15 @@ namespace KursovaWork.Controllers
     public class ModelListController : Controller
     {
         private readonly ICarService _carService;
-        private readonly ILogger<ModelListController> _logger;
         private static List<CarInfo> _curList;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelListController"/> class.
         /// </summary>
         /// <param name="carService">The service interface for performing car-related actions.</param>
-        /// <param name="logger">ILogger for logging events.</param>
-        public ModelListController(ICarService carService, ILogger<ModelListController> logger)
+        public ModelListController(ICarService carService)
         {
             _carService = carService;
-            _logger = logger;
         }
 
         /// <summary>
@@ -31,17 +29,17 @@ namespace KursovaWork.Controllers
         /// <returns>The page displaying the list of car models.</returns>
         public IActionResult ModelList()
         {
-            _logger.LogInformation("Entering method to navigate to the model list page");
+            Log.Information("Entering method to navigate to the model list page");
             _curList = _carService.GetAllCars().ToList();
 
-            _logger.LogInformation("Fetching all possible car models");
+            Log.Information("Fetching all possible car models");
 
-            _logger.LogInformation("Setting all car models list as current");
+            Log.Information("Setting all car models list as current");
             var model = new FilterViewModel();
-            FilterViewModel.origCars = _curList;
-            model.cars = _curList;
+            FilterViewModel.OrigCars = _curList;
+            model.Cars = _curList;
 
-            _logger.LogInformation("Navigating to the model list page");
+            Log.Information("Navigating to the model list page");
             return View(model);
         }
 
@@ -51,14 +49,14 @@ namespace KursovaWork.Controllers
         /// <returns>The page displaying the list of car models with the sorted list.</returns>
         public IActionResult SortByAlphabet()
         {
-            _logger.LogInformation("Entering method to sort the model list alphabetically");
+            Log.Information("Entering method to sort the model list alphabetically");
             _curList = _carService.SortByAlphabet(_curList).ToList();
 
-            _logger.LogInformation("Setting sorted list as current");
+            Log.Information("Setting sorted list as current");
             var model = new FilterViewModel();
-            model.cars = _curList;
+            model.Cars = _curList;
 
-            _logger.LogInformation("Navigating to the model list page");
+            Log.Information("Navigating to the model list page");
 
             return PartialView("~/Views/ModelList/_PartialModelList.cshtml", model);
         }
@@ -72,12 +70,12 @@ namespace KursovaWork.Controllers
         {
             _curList = _carService.SortByPrice(_curList, param1).ToList();
 
-            _logger.LogInformation("Setting sorted list as current");
+            Log.Information("Setting sorted list as current");
 
             var model = new FilterViewModel();
-            model.cars = _curList;
+            model.Cars = _curList;
 
-            _logger.LogInformation("Navigating to the model list page");
+            Log.Information("Navigating to the model list page");
 
             return PartialView("~/Views/ModelList/_PartialModelList.cshtml", model);
         }
@@ -88,16 +86,16 @@ namespace KursovaWork.Controllers
         /// <returns>The page displaying the list of car models with the sorted list.</returns>
         public IActionResult SortByNovelty()
         {
-            _logger.LogInformation("Entering method to sort the model list by descending year (Novelty)");
+            Log.Information("Entering method to sort the model list by descending year (Novelty)");
 
             _curList = _carService.SortByNovelty(_curList).ToList();
 
-            _logger.LogInformation("Setting sorted list as current");
+            Log.Information("Setting sorted list as current");
 
             var model = new FilterViewModel();
-            model.cars = _curList;
+            model.Cars = _curList;
 
-            _logger.LogInformation("Navigating to the model list page");
+            Log.Information("Navigating to the model list page");
 
             return PartialView("~/Views/ModelList/_PartialModelList.cshtml", model);
         }
@@ -116,11 +114,11 @@ namespace KursovaWork.Controllers
                 filter.SelectedMakes)
                 .ToList();
 
-            _logger.LogInformation("Setting filtered list as current");
+            Log.Information("Setting filtered list as current");
 
-            filter.cars = _curList;
+            filter.Cars = _curList;
 
-            _logger.LogInformation("Navigating to the model list page");
+            Log.Information("Navigating to the model list page");
 
             return PartialView("~/Views/ModelList/_PartialModelList.cshtml", filter);
         }

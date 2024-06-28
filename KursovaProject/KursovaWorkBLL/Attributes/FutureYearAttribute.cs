@@ -15,7 +15,7 @@ namespace KursovaWork.Models
         /// <returns>Success or failure of the validation.</returns>
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
-            return value is null || !int.TryParse(value.ToString(), out int year) || year < DateTime.Now.Year % 2000
+            return value is null || !int.TryParse(value.ToString(), out var year) || year < DateTime.Now.Year % 2000
                 ? new ValidationResult(ErrorMessage)
                 : ValidationResult.Success;
         }

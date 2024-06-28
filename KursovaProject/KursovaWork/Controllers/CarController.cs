@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using KursovaWorkBLL.Contracts;
+using Serilog;
 
 namespace KursovaWork.Controllers
 {
@@ -9,17 +10,14 @@ namespace KursovaWork.Controllers
     public class CarController : Controller
     {
         private readonly ICarService _carService;
-        private readonly ILogger<CarController> _logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CarController"/> class.
         /// </summary>
         /// <param name="carService">The service for car operations.</param>
-        /// <param name="logger">The logger for logging.</param>
-        public CarController(ICarService carService, ILogger<CarController> logger)
+        public CarController(ICarService carService)
         {
             _carService = carService;
-            _logger = logger;
         }
 
         /// <summary>
@@ -31,11 +29,11 @@ namespace KursovaWork.Controllers
         /// <returns>The page with detailed car information or an error page.</returns>
         public IActionResult Car(string param1, string param2, string param3)
         {
-            _logger.LogInformation("Entering Car method");
+            Log.Information("Entering Car method");
 
-            if (!int.TryParse(param3, out int year))
+            if (!int.TryParse(param3, out var year))
             {
-                _logger.LogError("Invalid year parameter");
+                Log.Error("Invalid year parameter");
                 return View("Error");
             }
 
@@ -43,11 +41,11 @@ namespace KursovaWork.Controllers
 
             if (car is not null)
             {
-                _logger.LogInformation("Car found, navigating to car page");
+                Log.Information("Car found, navigating to car page");
                 return View(car);
             }
 
-            _logger.LogError("Car not found");
+            Log.Error("Car not found");
             return View("Error");
         }
     }

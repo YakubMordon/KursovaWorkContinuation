@@ -1,8 +1,8 @@
 ﻿@model FilterViewModel
 
-@if (Model.cars.Any())
+@if (Model.Cars.Any())
 {
-    @foreach (var car in Model.cars)
+    @foreach (var car in Model.Cars)
     {
         <div class="col-md-4 mb-2 card-background">
             <a class="text-decoration-none" asp-action="Car" asp-controller="Car" asp-route-param1="@car.Make" asp-route-param2="@car.Model" asp-route-param3="@car.Year">

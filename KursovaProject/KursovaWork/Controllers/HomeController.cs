@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using KursovaWorkBLL.Contracts;
+using Serilog;
 
 namespace KursovaWork.Controllers
 {
@@ -13,17 +14,14 @@ namespace KursovaWork.Controllers
     public class HomeController : Controller
     {
         private readonly IOrderService _orderService;
-        private readonly ILogger<HomeController> _logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HomeController"/> class.
         /// </summary>
         /// <param name="orderService">The service interface for handling orders.</param>
-        /// <param name="logger">ILogger for logging events.</param>
         public HomeController(IOrderService orderService, ILogger<HomeController> logger)
         {
             _orderService = orderService;
-            _logger = logger;
         }
 
         /// <summary>
@@ -32,7 +30,7 @@ namespace KursovaWork.Controllers
         /// <returns>The home page.</returns>
         public IActionResult Index()
         {
-            _logger.LogInformation("Redirecting to the home page");
+            Log.Information("Redirecting to the home page");
             return View();
         }
 
@@ -42,7 +40,7 @@ namespace KursovaWork.Controllers
         /// <returns>The login page.</returns>
         public IActionResult LogIn()
         {
-            _logger.LogInformation("Redirecting to the login page");
+            Log.Information("Redirecting to the login page");
             return View("~/Views/LogIn/LogIn.cshtml");
         }
 
@@ -52,10 +50,10 @@ namespace KursovaWork.Controllers
         /// <returns>Redirects to the home page.</returns>
         public IActionResult LogOut()
         {
-            _logger.LogInformation("Executing logout from the account");
+            Log.Information("Executing logout from the account");
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).Wait();
 
-            _logger.LogInformation("Redirecting to the home page");
+            Log.Information("Redirecting to the home page");
             return RedirectToAction("Index", "Home");
         }
 
@@ -65,10 +63,10 @@ namespace KursovaWork.Controllers
         /// <returns>Redirects to the car model list page.</returns>
         public IActionResult ModelList()
         {
-            _logger.LogInformation("Clearing unnecessary configurations");
-            ConfiguratorController.options = null;
+            Log.Information("Clearing unnecessary configurations");
+            ConfiguratorController.Options = null;
 
-            _logger.LogInformation("Redirecting to the model list page");
+            Log.Information("Redirecting to the model list page");
             return RedirectToAction("ModelList", "ModelList");
         }
 
@@ -78,11 +76,11 @@ namespace KursovaWork.Controllers
         /// <returns>The order list page.</returns>
         public IActionResult OrderList()
         {
-            _logger.LogInformation("Entering method to redirect to the order list page");
+            Log.Information("Entering method to redirect to the order list page");
 
             var orders = _orderService.FindAllLoggedIn().ToList();
 
-            _logger.LogInformation("Redirecting to the order list page");
+            Log.Information("Redirecting to the order list page");
 
             return View("~/Views/OrderList/OrderList.cshtml", orders);
         }
@@ -94,7 +92,7 @@ namespace KursovaWork.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            _logger.LogError("An error occurred while loading the site");
+            Log.Error("An error occurred while loading the site");
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }

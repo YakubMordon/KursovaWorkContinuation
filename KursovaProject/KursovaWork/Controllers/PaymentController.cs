@@ -1,8 +1,8 @@
 ﻿using KursovaWorkDAL.Entity.Entities.Car;
 using KursovaWorkBLL.Services.AdditionalServices;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using KursovaWorkBLL.Contracts;
+using Serilog;
 
 namespace KursovaWork.Controllers
 {
@@ -15,7 +15,6 @@ namespace KursovaWork.Controllers
         private readonly ICardService _cardService;
         private readonly IOrderService _orderService;
         private readonly IUserService _userService;
-        private readonly ILogger<PaymentController> _logger;
         private static CarInfo _curCar;
 
         /// <summary>
@@ -25,14 +24,12 @@ namespace KursovaWork.Controllers
         /// <param name="cardService">The service interface for performing card-related actions.</param>
         /// <param name="orderService">The service interface for performing order-related actions.</param>
         /// <param name="userService">The service interface for performing user-related actions.</param>
-        /// <param name="logger">ILogger for logging events.</param>
-        public PaymentController(ICarService carService, ICardService cardService, IOrderService orderService, IUserService userService, ILogger<PaymentController> logger)
+        public PaymentController(ICarService carService, ICardService cardService, IOrderService orderService, IUserService userService)
         {
             _carService = carService;
             _cardService = cardService;
             _orderService = orderService;
             _userService = userService;
-            _logger = logger;
         }
 
         /// <summary>
@@ -44,23 +41,23 @@ namespace KursovaWork.Controllers
         /// <returns>Operation result.</returns>
         public IActionResult Payment(string param1, string param2, string param3)
         {
-            _logger.LogInformation("Entering method to check payment feasibility");
+            Log.Information("Entering method to check payment feasibility");
 
-            _logger.LogInformation("Fetching user ID");
+            Log.Information("Fetching user ID");
             var user = _userService.GetLoggedInUser();
 
             if (user is null)
             {
-                _logger.LogInformation("User not logged in");
+                Log.Information("User not logged in");
                 return View("~/Views/Payment/NotLoggedIn.cshtml");
             }
 
-            _logger.LogInformation("Fetching user payment method data");
+            Log.Information("Fetching user payment method data");
             var creditCard = _cardService.GetByLoggedInUser();
 
             if (creditCard is null)
             {
-                _logger.LogInformation("User has not added a payment method");
+                Log.Information("User has not added a payment method");
                 return View("~/Views/Payment/CardNotConnected.cshtml");
             }
 
@@ -71,14 +68,14 @@ namespace KursovaWork.Controllers
             if (car is not null)
             {
                 _curCar = car;
-                _logger.LogInformation("Model found successfully");
+                Log.Information("Model found successfully");
 
-                _logger.LogInformation("Redirecting to payment confirmation");
+                Log.Information("Redirecting to payment confirmation");
 
                 return View(car);
             }
 
-            _logger.LogWarning("Model not found");
+            Log.Warning("Model not found");
             return View("Error");
         }
 
@@ -88,15 +85,15 @@ namespace KursovaWork.Controllers
         /// <returns>Operation result.</returns>
         public IActionResult Success()
         {
-            _logger.LogInformation("Redirecting to method for confirming purchase payment");
+            Log.Information("Redirecting to method for confirming purchase payment");
 
-            var id = _orderService.AddOrderLoggedIn(_curCar, ConfiguratorController.options);
+            var id = _orderService.AddOrderLoggedIn(_curCar, ConfiguratorController.Options);
 
-            ConfiguratorController.options = null;
+            ConfiguratorController.Options = null;
 
-            _logger.LogInformation("Order number returned");
+            Log.Information("Order number returned");
 
-            _logger.LogInformation("Fetching user data");
+            Log.Information("Fetching user data");
             var user = _userService.GetLoggedInUser();
 
             var userName = user.FirstName + " " + user.LastName;
@@ -107,9 +104,9 @@ namespace KursovaWork.Controllers
 
             EmailSender.SendEmail(userEmail, subject, body);
 
-            _logger.LogInformation("Order information sent to email");
+            Log.Information("Order information sent to email");
 
-            _logger.LogInformation("Redirecting to successful purchase execution page");
+            Log.Information("Redirecting to successful purchase execution page");
 
             return View("~/Views/Payment/Success.cshtml");
         }

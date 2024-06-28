@@ -43,7 +43,7 @@ namespace KursovaWorkDAL.Entity.Entities
         /// Credit card CVV code.
         /// </summary>
         [Required]
-        public string CVV { get; set; }
+        public string Cvv { get; set; }
 
         /// <summary>
         /// Relationship with the user.

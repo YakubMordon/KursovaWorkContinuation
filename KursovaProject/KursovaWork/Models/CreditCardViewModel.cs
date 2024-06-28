@@ -53,7 +53,7 @@ namespace KursovaWork.Models
         [Required(ErrorMessage = "Поле CVV є обов'язковим")]
         [StringLength(3, MinimumLength = 3, ErrorMessage = "Довжина CVV повинна бути мінімум 3")]
         [RegularExpression(@"^(?:\d{3})$", ErrorMessage = "Неправильний номер CVV")]
-        public string CVV { get; set; }
+        public string Cvv { get; set; }
 
         /// <summary>
         /// Method for mapping from <see cref="CreditCardViewModel"> to <see cref="Card"/>.
@@ -68,7 +68,7 @@ namespace KursovaWork.Models
                 CardHolderName = CardHolderName,
                 ExpirationMonth = ExpirationMonth,
                 ExpirationYear = ExpirationYear,
-                CVV = CVV
+                Cvv = Cvv
             };
         }
     }

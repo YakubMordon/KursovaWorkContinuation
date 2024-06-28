@@ -1,0 +1,18 @@
+2024-06-28 18:44:44.420 +03:00 [INF] Successfully checked if the database is created.
+2024-06-28 18:44:44.585 +03:00 [INF] No cars exist in the database.
+2024-06-28 18:44:44.586 +03:00 [INF] Creating 10 fake users
+2024-06-28 18:44:44.756 +03:00 [INF] Adding each car.
+2024-06-28 18:44:45.277 +03:00 [INF] Adding each user.
+2024-06-28 18:44:45.297 +03:00 [INF] Data was successfully added.
+2024-06-28 18:59:15.718 +03:00 [INF] Successfully checked if the database is created.
+2024-06-28 18:59:15.890 +03:00 [INF] Cars already exist in the database.
+2024-06-28 18:59:16.812 +03:00 [INF] Redirecting to the home page
+2024-06-28 18:59:16.879 +03:00 [INF] Successfully checked if the user is logged in
+2024-06-28 18:59:24.238 +03:00 [INF] Clearing unnecessary configurations
+2024-06-28 18:59:24.239 +03:00 [INF] Redirecting to the model list page
+2024-06-28 18:59:24.250 +03:00 [INF] Entering method to navigate to the model list page
+2024-06-28 18:59:24.251 +03:00 [INF] Retrieved all possible car information
+2024-06-28 18:59:24.404 +03:00 [INF] Fetching all possible car models
+2024-06-28 18:59:24.405 +03:00 [INF] Setting all car models list as current
+2024-06-28 18:59:24.406 +03:00 [INF] Navigating to the model list page
+2024-06-28 18:59:24.413 +03:00 [INF] Successfully checked if the user is logged in

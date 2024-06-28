@@ -4,6 +4,7 @@ using KursovaWorkBLL.Services.AdditionalServices;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
 using KursovaWorkBLL.Contracts;
+using Serilog;
 
 namespace KursovaWork.Controllers
 {
@@ -13,8 +14,6 @@ namespace KursovaWork.Controllers
     public class ChangePasswordController : Controller
     {
         private readonly IUserService _userService;
-        private readonly ILogger<ChangePasswordController> _logger;
-
         private static User? _curUser;
         private static int _verificationCode;
 
@@ -22,11 +21,9 @@ namespace KursovaWork.Controllers
         /// Initializes a new instance of the <see cref="ChangePasswordController"/> class.
         /// </summary>
         /// <param name="userService">The service for user operations.</param>
-        /// <param name="logger">The logger for logging.</param>
-        public ChangePasswordController(IUserService userService, ILogger<ChangePasswordController> logger)
+        public ChangePasswordController(IUserService userService)
         {
             _userService = userService;
-            _logger = logger;
         }
 
         /// <summary>
@@ -35,7 +32,7 @@ namespace KursovaWork.Controllers
         /// <returns>The page for entering user email.</returns>
         public IActionResult UserFinder()
         {
-            _logger.LogInformation("Navigating to user email entry page");
+            Log.Information("Navigating to user email entry page");
             return View("~/Views/ForgotPassword/UserFinder.cshtml");
         }
 
@@ -46,25 +43,25 @@ namespace KursovaWork.Controllers
         /// <returns>The verification code entry page or the email entry page with an error message.</returns>
         public IActionResult ForgotPassword(EmailViewModel model)
         {
-            _logger.LogInformation("Entering email verification method");
+            Log.Information("Entering email verification method");
             if (ModelState.IsValid)
             {
                 _curUser = _userService.GetUserByEmail(model.Email);
 
                 if (_curUser is not null)
                 {
-                    _logger.LogInformation("Email found");
+                    Log.Information("Email found");
                     SendCode();
                     return Json(new { success = true });
                 }
 
-                _logger.LogInformation("Email not registered");
+                Log.Information("Email not registered");
                 return Json(new { success = false, error = "Such email is not registered" });
             }
 
             var error = ModelState[nameof(EmailViewModel.Email)].Errors.FirstOrDefault()?.ErrorMessage ?? "";
 
-            _logger.LogInformation("Data did not pass validation");
+            Log.Information("Data did not pass validation");
             return Json(new { success = false, error });
         }
 
@@ -75,17 +72,17 @@ namespace KursovaWork.Controllers
         /// <returns>The password change page or the verification code entry page with an error message.</returns>
         public IActionResult ChangePassword(VerificationViewModel model)
         {
-            _logger.LogInformation("Entering verification code method");
+            Log.Information("Entering verification code method");
             if (ModelState.IsValid)
             {
                 var stringBuilder = new StringBuilder();
-                _logger.LogInformation("Entering loop to construct a complete string of 4 substrings");
+                Log.Information("Entering loop to construct a complete string of 4 substrings");
 
                 foreach (var digit in model.VerificationDigits)
                 {
                     if (string.IsNullOrEmpty(digit))
                     {
-                        _logger.LogInformation("Not all digits entered");
+                        Log.Information("Not all digits entered");
                         return Json(new { success = false, error = "Not all digits entered" });
                     }
 
@@ -96,17 +93,17 @@ namespace KursovaWork.Controllers
 
                 if (int.Parse(temp) != _verificationCode)
                 {
-                    _logger.LogInformation("Incorrect verification code");
+                    Log.Information("Incorrect verification code");
                     return Json(new { success = false, error = "Incorrect verification code" });
                 }
 
-                _logger.LogInformation("Successfully verified user's ability to change password");
+                Log.Information("Successfully verified user's ability to change password");
                 return Json(new { success = true });
             }
 
             var error = ModelState[nameof(VerificationViewModel.VerificationDigits)].Errors.FirstOrDefault()?.ErrorMessage ?? "";
 
-            _logger.LogInformation("Data did not pass validation");
+            Log.Information("Data did not pass validation");
             return Json(new { success = false, error });
         }
 
@@ -116,7 +113,7 @@ namespace KursovaWork.Controllers
         /// <returns>The password change page.</returns>
         public IActionResult UpdatePassword()
         {
-            _logger.LogInformation("Navigating to the password change page");
+            Log.Information("Navigating to the password change page");
             return View("~/Views/ForgotPassword/ChangePassword.cshtml");
         }
 
@@ -128,15 +125,15 @@ namespace KursovaWork.Controllers
         [HttpPost]
         public IActionResult SubmitChange(ChangePasswordViewModel model)
         {
-            _logger.LogInformation("Entering password change method");
+            Log.Information("Entering password change method");
 
             if (ModelState.IsValid)
             {
-                _logger.LogInformation("Data passed validation");
+                Log.Information("Data passed validation");
 
                 _userService.UpdatePasswordOfUser(model.Password, model.ConfirmPassword, _curUser);
 
-                _logger.LogInformation("Password changed successfully, navigating to the main page");
+                Log.Information("Password changed successfully, navigating to the main page");
                 return Json(new { success = true });
             }
 
@@ -146,7 +143,7 @@ namespace KursovaWork.Controllers
                 confirmPasswordError = ModelState[nameof(ChangePasswordViewModel.ConfirmPassword)].Errors.FirstOrDefault()?.ErrorMessage ?? ""
             };
 
-            _logger.LogInformation("Data did not pass validation");
+            Log.Information("Data did not pass validation");
             return Json(new { success = false, errors });
         }
 
@@ -156,7 +153,7 @@ namespace KursovaWork.Controllers
         /// <returns>The verification code entry page.</returns>
         public IActionResult SendVerificationCode()
         {
-            _logger.LogInformation("Navigating to the verification code entry page");
+            Log.Information("Navigating to the verification code entry page");
 
             return View("~/Views/ForgotPassword/ForgotPassword.cshtml");
         }
@@ -177,7 +174,7 @@ namespace KursovaWork.Controllers
         /// </summary>
         public void SendCode()
         {
-            _logger.LogInformation("Entering verification code sending method");
+            Log.Information("Entering verification code sending method");
 
             _verificationCode = new Random().Next(1000, 9999);
 
@@ -185,7 +182,7 @@ namespace KursovaWork.Controllers
 
             var body = EmailBodyHelper.BodyTemp(_curUser.FirstName, _curUser.LastName, _verificationCode, "password change");
 
-            _logger.LogInformation("Sending email message to user's email");
+            Log.Information("Sending email message to user's email");
 
             EmailSender.SendEmail(_curUser.Email, subject, body);
         }

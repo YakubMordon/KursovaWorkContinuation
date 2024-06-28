@@ -1,7 +1,7 @@
-﻿using KursovaWorkDAL.Entity.Entities.Car;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using KursovaWorkDAL.Entity.Entities;
 using KursovaWorkBLL.Contracts;
+using Serilog;
 
 namespace KursovaWork.Controllers
 {
@@ -11,21 +11,16 @@ namespace KursovaWork.Controllers
     public class ConfiguratorController : Controller
     {
         private readonly ICarService _carService;
-        private readonly ILogger<ConfiguratorController> _logger;
-        private static CarInfo _curCar;
-
-        public static ConfiguratorOptions? options { get; set; }
+        public static ConfiguratorOptions? Options { get; set; }
         private static string[] _param = new string[3];
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConfiguratorController"/> class.
         /// </summary>
         /// <param name="carService">The service for car operations.</param>
-        /// <param name="logger">The logger for logging.</param>
-        public ConfiguratorController(ICarService carService, ILogger<ConfiguratorController> logger)
+        public ConfiguratorController(ICarService carService)
         {
             _carService = carService;
-            _logger = logger;
         }
 
         /// <summary>
@@ -37,7 +32,7 @@ namespace KursovaWork.Controllers
         /// <returns>The page with car configurator or error page.</returns>
         public IActionResult Configurator(string param1, string param2, string param3)
         {
-            _logger.LogInformation("Entering car configurator transition function");
+            Log.Information("Entering car configurator transition function");
 
             _param = new[] { param1, param2, param3 };
 
@@ -45,9 +40,7 @@ namespace KursovaWork.Controllers
 
             var car = _carService.GetCarByInfo(param1, param2, year);
 
-            _curCar = car;
-
-            _logger.LogInformation("Car found, transitioning to car configurator page");
+            Log.Information("Car found, transitioning to car configurator page");
             return View(car);
         }
 
@@ -60,42 +53,42 @@ namespace KursovaWork.Controllers
         /// <returns>The car payment page or the car configurator page with error messages.</returns>
         public IActionResult Submit(string color, string transmission, string fuelType)
         {
-            _logger.LogInformation("Entering car configuration confirmation function");
+            Log.Information("Entering car configuration confirmation function");
 
             var errors = new Dictionary<string, string>();
 
             if (string.IsNullOrEmpty(color))
             {
                 errors["color"] = "Select a color";
-                _logger.LogInformation("Color was not selected");
+                Log.Information("Color was not selected");
             }
 
             if (string.IsNullOrEmpty(transmission))
             {
                 errors["transmission"] = "Select a transmission type";
-                _logger.LogInformation("Transmission type was not selected");
+                Log.Information("Transmission type was not selected");
             }
 
             if (string.IsNullOrEmpty(fuelType))
             {
                 errors["fuelType"] = "Select a fuel type";
-                _logger.LogInformation("Fuel type was not selected");
+                Log.Information("Fuel type was not selected");
             }
 
             if (errors.Count > 0)
             {
-                _logger.LogInformation("One or more parameters were not selected in the configurator");
+                Log.Information("One or more parameters were not selected in the configurator");
                 return Json(new { errors });
             }
 
-            options = new ConfiguratorOptions()
+            Options = new ConfiguratorOptions()
             {
                 Color = color,
                 Transmission = transmission,
                 FuelType = fuelType
             };
 
-            _logger.LogInformation("Transitioning to car payment page");
+            Log.Information("Transitioning to car payment page");
             return Json(new { redirect = Url.Action("Payment", "Payment", new { param1 = _param[0], param2 = _param[1], param3 = _param[2] }) });
         }
     }

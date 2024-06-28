@@ -8,9 +8,14 @@ using KursovaWorkDAL.Repositories.Contracts;
 using KursovaWorkDAL.Repositories.Implementation;
 using KursovaWorkBLL.Contracts;
 using KursovaWorkBLL.Services.Entities;
+using Serilog;
 
+Console.OutputEncoding = System.Text.Encoding.UTF8;
 
-System.Console.OutputEncoding = System.Text.Encoding.UTF8;
+Log.Logger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .WriteTo.File("logs.txt")
+                .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,7 +54,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICarService, CarService>();
 builder.Services.AddScoped<ICardService,CardService>();
 builder.Services.AddScoped<IOrderService,OrderService>();
-builder.Services.AddScoped<IDRetriever>();
+builder.Services.AddScoped<IdRetriever>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
 .AddCookie(options =>
@@ -84,7 +89,7 @@ using (var scope = app.Services.CreateScope())
     var serviceProvider = scope.ServiceProvider;
     var dbContext = serviceProvider.GetRequiredService<CarSaleContext>();
 
-    dbContext.FillDB();
+    dbContext.FillDb();
 }
 
 app.MapControllerRoute(

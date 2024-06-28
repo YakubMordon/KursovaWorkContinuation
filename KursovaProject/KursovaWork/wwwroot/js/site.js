@@ -2,27 +2,28 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
-var elem = document.querySelector('.main-carousel');
+var elem = document.querySelector(".main-carousel");
+
 var flkty = new Flickity(elem, {
-    cellAlign: 'left',
+    cellAlign: "left",
     contain: true,
     wrapAround: true,
 });
 
 flkty.playPlayer();
 
-elem.addEventListener('mouseenter', function () {
+elem.addEventListener("mouseenter", function () {
     flkty.pausePlayer();
 });
 
-elem.addEventListener('mouseleave', function () {
+elem.addEventListener("mouseleave", function () {
     flkty.playPlayer();
 });
 
 
 
-const parallax = document.querySelector('.parallax');
-const parallaxBackground = document.querySelector('.parallax-background');
+const parallax = document.querySelector(".parallax");
+const parallaxBackground = document.querySelector(".parallax-background");
 
 function setParallaxBackgroundPosition() {
     const scrollTop = window.pageYOffset;
@@ -41,6 +42,6 @@ function setParallaxBackgroundPosition() {
 }
 
 setParallaxBackgroundPosition();
-window.addEventListener('scroll', setParallaxBackgroundPosition);
+window.addEventListener("scroll", setParallaxBackgroundPosition);
 
 

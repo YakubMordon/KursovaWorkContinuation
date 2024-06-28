@@ -15,7 +15,7 @@ namespace KursovaWork.Models
         /// <returns>Success or failure of the validation.</returns>
         protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
         {
-            if (value is not int month || !IsValidYear(validationContext, out int year) || !IsValidExpiration(month, year))
+            if (value is not int month || !IsValidYear(validationContext, out var year) || !IsValidExpiration(month, year))
             {
                 return new ValidationResult(ErrorMessage);
             }

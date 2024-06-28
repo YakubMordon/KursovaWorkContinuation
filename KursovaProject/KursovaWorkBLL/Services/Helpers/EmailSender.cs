@@ -1,7 +1,7 @@
 ﻿using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
-using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace KursovaWorkBLL.Services.AdditionalServices
 {
@@ -10,9 +10,6 @@ namespace KursovaWorkBLL.Services.AdditionalServices
     /// </summary>
     public class EmailSender
     {
-        private static readonly ILogger _logger = LoggerFactory.Create(builder => builder.AddConsole())
-            .CreateLogger(typeof(EmailSender));
-
         /// <summary>
         /// Sends an email.
         /// </summary>
@@ -21,17 +18,18 @@ namespace KursovaWorkBLL.Services.AdditionalServices
         /// <param name="message">Body of the email.</param>
         public static void SendEmail(string mail, string subject, string message)
         {
-            _logger.LogInformation("Entering the email sending method");
+            Log.Information("Entering the email sending method");
 
-            MimeMessage email = new MimeMessage();
+            var email = new MimeMessage();
+
             email.From.Add(new MailboxAddress("VAG Dealer", "baryaroman@ukr.net"));
             email.To.Add(new MailboxAddress("Dear customer", mail));
             email.Subject = subject;
             email.Body = new TextPart("html") { Text = message };
 
-            _logger.LogInformation("Email data set for sending");
+            Log.Information("Email data set for sending");
 
-            using (SmtpClient smtp = new SmtpClient())
+            using (var smtp = new SmtpClient())
             {
                 smtp.Connect("smtp.ukr.net", 465, SecureSocketOptions.SslOnConnect);
                 smtp.Authenticate("baryaroman@ukr.net", "a94DSYBDuxMIT8l4");
@@ -39,7 +37,7 @@ namespace KursovaWorkBLL.Services.AdditionalServices
                 smtp.Disconnect(true);
             }
 
-            _logger.LogInformation("Email sent successfully");
+            Log.Information("Email sent successfully");
         }
     }
 }

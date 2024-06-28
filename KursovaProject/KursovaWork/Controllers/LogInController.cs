@@ -3,10 +3,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using System.Linq;
 using KursovaWorkBLL.Contracts;
+using Serilog;
 
 namespace KursovaWork.Controllers
 {
@@ -16,17 +14,14 @@ namespace KursovaWork.Controllers
     public class LogInController : Controller
     {
         private readonly IUserService _userService;
-        private readonly ILogger<LogInController> _logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LogInController"/> class.
         /// </summary>
         /// <param name="userService">The service interface for handling users.</param>
-        /// <param name="logger">ILogger for logging events.</param>
-        public LogInController(IUserService userService, ILogger<LogInController> logger)
+        public LogInController(IUserService userService)
         {
             _userService = userService;
-            _logger = logger;
         }
 
         /// <summary>
@@ -35,7 +30,7 @@ namespace KursovaWork.Controllers
         /// <returns>The login page.</returns>
         public IActionResult LogIn()
         {
-            _logger.LogInformation("Redirecting to the login page");
+            Log.Information("Redirecting to the login page");
             return View();
         }
 
@@ -45,7 +40,7 @@ namespace KursovaWork.Controllers
         /// <returns>The sign-up page.</returns>
         public IActionResult SignUp()
         {
-            _logger.LogInformation("Redirecting to the sign-up page");
+            Log.Information("Redirecting to the sign-up page");
             return View("~/Views/SignUp/SignUp.cshtml");
         }
 
@@ -58,7 +53,7 @@ namespace KursovaWork.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult LogIn(LogInViewModel model)
         {
-            _logger.LogInformation("Entering method to check login data");
+            Log.Information("Entering method to check login data");
             if (ModelState.IsValid)
             {
                 var user = _userService.ValidateUser(model.Email, model.Password);
@@ -82,12 +77,12 @@ namespace KursovaWork.Controllers
 
                     HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties).Wait();
 
-                    _logger.LogInformation("User successfully logged into the account");
+                    Log.Information("User successfully logged into the account");
 
                     return Json(new { success = true });
                 }
 
-                _logger.LogInformation("Incorrect email or password entered");
+                Log.Information("Incorrect email or password entered");
                 var error = "Incorrect email or password.";
 
                 return Json(new { success = false, error });
@@ -99,7 +94,7 @@ namespace KursovaWork.Controllers
                 passwordError = ModelState[nameof(LogInViewModel.Password)].Errors.FirstOrDefault()?.ErrorMessage ?? "",
             };
 
-            _logger.LogInformation("Data did not pass validation");
+            Log.Information("Data did not pass validation");
             return Json(new { success = false, errors });
         }
     }

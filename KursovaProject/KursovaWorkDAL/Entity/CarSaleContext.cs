@@ -111,10 +111,10 @@ namespace KursovaWorkDAL.Entity
 
             // Adding encryption for CVV code
             modelBuilder.Entity<Card>()
-                .Property(o => o.CVV)
+                .Property(o => o.Cvv)
                 .HasConversion(
-                    CVV => Encrypter.EncryptCVV(CVV),
-                    encryptedCVV => Encrypter.DecryptCVV(encryptedCVV)
+                    cvv => Encrypter.EncryptCvv(cvv),
+                    encryptedCvv => Encrypter.DecryptCvv(encryptedCvv)
                 );
 
             // Adding encryption for password
@@ -138,7 +138,7 @@ namespace KursovaWorkDAL.Entity
         /// <summary>
         /// Populates the database with initial data.
         /// </summary>
-        public void FillDB()
+        public void FillDb()
         {
             DbInitializer.Initialize(this);
         }

@@ -4,9 +4,7 @@ using KursovaWorkDAL.Entity.Entities;
 using KursovaWorkBLL.Services.AdditionalServices;
 using System.Text;
 using KursovaWorkBLL.Contracts;
-using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using System.Linq;
+using Serilog;
 
 namespace KursovaWork.Controllers
 {
@@ -16,7 +14,6 @@ namespace KursovaWork.Controllers
     public class SignUpController : Controller
     {
         private readonly IUserService _userService;
-        private readonly ILogger<SignUpController> _logger;
         private static User? _curUser;
         private static int _verificationCode;
 
@@ -24,11 +21,9 @@ namespace KursovaWork.Controllers
         /// Initializes a new instance of the <see cref="SignUpController"/> class.
         /// </summary>
         /// <param name="userService">The service interface for user-related actions.</param>
-        /// <param name="logger">ILogger for logging events.</param>
-        public SignUpController(IUserService userService, ILogger<SignUpController> logger)
+        public SignUpController(IUserService userService)
         {
             _userService = userService;
-            _logger = logger;
         }
 
         /// <summary>
@@ -37,7 +32,7 @@ namespace KursovaWork.Controllers
         /// <returns>The registration page.</returns>
         public IActionResult SignUp()
         {
-            _logger.LogInformation("Navigating to the registration page");
+            Log.Information("Navigating to the registration page");
             return View();
         }
 
@@ -47,7 +42,7 @@ namespace KursovaWork.Controllers
         /// <returns>The login page.</returns>
         public IActionResult LogIn()
         {
-            _logger.LogInformation("Navigating to the login page");
+            Log.Information("Navigating to the login page");
             return View("~/Views/LogIn/LogIn.cshtml");
         }
 
@@ -59,7 +54,7 @@ namespace KursovaWork.Controllers
         [HttpPost]
         public IActionResult SignUp(SignUpViewModel model)
         {
-            _logger.LogInformation("Entering user registration data verification method");
+            Log.Information("Entering user registration data verification method");
 
             var errors = new Dictionary<string, string>();
 
@@ -71,13 +66,13 @@ namespace KursovaWork.Controllers
                 {
                     errors["emailError"] = "User with this email already exists.";
                     ModelState.AddModelError("Email", "User with this email already exists.");
-                    _logger.LogInformation("User with this email already exists");
+                    Log.Information("User with this email already exists");
                     return Json(new { success = false, errors });
                 }
 
                 _curUser = model.ToUser();
 
-                _logger.LogInformation("Successfully checked if email already exists");
+                Log.Information("Successfully checked if email already exists");
 
                 SendCode();
 
@@ -90,7 +85,7 @@ namespace KursovaWork.Controllers
             errors["passwordError"] = ModelState[nameof(SignUpViewModel.Password)].Errors.FirstOrDefault()?.ErrorMessage ?? "";
             errors["confirmPasswordError"] = ModelState[nameof(SignUpViewModel.ConfirmPassword)].Errors.FirstOrDefault()?.ErrorMessage ?? "";
 
-            _logger.LogInformation("Data did not pass validation");
+            Log.Information("Data did not pass validation");
             return Json(new { success = false, errors });
         }
 
@@ -102,18 +97,18 @@ namespace KursovaWork.Controllers
         [HttpPost]
         public IActionResult Submit(VerificationViewModel verification)
         {
-            _logger.LogInformation("Entering method to confirm user registration and validate verification code");
+            Log.Information("Entering method to confirm user registration and validate verification code");
 
             if (ModelState.IsValid)
             {
                 var stringBuilder = new StringBuilder();
-                _logger.LogInformation("Entering loop to form a concatenated string of 4 substrings");
+                Log.Information("Entering loop to form a concatenated string of 4 substrings");
 
                 foreach (var digit in verification.VerificationDigits)
                 {
                     if (string.IsNullOrEmpty(digit))
                     {
-                        _logger.LogInformation("Not all digits are entered");
+                        Log.Information("Not all digits are entered");
                         return Json(new { success = false, error = "Not all digits are entered" });
                     }
                     stringBuilder.Append(digit);
@@ -123,21 +118,21 @@ namespace KursovaWork.Controllers
 
                 if (int.Parse(temp) != _verificationCode)
                 {
-                    _logger.LogInformation("Incorrect verification code");
+                    Log.Information("Incorrect verification code");
 
                     return Json(new { success = false, error = "Incorrect verification code" });
                 }
 
                 _userService.AddUser(_curUser);
                 _curUser = null;
-                _logger.LogInformation("User successfully registered, redirecting to the main page");
+                Log.Information("User successfully registered, redirecting to the main page");
 
                 return Json(new { success = true });
             }
 
             var error = ModelState[nameof(VerificationViewModel.VerificationDigits)].Errors.FirstOrDefault()?.ErrorMessage ?? "";
 
-            _logger.LogInformation("Data did not pass validation");
+            Log.Information("Data did not pass validation");
             return Json(new { success = false, error });
         }
 
@@ -157,7 +152,7 @@ namespace KursovaWork.Controllers
         /// <returns>The verification code entry page.</returns>
         public IActionResult SendVerificationCode()
         {
-            _logger.LogInformation("Navigating to the code entry page");
+            Log.Information("Navigating to the code entry page");
 
             return View("~/Views/SignUp/Submit.cshtml");
         }
@@ -177,14 +172,14 @@ namespace KursovaWork.Controllers
         /// </summary>
         public void SendCode()
         {
-            _logger.LogInformation("Entering method to send verification code");
+            Log.Information("Entering method to send verification code");
 
             _verificationCode = new Random().Next(1000, 9999);
 
             var subject = "Verification Code";
             var body = EmailBodyHelper.BodyTemp(_curUser.FirstName, _curUser.LastName, _verificationCode, "registration");
 
-            _logger.LogInformation("Sending email notification to user's email");
+            Log.Information("Sending email notification to user's email");
 
             EmailSender.SendEmail(_curUser.Email, subject, body);
         }
