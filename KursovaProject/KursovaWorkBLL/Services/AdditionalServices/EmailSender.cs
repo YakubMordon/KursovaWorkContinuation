@@ -37,7 +37,7 @@ namespace KursovaWorkBLL.Services.AdditionalServices
             using (SmtpClient smtp = new SmtpClient())
             {
                 smtp.Connect("smtp.ukr.net", 465, SecureSocketOptions.SslOnConnect);
-                smtp.Authenticate("baryaroman@ukr.net", "9OyB6M4t9sLWXW8C");
+                smtp.Authenticate("baryaroman@ukr.net", "a94DSYBDuxMIT8l4");
                 smtp.Send(email);
                 smtp.Disconnect(true);
             }
