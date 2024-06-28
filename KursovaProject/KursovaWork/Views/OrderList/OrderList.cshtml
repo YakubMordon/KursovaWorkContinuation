@@ -1,10 +1,10 @@
-﻿@using KursovaWorkDAL.Entity.Entities;
-@using KursovaWorkBLL.Services.AdditionalServices;
-@{
+﻿@{
     ViewBagHelper.SetIsLoggedInInViewBag(ViewContext);
     ViewBag.Title = "Список замовлень";
 }
 
+@using KursovaWorkBLL.Services.Helpers.Static
+@using KursovaWorkDAL.Entity.Entities;
 @model List<Order>
 
 @if (Model.Any())

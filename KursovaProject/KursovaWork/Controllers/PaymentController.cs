@@ -1,8 +1,8 @@
 ﻿using KursovaWorkDAL.Entity.Entities.Car;
-using KursovaWorkBLL.Services.AdditionalServices;
 using Microsoft.AspNetCore.Mvc;
 using KursovaWorkBLL.Contracts;
 using Serilog;
+using KursovaWorkBLL.Services.Helpers.Static;
 
 namespace KursovaWork.Controllers
 {
@@ -102,7 +102,7 @@ namespace KursovaWork.Controllers
             var subject = $"Car purchase #{id}";
             var body = EmailBodyHelper.OrderBodyTemp(userName, _curCar.Make, _curCar.Model, _curCar.Year);
 
-            EmailSender.SendEmail(userEmail, subject, body);
+            EmailSenderHelper.SendEmail(userEmail, subject, body);
 
             Log.Information("Order information sent to email");
 

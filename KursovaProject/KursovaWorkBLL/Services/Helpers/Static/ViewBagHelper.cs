@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Serilog;
 
-namespace KursovaWorkBLL.Services.AdditionalServices
+namespace KursovaWorkBLL.Services.Helpers.Static
 {
     /// <summary>
     /// Helper class for working with ViewBag.

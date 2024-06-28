@@ -1,10 +1,10 @@
 ﻿using KursovaWorkDAL.Entity.Entities;
 using KursovaWork.Models;
-using KursovaWorkBLL.Services.AdditionalServices;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
 using KursovaWorkBLL.Contracts;
 using Serilog;
+using KursovaWorkBLL.Services.Helpers.Static;
 
 namespace KursovaWork.Controllers
 {
@@ -184,7 +184,7 @@ namespace KursovaWork.Controllers
 
             Log.Information("Sending email message to user's email");
 
-            EmailSender.SendEmail(_curUser.Email, subject, body);
+            EmailSenderHelper.SendEmail(_curUser.Email, subject, body);
         }
     }
 }

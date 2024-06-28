@@ -1,11 +1,10 @@
-﻿@using KursovaWorkBLL.Services.AdditionalServices;
-@using Microsoft.IdentityModel.Tokens
-
-@{
+﻿@{
     ViewBag.Title = "Моделі";
     ViewBagHelper.SetIsLoggedInInViewBag(ViewContext);
 }
 
+@using KursovaWorkBLL.Services.Helpers.Static
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model FilterViewModel
 
 <div class="modelBody">

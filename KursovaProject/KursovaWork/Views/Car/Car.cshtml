@@ -1,7 +1,6 @@
-﻿@using KursovaWorkDAL.Entity.Entities.Car;
-@using KursovaWorkBLL.Services.AdditionalServices;
-
-@model CarInfo;
+﻿@using KursovaWorkBLL.Services.Helpers.Static
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model KursovaWorkDAL.Entity.Entities.Car.CarInfo;
 @{
     ViewBag.Title = Model.Make + " " + Model.Model;
     ViewBagHelper.SetIsLoggedInInViewBag(ViewContext);

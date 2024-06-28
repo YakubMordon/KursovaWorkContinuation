@@ -3,12 +3,12 @@ using MailKit.Security;
 using MimeKit;
 using Serilog;
 
-namespace KursovaWorkBLL.Services.AdditionalServices
+namespace KursovaWorkBLL.Services.Helpers.Static
 {
     /// <summary>
     /// Class for sending emails.
     /// </summary>
-    public class EmailSender
+    public static class EmailSenderHelper
     {
         /// <summary>
         /// Sends an email.

@@ -1,4 +1,4 @@
-﻿namespace KursovaWorkBLL.Services.AdditionalServices
+﻿namespace KursovaWorkBLL.Services.Helpers.Static
 {
     /// <summary>
     /// Class providing a template for creating HTML email bodies.
