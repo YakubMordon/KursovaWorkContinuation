@@ -1,5 +1,4 @@
-﻿using EFCore.BulkExtensions;
-using KursovaWorkDAL.Entity.Entities.Car;
+﻿using KursovaWorkDAL.Entity.Entities.Car;
 using KursovaWorkDAL.Entity.Service.Fakers;
 using Serilog;
 
@@ -239,11 +238,13 @@ public static class DbInitializer
 
         Log.Information("Adding each car.");
 
-        context.BulkInsert(carInfos);
+        context.AddRange(carInfos);
 
         Log.Information("Adding each user.");
 
-        context.BulkInsert(users);
+        context.AddRange(users);
+
+        context.SaveChanges();
 
         Log.Information("Data was successfully added.");
     }
