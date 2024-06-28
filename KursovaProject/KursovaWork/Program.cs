@@ -12,7 +12,6 @@ using KursovaWorkDAL.Repositories.CardRepository;
 using KursovaWorkDAL.Repositories.OrderRepository;
 using Microsoft.AspNetCore.ResponseCompression;
 using System.IO.Compression;
-using Microsoft.OpenApi.Models;
 
 
 System.Console.OutputEncoding = System.Text.Encoding.UTF8;
