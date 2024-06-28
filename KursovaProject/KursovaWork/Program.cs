@@ -10,11 +10,31 @@ using KursovaWorkDAL.Repositories.UserRepository;
 using KursovaWorkDAL.Repositories.CarRepository;
 using KursovaWorkDAL.Repositories.CardRepository;
 using KursovaWorkDAL.Repositories.OrderRepository;
+using Microsoft.AspNetCore.ResponseCompression;
+using System.IO.Compression;
+using Microsoft.OpenApi.Models;
 
 
 System.Console.OutputEncoding = System.Text.Encoding.UTF8;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddResponseCompression(options =>
+{
+    options.EnableForHttps = true;
+    options.Providers.Add<BrotliCompressionProvider>();
+    options.Providers.Add<GzipCompressionProvider>();
+});
+
+builder.Services.Configure<BrotliCompressionProviderOptions>(options =>
+{
+    options.Level = CompressionLevel.Fastest;
+});
+
+builder.Services.Configure<GzipCompressionProviderOptions>(options =>
+{
+    options.Level = CompressionLevel.Fastest;
+});
 
 builder.Services.AddDbContext<CarSaleContext>(options =>
 {
