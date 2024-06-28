@@ -4,38 +4,38 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace KursovaWorkDAL.Entity.Entities
 {
     /// <summary>
-    /// Клас, що представляє користувача.
+    /// Represents a user.
     /// </summary>
-    public class User
+    public class User : BaseEntity
     {
         /// <summary>
-        /// Унікальний ідентифікатор користувача.
+        /// The unique identifier for the user.
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// Ім'я користувача.
+        /// The user's first name.
         /// </summary>
         [Required]
         [StringLength(50)]
         public string FirstName { get; set; }
 
         /// <summary>
-        /// Прізвище користувача.
+        /// The user's last name.
         /// </summary>
         [Required]
         [StringLength(50)]
         public string LastName { get; set; }
 
         /// <summary>
-        /// Електронна пошта користувача.
+        /// The user's email address.
         /// </summary>
         [Required]
         [EmailAddress]
         public string Email { get; set; }
 
         /// <summary>
-        /// Пароль користувача.
+        /// The user's password.
         /// </summary>
         [Required]
         [DataType(DataType.Password)]
@@ -43,7 +43,7 @@ namespace KursovaWorkDAL.Entity.Entities
         public string Password { get; set; }
 
         /// <summary>
-        /// Підтвердження пароля користувача.
+        /// The confirmation of the user's password.
         /// </summary>
         [Required]
         [DataType(DataType.Password)]
@@ -51,17 +51,17 @@ namespace KursovaWorkDAL.Entity.Entities
         public string ConfirmPassword { get; set; }
 
         /// <summary>
-        /// Дата і час створення користувача.
+        /// The date and time the user was created.
         /// </summary>
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         /// <summary>
-        /// Колекція замовлень, пов'язаних з користувачем.
+        /// A collection of orders associated with the user.
         /// </summary>
         public virtual ICollection<Order> Orders { get; set; }
 
         /// <summary>
-        /// Кредитна картка користувача (зв'язок один-до-одного).
+        /// The user's credit card (one-to-one relationship).
         /// </summary>
         [ForeignKey("UserId")]
         public virtual Card CreditCard { get; set; }

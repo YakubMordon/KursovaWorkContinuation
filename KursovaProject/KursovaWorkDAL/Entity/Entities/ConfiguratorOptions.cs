@@ -3,41 +3,41 @@
 namespace KursovaWorkDAL.Entity.Entities
 {
     /// <summary>
-    /// Клас, що представляє параметри конфігуратора.
+    /// Class representing the configurator options.
     /// </summary>
-    public class ConfiguratorOptions
+    public class ConfiguratorOptions : BaseEntity
     {
         /// <summary>
-        /// Ідентифікатор параметрів конфігуратора.
+        /// Configurator options identifier.
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// ідентифікатор замовлення, до якого належать параметри конфігуратора.
+        /// The identifier of the order to which the configurator options belong.
         /// </summary>
         [Required]
         public int OrderId { get; set; }
 
         /// <summary>
-        /// Колір автомобіля.
+        /// The color of the car.
         /// </summary>
         [StringLength(50)]
         public string? Color { get; set; }
 
         /// <summary>
-        /// Тип трансмісії автомобіля.
+        /// The transmission type of the car.
         /// </summary>
         [StringLength(50)]
         public string? Transmission { get; set; }
 
         /// <summary>
-        /// Тип палива автомобіля.
+        /// The fuel type of the car.
         /// </summary>
         [StringLength(50)]
         public string? FuelType { get; set; }
 
         /// <summary>
-        /// Зв'язок з замовленням.
+        /// Relationship with the order.
         /// </summary>
         public virtual Order? Order { get; set; }
     }

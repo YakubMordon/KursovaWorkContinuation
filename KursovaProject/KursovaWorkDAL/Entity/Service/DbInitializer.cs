@@ -4,19 +4,15 @@ using Microsoft.Extensions.Logging;
 namespace KursovaWorkDAL.Entity.Service
 {
     /// <summary>
-    /// Клас для ініціалізації бази даних автомобільного продажу.
+    /// Static class for initialization of database.
     /// </summary>
     public static class DbInitializer
     {
-        /// <summary>
-        /// Об'єкт класу ILogger для логування подій 
-        /// </summary>
-        /// 
         private static readonly ILogger _logger = LoggerFactory.Create(builder => builder.AddConsole())
             .CreateLogger(typeof(DbInitializer));
 
         /// <summary>
-        /// Ініціалізує базу даних автомобільного продажу.
+        /// Initializes Database.
         /// </summary>
         public static void Initialize(CarSaleContext context)
         {

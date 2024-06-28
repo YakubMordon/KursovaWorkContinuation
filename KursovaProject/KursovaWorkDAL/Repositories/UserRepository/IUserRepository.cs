@@ -1,48 +1,25 @@
 ﻿using KursovaWorkDAL.Entity.Entities;
+using KursovaWorkDAL.Repositories.BaseRepository;
 
 namespace KursovaWorkDAL.Repositories.UserRepository
 {
     /// <summary>
-    /// Інтерфейс для обробки запитів зв'язаних з користувачем
+    /// Interface for handling user-related queries.
     /// </summary>
-    public interface IUserRepository
+    public interface IUserRepository : IBaseRepository<User>
     {
         /// <summary>
-        /// Метод получення користувача за його ідентифікатором
+        /// Method to retrieve a user by their identifier.
         /// </summary>
-        /// <param name="id">Ідентифікатор користувача</param>
-        /// <returns>Користувач</returns>
+        /// <param name="id">User identifier.</param>
+        /// <returns>The user.</returns>
         User GetById(int id);
 
         /// <summary>
-        /// Метод получення користувача за його електронною поштою
+        /// Method to retrieve a user by their email.
         /// </summary>
-        /// <param name="email">Електронна пошта</param>
-        /// <returns>Користувач</returns>
+        /// <param name="email">Email address.</param>
+        /// <returns>The user.</returns>
         User GetByEmail(string email);
-
-        /// <summary>
-        /// Метод додання користувача до бази даних
-        /// </summary>
-        /// <param name="user">Користувач</param>
-        void Add(User user);
-
-        /// <summary>
-        /// Метод оновлення інформації про користувача в базі даних
-        /// </summary>
-        /// <param name="user">Користувач</param>
-        void Update(User user);
-
-        /// <summary>
-        /// Метод видалення користувача з бази даних
-        /// </summary>
-        /// <param name="user">Користувач</param>
-        void Delete(User user);
-
-        /// <summary>
-        /// Метод заполучення списку всіх користувачів
-        /// </summary>
-        /// <returns>Список всіх користувачів</returns>
-        IEnumerable<User> GetAll();
     }
 }

@@ -5,34 +5,17 @@ using Microsoft.EntityFrameworkCore;
 namespace KursovaWorkDAL.Repositories.CarRepository
 {
     /// <summary>
-    /// Імплементація інтерфейсу для обробки запитів зв'язаних з автомобілями
+    /// Implementation of the interface for handling car-related queries.
     /// </summary>
-    public class CarRepository : ICarRepository
+    public class CarRepository : BaseRepository.BaseRepository<CarInfo>, ICarRepository
     {
         /// <summary>
-        /// Контекст для роботи з бд
+        /// Initializes a new instance of the <see cref="CarRepository"/> class.
         /// </summary>
-        private readonly CarSaleContext _context;
+        /// <param name="context">Context for database operations.</param>
+        public CarRepository(CarSaleContext context) : base(context) { }
 
-        /// <summary>
-        /// Ініціалізує новий екземпляр класу <see cref="CarRepository"/>.
-        /// </summary>
-        /// <param name="context">Контекст для роботи з бд</param>
-        public CarRepository(CarSaleContext context)
-        {
-            _context = context;
-        }
-        public void Add(CarInfo car)
-        {
-            _context.Cars.Add(car);
-            _context.SaveChanges();
-        }
-        public void Delete(CarInfo car)
-        {
-            _context.Cars.Remove(car);
-            _context.SaveChanges();
-        }
-        public IEnumerable<CarInfo> GetAll()
+        public new IEnumerable<CarInfo> GetAll()
         {
             return _context.Cars
                 .Include(c => c.Detail)
@@ -51,11 +34,6 @@ namespace KursovaWorkDAL.Repositories.CarRepository
                 .Include(c => c.Detail)
                 .Include(c => c.Images)
                 .FirstOrDefault(c => c.Id == id);
-        }
-        public void Update(CarInfo car)
-        {
-            _context.Cars.Update(car);
-            _context.SaveChanges();
         }
     }
 }

@@ -6,63 +6,63 @@ using Microsoft.EntityFrameworkCore;
 namespace KursovaWorkDAL.Entity
 {
     /// <summary>
-    /// Контекст бази даних для продажу автомобілів.
+    /// Database context for car sales.
     /// </summary>
     public class CarSaleContext : DbContext
     {
         /// <summary>
-        /// Ініціалізує новий екземпляр класу CarSaleContext з заданими опціями.
+        /// Initializes a new instance of the CarSaleContext class with the specified options.
         /// </summary>
-        /// <param name="options">Опції бази даних.</param>
+        /// <param name="options">Database options.</param>
         public CarSaleContext(DbContextOptions<CarSaleContext> options)
         : base(options)
         {
         }
 
         /// <summary>
-        /// Ініціалізує новий екземпляр класу CarSaleContext.
+        /// Initializes a new instance of the CarSaleContext class.
         /// </summary>
         public CarSaleContext() : base() { }
 
         /// <summary>
-        /// Представляє таблицю автомобілів в базі даних.
+        /// Represents the table of cars in the database.
         /// </summary>
         public DbSet<CarInfo> Cars { get; set; }
 
         /// <summary>
-        /// Представляє таблицю зображень автомобілів в базі даних.
+        /// Represents the table of car images in the database.
         /// </summary>
         public DbSet<CarImage> CarImages { get; set; }
 
         /// <summary>
-        /// Представляє таблицю деталей автомобілів в базі даних.
+        /// Represents the table of car details in the database.
         /// </summary>
         public DbSet<CarDetail> CarDetails { get; set; }
 
         /// <summary>
-        /// Представляє таблицю користувачів в базі даних.
+        /// Represents the table of users in the database.
         /// </summary>
         public DbSet<User> Users { get; set; }
 
         /// <summary>
-        /// Представляє таблицю замовлень автомобілів в базі даних.
+        /// Represents the table of car orders in the database.
         /// </summary>
         public DbSet<Order> Orders { get; set; }
 
         /// <summary>
-        /// Представляє таблицю кредитних карт користувачів в базі даних.
+        /// Represents the table of user credit cards in the database.
         /// </summary>
         public DbSet<Card> Cards { get; set; }
 
         /// <summary>
-        /// Представляє таблицю опцій конфігуратора автомобілів в базі даних.
+        /// Represents the table of configurator options for cars in the database.
         /// </summary>
         public DbSet<ConfiguratorOptions> ConfiguratorOptions { get; set; }
 
         /// <summary>
-        /// Визначає модель бази даних та встановлює зв'язки між таблицями.
+        /// Defines the database model and establishes relationships between tables.
         /// </summary>
-        /// <param name="modelBuilder">Об'єкт, який використовується для побудови моделі.</param>
+        /// <param name="modelBuilder">Object used to build the model.</param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<CarInfo>()
@@ -85,39 +85,39 @@ namespace KursovaWorkDAL.Entity
                 .WithMany(c => c.Orders)
                 .HasForeignKey(o => o.CarId);
 
-            // Додання шифрування кредитної карти
+            // Adding encryption for credit card
             modelBuilder.Entity<Card>()
-            .Property(o => o.CardNumber)
-            .HasConversion(
-                card => Encrypter.Encrypt(card),
-                encryptedCard => Encrypter.Decrypt(encryptedCard)
-            );
+                .Property(o => o.CardNumber)
+                .HasConversion(
+                    card => Encrypter.Encrypt(card),
+                    encryptedCard => Encrypter.Decrypt(encryptedCard)
+                );
 
-            // Додання шифрування місяця
+            // Adding encryption for month
             modelBuilder.Entity<Card>()
-            .Property(o => o.ExpirationMonth)
-            .HasConversion(
-                month => Encrypter.EncryptMonth(month),
-                encryptedMonth => Encrypter.DecryptMonth(encryptedMonth)
-            );
+                .Property(o => o.ExpirationMonth)
+                .HasConversion(
+                    month => Encrypter.EncryptMonth(month),
+                    encryptedMonth => Encrypter.DecryptMonth(encryptedMonth)
+                );
 
-            // Додання шифрування року
+            // Adding encryption for year
             modelBuilder.Entity<Card>()
-            .Property(o => o.ExpirationYear)
-            .HasConversion(
-                year => Encrypter.EncryptYear(year),
-                encryptedYear => Encrypter.DecryptYear(encryptedYear)
-            );
+                .Property(o => o.ExpirationYear)
+                .HasConversion(
+                    year => Encrypter.EncryptYear(year),
+                    encryptedYear => Encrypter.DecryptYear(encryptedYear)
+                );
 
-            // Додання шифрування CVV коду
+            // Adding encryption for CVV code
             modelBuilder.Entity<Card>()
-            .Property(o => o.CVV)
-            .HasConversion(
-                CVV => Encrypter.EncryptCVV(CVV),
-                encryptedCVV => Encrypter.DecryptCVV(encryptedCVV)
-            );
+                .Property(o => o.CVV)
+                .HasConversion(
+                    CVV => Encrypter.EncryptCVV(CVV),
+                    encryptedCVV => Encrypter.DecryptCVV(encryptedCVV)
+                );
 
-            // Додання шифрування пароля
+            // Adding encryption for password
             modelBuilder.Entity<User>()
                 .Property(u => u.Password)
                 .HasConversion(
@@ -136,7 +136,7 @@ namespace KursovaWorkDAL.Entity
         }
 
         /// <summary>
-        /// Заповнює базу даних початковими даними.
+        /// Populates the database with initial data.
         /// </summary>
         public void FillDB()
         {
@@ -144,4 +144,3 @@ namespace KursovaWorkDAL.Entity
         }
     }
 }
-

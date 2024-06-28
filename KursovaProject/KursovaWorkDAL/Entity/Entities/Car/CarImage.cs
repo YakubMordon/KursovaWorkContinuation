@@ -3,35 +3,35 @@
 namespace KursovaWorkDAL.Entity.Entities.Car
 {
     /// <summary>
-    /// Клас, що представляє зображення автомобіля.
+    /// Represents a car image.
     /// </summary>
-    public class CarImage
+    public class CarImage : BaseEntity
     {
         /// <summary>
-        /// Ідентифікатор зображення автомобіля.
+        /// The identifier for the car image.
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// Ідентифікатор автомобіля, до якого належить зображення.
+        /// The identifier for the car to which the image belongs.
         /// </summary>
         [Required]
         public int CarId { get; set; }
 
-#pragma warning disable CS8618 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Возможно, стоит объявить поле как допускающее значения NULL.
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
         /// <summary>
-        /// URL зображення автомобіля.
+        /// The URL of the car image.
         /// </summary>
         [Required]
         public string ImageUrl { get; set; }
 
         /// <summary>
-        /// Об'єкт, що представляє автомобіль, до якого належить зображення.
+        /// The car object to which the image belongs.
         /// </summary>
         public virtual CarInfo Car { get; set; }
 
-#pragma warning restore CS8618 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Возможно, стоит объявить поле как допускающее значения NULL.
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
     }
 }

@@ -3,69 +3,62 @@
 namespace KursovaWorkDAL.Entity.Entities.Car
 {
     /// <summary>
-    /// Клас, який представляє інформацію про автомобіль.
+    /// Class representing car information.
     /// </summary>
-    public class CarInfo
+    public class CarInfo : BaseEntity
     {
         /// <summary>
-        /// Унікальний ідентифікатор автомобіля.
+        /// Unique identifier for the car.
         /// </summary>
         public int Id { get; set; }
 
-#pragma warning disable CS8618 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Возможно, стоит объявить поле как допускающее значения NULL.
-        
         /// <summary>
-        /// Марка автомобіля.
+        /// Car make.
         /// </summary>
         [Required]
         [StringLength(50)]
         public string Make { get; set; }
 
         /// <summary>
-        /// Модель автомобіля.
+        /// Car model.
         /// </summary>
         [Required]
         [StringLength(50)]
         public string Model { get; set; }
 
         /// <summary>
-        /// Рік виробництва автомобіля.
+        /// Year of manufacture of the car.
         /// </summary>
         [Required]
         [Range(1900, 2100)]
         public int Year { get; set; }
 
         /// <summary>
-        /// Ціна автомобіля.
+        /// Price of the car.
         /// </summary>
         [Required]
         [Range(0, double.MaxValue)]
         public decimal Price { get; set; }
 
         /// <summary>
-        /// Опис автомобіля.
+        /// Description of the car.
         /// </summary>
         [StringLength(500)]
         public string Description { get; set; }
 
-
         /// <summary>
-        /// Зображення автомобіля.
+        /// Car images.
         /// </summary>
         public virtual ICollection<CarImage> Images { get; set; }
 
         /// <summary>
-        /// Деталі автомобіля.
+        /// Car details.
         /// </summary>
         public virtual CarDetail Detail { get; set; }
 
         /// <summary>
-        /// Замовлення на автомобіль.
+        /// Car orders.
         /// </summary>
         public virtual ICollection<Order> Orders { get; set; }
-
-#pragma warning restore CS8618 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Возможно, стоит объявить поле как допускающее значения NULL.
-
     }
-
 }

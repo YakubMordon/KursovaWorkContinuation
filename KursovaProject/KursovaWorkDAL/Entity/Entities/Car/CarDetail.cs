@@ -3,47 +3,42 @@
 namespace KursovaWorkDAL.Entity.Entities.Car
 {
     /// <summary>
-    /// Деталі автомобіля.
+    /// Car details.
     /// </summary>
-    public class CarDetail
+    public class CarDetail : BaseEntity
     {
         /// <summary>
-        /// Ідентифікатор деталі автомобіля.
+        /// The identifier for the car detail.
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// Ідентифікатор автомобіля.
+        /// The identifier for the car.
         /// </summary>
         [Required]
         public int CarId { get; set; }
 
-#pragma warning disable CS8618 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Возможно, стоит объявить поле как допускающее значения NULL.
-
         /// <summary>
-        /// Колір автомобіля.
+        /// The color of the car.
         /// </summary>
         [StringLength(50)]
         public string Color { get; set; }
 
         /// <summary>
-        /// Тип коробки передач автомобіля.
+        /// The type of transmission of the car.
         /// </summary>
         [StringLength(50)]
         public string Transmission { get; set; }
 
         /// <summary>
-        /// Тип палива автомобіля.
+        /// The type of fuel of the car.
         /// </summary>
         [StringLength(50)]
         public string FuelType { get; set; }
 
         /// <summary>
-        /// Автомобіль, до якого належать деталі.
+        /// The car to which the details belong.
         /// </summary>
         public virtual CarInfo Car { get; set; }
-
-#pragma warning restore CS8618 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Возможно, стоит объявить поле как допускающее значения NULL.
-
     }
 }
