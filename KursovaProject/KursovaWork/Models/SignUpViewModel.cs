@@ -4,12 +4,12 @@ using KursovaWorkDAL.Entity.Entities;
 namespace KursovaWork.Models
 {
     /// <summary>
-    /// Клас для получення даних реєстрації, які ввів користувач
+    /// Model for getting signup data.
     /// </summary>
     public class SignUpViewModel
     {
         /// <summary>
-        /// Ім'я
+        /// First Name.
         /// </summary>
         [Required(ErrorMessage = "Поле Ім\'я є обов\'язковим")]
         [StringLength(50)]
@@ -17,7 +17,7 @@ namespace KursovaWork.Models
         public string FirstName { get; set; }
 
         /// <summary>
-        /// Прізвище
+        /// Last Name.
         /// </summary>
         [Required(ErrorMessage = "Поле Прізвище є обов'язковим")]
         [StringLength(50)]
@@ -25,7 +25,7 @@ namespace KursovaWork.Models
         public string LastName { get; set; }
 
         /// <summary>
-        /// Електронна пошта
+        /// Email.
         /// </summary>
         [Required(ErrorMessage = "Поле Електронна пошта є обов'язковим")]
         [EmailAddress(ErrorMessage = "Поле, не являється електронною поштою")]
@@ -33,7 +33,7 @@ namespace KursovaWork.Models
         public string Email { get; set; }
 
         /// <summary>
-        /// Пароль
+        /// Password.
         /// </summary>
         [Required(ErrorMessage = "Поле Пароль є обов'язковим")]
         [DataType(DataType.Password)]
@@ -42,7 +42,7 @@ namespace KursovaWork.Models
         public string Password { get; set; }
 
         /// <summary>
-        /// Підтвердження пароля
+        /// Password Confirmation.
         /// </summary>
         [Required(ErrorMessage = "Поле Підтвердження пароля є обов'язковим")]
         [DataType(DataType.Password)]
@@ -51,11 +51,12 @@ namespace KursovaWork.Models
         public string ConfirmPassword { get; set; }
 
         /// <summary>
-        /// Метод перетворення об'єкту класу SignUpViewModel у об'єкт класу User
+        /// Method for mapping from <see cref="SignUpViewModel"/> to <see cref="User">.
         /// </summary>
-        /// <returns>Об'єкт класу User</returns>
+        /// <returns>Mapped <see cref="User"/> Entity.</returns>
         public User ToUser()
         {
+            // TODO: Create mapper for User.
             return new User
             {
                 FirstName = this.FirstName,

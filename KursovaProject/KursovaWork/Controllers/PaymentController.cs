@@ -1,138 +1,115 @@
 ﻿using KursovaWorkDAL.Entity.Entities.Car;
-using KursovaWorkDAL.Entity.Entities;
 using KursovaWorkBLL.Services.AdditionalServices;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using KursovaWorkBLL.Contracts;
 
 namespace KursovaWork.Controllers
 {
     /// <summary>
-    /// Контролер для обробки оплати.
+    /// Controller for handling payments.
     /// </summary>
     public class PaymentController : Controller
     {
-        /// <summary>
-        /// Сервіс для виконання дій зв'язаних з автомобілями
-        /// </summary>
         private readonly ICarService _carService;
-
-        /// <summary>
-        /// Сервіс для виконання дій зв'язаних з картою
-        /// </summary>
         private readonly ICardService _cardService;
-
-        /// <summary>
-        /// Сервіс для виконання дій зв'язаних з замовленнями
-        /// </summary>
         private readonly IOrderService _orderService;
-
-        /// <summary>
-        /// Сервіс для виконання дії зв'язаних з користувачем
-        /// </summary>
         private readonly IUserService _userService;
-
-        /// <summary>
-        /// Об'єкт класу ILogger для логування подій 
-        /// </summary>
         private readonly ILogger<PaymentController> _logger;
-
-        /// <summary>
-        /// Об'єкт класу CarInfo, який вказує на поточну машину
-        /// </summary>
         private static CarInfo _curCar;
 
         /// <summary>
-        /// Ініціалізує новий екземпляр класу PaymentController.
+        /// Initializes a new instance of the <see cref="PaymentController"/> class.
         /// </summary>
-        /// <param name="carService">Сервіс для виконання дій зв'язаних з автомобілями.</param>
-        /// <param name="cardService">Сервіс для виконання дій зв'язаних з картою</param>
-        /// <param name="orderService">Сервіс для виконання дій зв'язаних з замовленнями</param>
-        /// <param name="userService">Сервіс для виконання дії зв'язаних з користувачем</param>
-        /// <param name="logger">Об'єкт логування ILogger.</param>
+        /// <param name="carService">The service interface for performing car-related actions.</param>
+        /// <param name="cardService">The service interface for performing card-related actions.</param>
+        /// <param name="orderService">The service interface for performing order-related actions.</param>
+        /// <param name="userService">The service interface for performing user-related actions.</param>
+        /// <param name="logger">ILogger for logging events.</param>
         public PaymentController(ICarService carService, ICardService cardService, IOrderService orderService, IUserService userService, ILogger<PaymentController> logger)
         {
             _carService = carService;
             _cardService = cardService;
             _orderService = orderService;
-            _userService = userService; 
+            _userService = userService;
             _logger = logger;
         }
 
         /// <summary>
-        /// Метод для обробки перевірки можливості оплати.
+        /// Method for handling payment feasibility check.
         /// </summary>
-        /// <param name="param1">Марка автомобіля</param>
-        /// <param name="param2">Модель автомобіля</param>
-        /// <param name="param3">Рік виробництва автомобіля</param>
-        /// <returns>Результат операції.</returns>
+        /// <param name="param1">Car make.</param>
+        /// <param name="param2">Car model.</param>
+        /// <param name="param3">Car year.</param>
+        /// <returns>Operation result.</returns>
         public IActionResult Payment(string param1, string param2, string param3)
         {
-            _logger.LogInformation("Вхід у метод перевірки можливості оплати");
+            _logger.LogInformation("Entering method to check payment feasibility");
 
-            _logger.LogInformation("Заполучення ідентифікатора користувача");
-            User user = _userService.GetLoggedInUser();
+            _logger.LogInformation("Fetching user ID");
+            var user = _userService.GetLoggedInUser();
 
-            if (user == null)
+            if (user is null)
             {
-                _logger.LogInformation("Користувач не ввійшов у обліковий запис");
+                _logger.LogInformation("User not logged in");
                 return View("~/Views/Payment/NotLoggedIn.cshtml");
             }
 
-            _logger.LogInformation("Заполучення даних про метод оплати користувача");
+            _logger.LogInformation("Fetching user payment method data");
             var creditCard = _cardService.GetByLoggedInUser();
 
-            if (creditCard == null)
+            if (creditCard is null)
             {
-                _logger.LogInformation("Користувач не додав методу оплати");
+                _logger.LogInformation("User has not added a payment method");
                 return View("~/Views/Payment/CardNotConnected.cshtml");
             }
-            int year = int.Parse(param3);
 
-            CarInfo car = _carService.GetCarByInfo(param1, param2, year);
+            var year = int.Parse(param3);
 
-            if (car != null)
+            var car = _carService.GetCarByInfo(param1, param2, year);
+
+            if (car is not null)
             {
                 _curCar = car;
-                _logger.LogInformation("Модель успішно знайдена");
+                _logger.LogInformation("Model found successfully");
 
-                _logger.LogInformation("Перехід до підтвердження оплати");
+                _logger.LogInformation("Redirecting to payment confirmation");
 
                 return View(car);
             }
 
-            _logger.LogWarning("Моделі не було знайдено");
+            _logger.LogWarning("Model not found");
             return View("Error");
-
         }
 
         /// <summary>
-        /// Метод для обробки успішного платежу.
+        /// Method for handling successful payment.
         /// </summary>
-        /// <returns>Результат операції.</returns>
+        /// <returns>Operation result.</returns>
         public IActionResult Success()
         {
-            _logger.LogInformation("Перехід до методу підтвердження оплати за покупку");
+            _logger.LogInformation("Redirecting to method for confirming purchase payment");
 
-            int id = _orderService.AddOrderLoggedIn(_curCar, ConfiguratorController.options);
+            var id = _orderService.AddOrderLoggedIn(_curCar, ConfiguratorController.options);
 
             ConfiguratorController.options = null;
 
-            _logger.LogInformation("Номер замовлення повернено");
+            _logger.LogInformation("Order number returned");
 
-            _logger.LogInformation("Заполучення даних про користувача");
-            User user = _userService.GetLoggedInUser();
+            _logger.LogInformation("Fetching user data");
+            var user = _userService.GetLoggedInUser();
 
-            string userName = user.FirstName + " " + user.LastName;
-            string userEmail = user.Email;
+            var userName = user.FirstName + " " + user.LastName;
+            var userEmail = user.Email;
 
-            string subject = $"Покупка автомобіля №{id}";
-            string body = EmailBodyHelper.OrderBodyTemp(userName, _curCar.Make, _curCar.Model, _curCar.Year);
+            var subject = $"Car purchase #{id}";
+            var body = EmailBodyHelper.OrderBodyTemp(userName, _curCar.Make, _curCar.Model, _curCar.Year);
 
             EmailSender.SendEmail(userEmail, subject, body);
 
-            _logger.LogInformation("Надіслання на пошту даних про замовлення");
+            _logger.LogInformation("Order information sent to email");
 
-            _logger.LogInformation("Перехід на сторінку успішного виконання покупки");
+            _logger.LogInformation("Redirecting to successful purchase execution page");
 
             return View("~/Views/Payment/Success.cshtml");
         }

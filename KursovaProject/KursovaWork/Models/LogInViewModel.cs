@@ -3,12 +3,12 @@
 namespace KursovaWork.Models
 {
     /// <summary>
-    /// Клас для получення даних входу, які ввів користувач
+    /// Model for getting login data.
     /// </summary>
     public class LogInViewModel
     {
         /// <summary>
-        /// Електронна пошта
+        /// Email.
         /// </summary>
         [Required(ErrorMessage = "Поле Електронна пошта є потрібне.")]
         [EmailAddress(ErrorMessage = "Неправильна Електронна пошта.")]
@@ -16,7 +16,7 @@ namespace KursovaWork.Models
         public string Email { get; set; }
 
         /// <summary>
-        /// Пароль
+        /// Password.
         /// </summary>
         [Required(ErrorMessage = "Поле паролю є потрібне.")]
         [DataType(DataType.Password)]

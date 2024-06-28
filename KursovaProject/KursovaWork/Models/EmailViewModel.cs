@@ -3,12 +3,12 @@
 namespace KursovaWork.Models
 {
     /// <summary>
-    /// Клас для заполучення електронної пошти, під час зміни паролю
+    /// Model for getting email on changing of password.
     /// </summary>
     public class EmailViewModel
     {
         /// <summary>
-        /// Електронна пошта
+        /// Email.
         /// </summary>
         [Required(ErrorMessage = "Поле Електронна пошта є обов'язковим")]
         [EmailAddress(ErrorMessage = "Поле, не являється електронною поштою")]

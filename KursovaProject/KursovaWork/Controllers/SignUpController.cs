@@ -4,39 +4,27 @@ using KursovaWorkDAL.Entity.Entities;
 using KursovaWorkBLL.Services.AdditionalServices;
 using System.Text;
 using KursovaWorkBLL.Contracts;
+using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace KursovaWork.Controllers
 {
     /// <summary>
-    /// Контролер, що відповідає за реєстрацію нового користувача.
+    /// Controller responsible for user registration.
     /// </summary>
     public class SignUpController : Controller
     {
-        /// <summary>
-        /// Сервіс для роботи з користувачем
-        /// </summary>
         private readonly IUserService _userService;
-
-        /// <summary>
-        /// Об'єкт класу ILogger для логування подій 
-        /// </summary>
         private readonly ILogger<SignUpController> _logger;
-
-        /// <summary>
-        /// Об'єкт класу User? (nullable), який вказує на поточного користувача
-        /// </summary>
         private static User? _curUser;
-
-        /// <summary>
-        /// Змінна, яка містить в собі поточний верифікаційний код
-        /// </summary>
         private static int _verificationCode;
 
         /// <summary>
-        /// Ініціалізує новий екземпляр класу <see cref="SignUpController"/>.
+        /// Initializes a new instance of the <see cref="SignUpController"/> class.
         /// </summary>
-        /// <param name="userService">Сервіс для роботи з користувачем</param>
-        /// <param name="logger">Логгер для запису логів.</param>
+        /// <param name="userService">The service interface for user-related actions.</param>
+        /// <param name="logger">ILogger for logging events.</param>
         public SignUpController(IUserService userService, ILogger<SignUpController> logger)
         {
             _userService = userService;
@@ -44,56 +32,56 @@ namespace KursovaWork.Controllers
         }
 
         /// <summary>
-        /// Отримує сторінку реєстрації.
+        /// Retrieves the registration page.
         /// </summary>
-        /// <returns>Сторінка реєстрації.</returns>
+        /// <returns>The registration page.</returns>
         public IActionResult SignUp()
         {
-            _logger.LogInformation("Перехід на сторінку реєстрації");
+            _logger.LogInformation("Navigating to the registration page");
             return View();
         }
 
         /// <summary>
-        /// Отримує сторінку входу.
+        /// Retrieves the login page.
         /// </summary>
-        /// <returns>Сторінка входу.</returns>
+        /// <returns>The login page.</returns>
         public IActionResult LogIn()
         {
-            _logger.LogInformation("Перехід на сторінку входу");
+            _logger.LogInformation("Navigating to the login page");
             return View("~/Views/LogIn/LogIn.cshtml");
         }
 
         /// <summary>
-        /// Обробляє введені користувачем дані реєстрації.
+        /// Handles user registration data input.
         /// </summary>
-        /// <param name="model">Модель, що містить введені користувачем дані реєстрації.</param>
-        /// <returns>Сторінка введення верифікаційного коду або сторінка реєстрації з повідомленням про помилку.</returns>
+        /// <param name="model">The model containing user registration data.</param>
+        /// <returns>The verification code entry page or the registration page with an error message.</returns>
         [HttpPost]
         public IActionResult SignUp(SignUpViewModel model)
         {
-            _logger.LogInformation("Вхід у метод верифікації даних реєстрації");
+            _logger.LogInformation("Entering user registration data verification method");
 
             var errors = new Dictionary<string, string>();
 
             if (ModelState.IsValid)
             {
-                User user = _userService.GetUserByEmail(model.Email);
+                var user = _userService.GetUserByEmail(model.Email);
 
                 if (user != null)
                 {
-                    errors["emailError"] = "Користувач з такою ж елекронною поштою існує";
+                    errors["emailError"] = "User with this email already exists.";
                     ModelState.AddModelError("Email", "User with this email already exists.");
-                    _logger.LogInformation("Користувач з такою ж елекронною поштою існує");
+                    _logger.LogInformation("User with this email already exists");
                     return Json(new { success = false, errors });
                 }
+
                 _curUser = model.ToUser();
 
-                _logger.LogInformation("Успішно перевірено чи є така ж електронна пошта");
+                _logger.LogInformation("Successfully checked if email already exists");
 
                 SendCode();
 
                 return Json(new { success = true });
-
             }
 
             errors["firstNameError"] = ModelState[nameof(SignUpViewModel.FirstName)].Errors.FirstOrDefault()?.ErrorMessage ?? "";
@@ -102,62 +90,61 @@ namespace KursovaWork.Controllers
             errors["passwordError"] = ModelState[nameof(SignUpViewModel.Password)].Errors.FirstOrDefault()?.ErrorMessage ?? "";
             errors["confirmPasswordError"] = ModelState[nameof(SignUpViewModel.ConfirmPassword)].Errors.FirstOrDefault()?.ErrorMessage ?? "";
 
-
-            _logger.LogInformation("Дані не пройшли валідацію");
+            _logger.LogInformation("Data did not pass validation");
             return Json(new { success = false, errors });
         }
 
         /// <summary>
-        /// Обробляє введений користувачем верифікаційний код та здійснює підтвердження реєстрації.
+        /// Handles user-entered verification code and confirms registration.
         /// </summary>
-        /// <param name="verification">Модель, що містить введений користувачем верифікаційний код.</param>
-        /// <returns>Сторінка привітання або сторінка введення верифікаційного коду з повідомленням про помилку.</returns>
+        /// <param name="verification">The model containing user-entered verification code.</param>
+        /// <returns>The congratulations page or the verification code entry page with an error message.</returns>
         [HttpPost]
         public IActionResult Submit(VerificationViewModel verification)
         {
-            _logger.LogInformation("Вхід у метод підтвердження реєстрації та перевірки валідаційного коду");
+            _logger.LogInformation("Entering method to confirm user registration and validate verification code");
 
             if (ModelState.IsValid)
             {
-                StringBuilder stringBuilder = new StringBuilder();
-                _logger.LogInformation("Переходимо в цикл утворення цілісного рядка з 4 підрядків");
+                var stringBuilder = new StringBuilder();
+                _logger.LogInformation("Entering loop to form a concatenated string of 4 substrings");
 
                 foreach (var digit in verification.VerificationDigits)
                 {
                     if (string.IsNullOrEmpty(digit))
                     {
-                        _logger.LogInformation("Не введено всіх цифр");
-                        return Json(new { success = false, error = "Не введено всіх цифр" });
+                        _logger.LogInformation("Not all digits are entered");
+                        return Json(new { success = false, error = "Not all digits are entered" });
                     }
                     stringBuilder.Append(digit);
                 }
 
-                string temp = stringBuilder.ToString();
+                var temp = stringBuilder.ToString();
 
                 if (int.Parse(temp) != _verificationCode)
                 {
-                    _logger.LogInformation("Неправильний код підтвердження");
+                    _logger.LogInformation("Incorrect verification code");
 
-                    return Json(new { success = false, error = "Неправильний код підтвердження" });
+                    return Json(new { success = false, error = "Incorrect verification code" });
                 }
 
                 _userService.AddUser(_curUser);
                 _curUser = null;
-                _logger.LogInformation("Успішно зареєстровано користувача, перехід на головну сторінку");
+                _logger.LogInformation("User successfully registered, redirecting to the main page");
 
                 return Json(new { success = true });
             }
 
-            string error = ModelState[nameof(VerificationViewModel.VerificationDigits)].Errors.FirstOrDefault()?.ErrorMessage ?? "";
+            var error = ModelState[nameof(VerificationViewModel.VerificationDigits)].Errors.FirstOrDefault()?.ErrorMessage ?? "";
 
-            _logger.LogInformation("Дані не пройшли валідацію");
+            _logger.LogInformation("Data did not pass validation");
             return Json(new { success = false, error });
         }
 
         /// <summary>
-        /// Метод переходу на сторінку привітання
+        /// Redirects to the congratulations page.
         /// </summary>
-        /// <returns>Сторінка привітання</returns>
+        /// <returns>The congratulations page.</returns>
         [HttpGet]
         public IActionResult Congratulations()
         {
@@ -165,40 +152,39 @@ namespace KursovaWork.Controllers
         }
 
         /// <summary>
-        /// Відправляє електронний лист з верифікаційним кодом.
+        /// Sends an email with the verification code.
         /// </summary>
-        /// <returns>Сторінка введення верифікаційного коду.</returns>
+        /// <returns>The verification code entry page.</returns>
         public IActionResult SendVerificationCode()
         {
-            _logger.LogInformation("Переходимо на сторінку з введенням коду");
+            _logger.LogInformation("Navigating to the code entry page");
 
             return View("~/Views/SignUp/Submit.cshtml");
         }
 
         /// <summary>
-        /// Відправляє заново електронний лист з новим верифікаційним кодом.
+        /// Resends the email with a new verification code.
         /// </summary>
-        /// <returns>Повідомлення про успішне надіслання коду</returns>
+        /// <returns>Success message indicating code sent successfully.</returns>
         public IActionResult ReSendVerificationCode()
         {
             SendCode();
-            return Json(new { message = "Успішно надіслано код" });
+            return Json(new { message = "Code successfully sent" });
         }
 
         /// <summary>
-        /// Метод генерування коду та відправки листа
+        /// Generates and sends the verification code via email.
         /// </summary>
         public void SendCode()
         {
-            _logger.LogInformation("Вхід у метод надсилання верифікаційного коду");
+            _logger.LogInformation("Entering method to send verification code");
 
             _verificationCode = new Random().Next(1000, 9999);
 
-            string subject = "Код підтвердження";
+            var subject = "Verification Code";
+            var body = EmailBodyHelper.BodyTemp(_curUser.FirstName, _curUser.LastName, _verificationCode, "registration");
 
-            string body = EmailBodyHelper.BodyTemp(_curUser.FirstName, _curUser.LastName, _verificationCode, "реєстрації");
-
-            _logger.LogInformation("Надсилаємо повідомлення на електронну пошту користувача");
+            _logger.LogInformation("Sending email notification to user's email");
 
             EmailSender.SendEmail(_curUser.Email, subject, body);
         }

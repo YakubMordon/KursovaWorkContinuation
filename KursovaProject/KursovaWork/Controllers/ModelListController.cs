@@ -6,30 +6,19 @@ using KursovaWorkBLL.Contracts;
 namespace KursovaWork.Controllers
 {
     /// <summary>
-    /// Контролер, що відповідає за відображення списку моделей автомобілів.
+    /// Controller responsible for displaying the list of car models.
     /// </summary>
     public class ModelListController : Controller
     {
-        /// <summary>
-        /// Сервіс для виконання дій зв'язаних з автомобілями
-        /// </summary>
         private readonly ICarService _carService;
-
-        /// <summary>
-        /// Об'єкт класу ILogger для логування подій 
-        /// </summary>
         private readonly ILogger<ModelListController> _logger;
-
-        /// <summary>
-        /// Список об'єктів класу CarInfo, який є поточним
-        /// </summary>
         private static List<CarInfo> _curList;
 
         /// <summary>
-        /// Ініціалізує новий екземпляр класу <see cref="ModelListController"/>.
+        /// Initializes a new instance of the <see cref="ModelListController"/> class.
         /// </summary>
-        /// <param name="carService">Сервіс для виконання дій зв'язаних з автомобілями</param>
-        /// <param name="logger">Логгер для запису логів.</param>
+        /// <param name="carService">The service interface for performing car-related actions.</param>
+        /// <param name="logger">ILogger for logging events.</param>
         public ModelListController(ICarService carService, ILogger<ModelListController> logger)
         {
             _carService = carService;
@@ -37,104 +26,103 @@ namespace KursovaWork.Controllers
         }
 
         /// <summary>
-        /// Отримує сторінку списку моделей автомобілів.
+        /// Retrieves the page displaying the list of car models.
         /// </summary>
-        /// <returns>Сторінка списку моделей автомобілів.</returns>
+        /// <returns>The page displaying the list of car models.</returns>
         public IActionResult ModelList()
         {
-            _logger.LogInformation("Вхід у метод переходу на сторінку списку моделів");
+            _logger.LogInformation("Entering method to navigate to the model list page");
             _curList = _carService.GetAllCars().ToList();
 
-            _logger.LogInformation("Заполучення всіх можливих моделей автомобілів");
+            _logger.LogInformation("Fetching all possible car models");
 
-            _logger.LogInformation("Встановлення списку всіх моделей автомобілів як поточного");
+            _logger.LogInformation("Setting all car models list as current");
             var model = new FilterViewModel();
             FilterViewModel.origCars = _curList;
             model.cars = _curList;
 
-            _logger.LogInformation("Перехід на сторінку списку моделів");
+            _logger.LogInformation("Navigating to the model list page");
             return View(model);
         }
 
         /// <summary>
-        /// Сортує список моделей за алфавітом.
+        /// Sorts the list of models alphabetically.
         /// </summary>
-        /// <returns>Сторінка списку моделей автомобілів зі відсортованим списком.</returns>
+        /// <returns>The page displaying the list of car models with the sorted list.</returns>
         public IActionResult SortByAlphabet()
         {
-            _logger.LogInformation("Вхід у метод сортування списку моделей за алфавітом");
+            _logger.LogInformation("Entering method to sort the model list alphabetically");
             _curList = _carService.SortByAlphabet(_curList).ToList();
 
-            _logger.LogInformation("Встановлення посортованого списку як поточного");
+            _logger.LogInformation("Setting sorted list as current");
             var model = new FilterViewModel();
             model.cars = _curList;
 
-            _logger.LogInformation("Перехід на сторінку списку моделів");
+            _logger.LogInformation("Navigating to the model list page");
 
             return PartialView("~/Views/ModelList/_PartialModelList.cshtml", model);
         }
 
         /// <summary>
-        /// Сортує список моделей за ціною.
+        /// Sorts the list of models by price.
         /// </summary>
-        /// <param name="param1">Параметр сортування (cheap або expensive).</param>
-        /// <returns>Сторінка списку моделей автомобілів зі відсортованим списком.</returns>
+        /// <param name="param1">Sorting parameter (cheap or expensive).</param>
+        /// <returns>The page displaying the list of car models with the sorted list.</returns>
         public IActionResult SortByPrice(string param1)
         {
             _curList = _carService.SortByPrice(_curList, param1).ToList();
 
-            _logger.LogInformation("Встановлення посортованого списку як поточного");
+            _logger.LogInformation("Setting sorted list as current");
 
             var model = new FilterViewModel();
             model.cars = _curList;
 
-            _logger.LogInformation("Перехід на сторінку списку моделів");
+            _logger.LogInformation("Navigating to the model list page");
 
             return PartialView("~/Views/ModelList/_PartialModelList.cshtml", model);
         }
 
         /// <summary>
-        /// Сортує список моделей за новизною (роком виробництва).
+        /// Sorts the list of models by novelty (year of manufacture).
         /// </summary>
-        /// <returns>Сторінка списку моделей автомобілів зі відсортованим списком.</returns>
+        /// <returns>The page displaying the list of car models with the sorted list.</returns>
         public IActionResult SortByNovelty()
         {
-            _logger.LogInformation("Вхід у метод сортування списку моделей за роком по спаданню (Новинки)");
+            _logger.LogInformation("Entering method to sort the model list by descending year (Novelty)");
 
             _curList = _carService.SortByNovelty(_curList).ToList();
 
-            _logger.LogInformation("Встановлення посортованого списку як поточного");
+            _logger.LogInformation("Setting sorted list as current");
 
             var model = new FilterViewModel();
             model.cars = _curList;
 
-            _logger.LogInformation("Перехід на сторінку списку моделів");
+            _logger.LogInformation("Navigating to the model list page");
 
             return PartialView("~/Views/ModelList/_PartialModelList.cshtml", model);
         }
 
         /// <summary>
-        /// Застосовує фільтри до списку моделей автомобілів.
+        /// Applies filters to the list of car models.
         /// </summary>
-        /// <param name="filter">Модель, що містить введені користувачем фільтри.</param>
-        /// <returns>Сторінка списку моделей автомобілів з відфільтрованим списком.</returns>
+        /// <param name="filter">The model containing user-entered filters.</param>
+        /// <returns>The page displaying the list of car models with the filtered list.</returns>
         public IActionResult ApplyFilters(FilterViewModel filter)
         {
-            _curList = _carService.Filtering(filter.PriceFrom,filter.PriceTo,
-                filter.YearFrom,filter.YearTo,
+            _curList = _carService.Filtering(filter.PriceFrom, filter.PriceTo,
+                filter.YearFrom, filter.YearTo,
                 filter.SelectedFuelTypes,
                 filter.SelectedTransmissionTypes,
                 filter.SelectedMakes)
                 .ToList();
 
-            _logger.LogInformation("Встановлення відфільтрованого списку як поточного");
+            _logger.LogInformation("Setting filtered list as current");
 
             filter.cars = _curList;
 
-            _logger.LogInformation("Перехід на сторінку списку моделів");
+            _logger.LogInformation("Navigating to the model list page");
 
             return PartialView("~/Views/ModelList/_PartialModelList.cshtml", filter);
         }
-
     }
 }

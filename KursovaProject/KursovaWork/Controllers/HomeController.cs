@@ -8,25 +8,18 @@ using KursovaWorkBLL.Contracts;
 namespace KursovaWork.Controllers
 {
     /// <summary>
-    /// Контролер, що відповідає за основні дії на головній сторінці.
+    /// Controller responsible for main actions on the home page.
     /// </summary>
     public class HomeController : Controller
     {
-        /// <summary>
-        /// Сервіс для роботи з замовленнями
-        /// </summary>
         private readonly IOrderService _orderService;
-
-        /// <summary>
-        /// Об'єкт класу ILogger для логування подій 
-        /// </summary>
         private readonly ILogger<HomeController> _logger;
 
         /// <summary>
-        /// Ініціалізує новий екземпляр класу <see cref="HomeController"/>.
+        /// Initializes a new instance of the <see cref="HomeController"/> class.
         /// </summary>
-        /// <param name="orderService">Сервіс для роботи з замовленнями.</param>
-        /// <param name="logger">Логгер для запису логів.</param>
+        /// <param name="orderService">The service interface for handling orders.</param>
+        /// <param name="logger">ILogger for logging events.</param>
         public HomeController(IOrderService orderService, ILogger<HomeController> logger)
         {
             _orderService = orderService;
@@ -34,74 +27,74 @@ namespace KursovaWork.Controllers
         }
 
         /// <summary>
-        /// Перехід на головну сторінку.
+        /// Redirects to the home page.
         /// </summary>
-        /// <returns>Головна сторінка.</returns>
+        /// <returns>The home page.</returns>
         public IActionResult Index()
         {
-            _logger.LogInformation("Перехід на головну сторінку");
+            _logger.LogInformation("Redirecting to the home page");
             return View();
         }
 
         /// <summary>
-        /// Перехід на сторінку входу.
+        /// Redirects to the login page.
         /// </summary>
-        /// <returns>Сторінка входу.</returns>
+        /// <returns>The login page.</returns>
         public IActionResult LogIn()
         {
-            _logger.LogInformation("Перехід на сторінку входу");
+            _logger.LogInformation("Redirecting to the login page");
             return View("~/Views/LogIn/LogIn.cshtml");
         }
 
         /// <summary>
-        /// Виконання виходу з облікового запису.
+        /// Executes logout from the account.
         /// </summary>
-        /// <returns>Перенаправлення на головну сторінку.</returns>
+        /// <returns>Redirects to the home page.</returns>
         public IActionResult LogOut()
         {
-            _logger.LogInformation("Виконування виходу з облікового запису");
+            _logger.LogInformation("Executing logout from the account");
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).Wait();
 
-            _logger.LogInformation("Перехід на головну сторінку");
+            _logger.LogInformation("Redirecting to the home page");
             return RedirectToAction("Index", "Home");
         }
 
         /// <summary>
-        /// Перехід до списку моделей.
+        /// Redirects to the model list page.
         /// </summary>
-        /// <returns>Перенаправлення на сторінку списку моделей автомобілів.</returns>
+        /// <returns>Redirects to the car model list page.</returns>
         public IActionResult ModelList()
         {
-            _logger.LogInformation("Зачищення лишніх конфігурацій");
+            _logger.LogInformation("Clearing unnecessary configurations");
             ConfiguratorController.options = null;
 
-            _logger.LogInformation("Перехід до списку моделей");
+            _logger.LogInformation("Redirecting to the model list page");
             return RedirectToAction("ModelList", "ModelList");
         }
 
         /// <summary>
-        /// Перехід на сторінку списку замовлень.
+        /// Redirects to the order list page.
         /// </summary>
-        /// <returns>Сторінка списку замовлень.</returns>
+        /// <returns>The order list page.</returns>
         public IActionResult OrderList()
         {
-            _logger.LogInformation("Вхід у метод переходу на сторінку списку замовлень");
+            _logger.LogInformation("Entering method to redirect to the order list page");
 
             var orders = _orderService.FindAllLoggedIn().ToList();
 
-            _logger.LogInformation("Перехід на сторінку списку замовлень");
+            _logger.LogInformation("Redirecting to the order list page");
 
-            return View("~/Views/OrderList/OrderList.cshtml",orders);
+            return View("~/Views/OrderList/OrderList.cshtml", orders);
         }
-        
+
         /// <summary>
-        /// Обробка помилки під час виконання запиту.
+        /// Handles errors during request execution.
         /// </summary>
-        /// <returns>Сторінка з відображенням помилки.</returns>
+        /// <returns>Page displaying the error.</returns>
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            _logger.LogError("Сталася помилка під час прогрузки сайту");
+            _logger.LogError("An error occurred while loading the site");
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }

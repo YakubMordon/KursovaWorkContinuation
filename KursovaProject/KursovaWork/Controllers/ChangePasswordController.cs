@@ -8,35 +8,21 @@ using KursovaWorkBLL.Contracts;
 namespace KursovaWork.Controllers
 {
     /// <summary>
-    /// Контролер, що відповідає за зміну пароля користувача.
+    /// Controller responsible for handling user password change actions.
     /// </summary>
     public class ChangePasswordController : Controller
     {
-        /// <summary>
-        /// Сервіс для роботи з користувачем
-        /// </summary>
         private readonly IUserService _userService;
-
-        /// <summary>
-        /// Об'єкт класу ILogger для логування подій 
-        /// </summary>
         private readonly ILogger<ChangePasswordController> _logger;
 
-        /// <summary>
-        /// Об'єкт класу User? (nullable), який вказує на поточного користувача
-        /// </summary>
         private static User? _curUser;
-
-        /// <summary>
-        /// Змінна, яка містить в собі поточний верифікаційний код
-        /// </summary>
         private static int _verificationCode;
 
         /// <summary>
-        /// Ініціалізує новий екземпляр класу <see cref="ChangePasswordController"/>.
+        /// Initializes a new instance of the <see cref="ChangePasswordController"/> class.
         /// </summary>
-        /// <param name="userService">Сервіс для роботи з користувачем.</param>
-        /// <param name="logger">Логгер для запису логів.</param>
+        /// <param name="userService">The service for user operations.</param>
+        /// <param name="logger">The logger for logging.</param>
         public ChangePasswordController(IUserService userService, ILogger<ChangePasswordController> logger)
         {
             _userService = userService;
@@ -44,115 +30,114 @@ namespace KursovaWork.Controllers
         }
 
         /// <summary>
-        /// Отримує сторінку для введення пошти користувача.
+        /// Retrieves the page for entering user email.
         /// </summary>
-        /// <returns>Сторінка введення пошти користувача.</returns>
+        /// <returns>The page for entering user email.</returns>
         public IActionResult UserFinder()
         {
-            _logger.LogInformation("Перехід на сторінку введення пошти");
+            _logger.LogInformation("Navigating to user email entry page");
             return View("~/Views/ForgotPassword/UserFinder.cshtml");
         }
 
         /// <summary>
-        /// Обробляє введену пошту користувача для відправки верифікаційного коду.
+        /// Processes the entered user email for sending a verification code.
         /// </summary>
-        /// <param name="model">Модель, що містить введену пошту користувача.</param>
-        /// <returns>Сторінка введення верифікаційного коду або сторінка введення пошти з повідомленням про помилку.</returns>
+        /// <param name="model">The model containing the entered user email.</param>
+        /// <returns>The verification code entry page or the email entry page with an error message.</returns>
         public IActionResult ForgotPassword(EmailViewModel model)
         {
-            _logger.LogInformation("Вхід у метод верифікації електронної пошти");
-            if(ModelState.IsValid)
+            _logger.LogInformation("Entering email verification method");
+            if (ModelState.IsValid)
             {
-                _curUser = _userService.GetUserByEmail(model.Email);    
-                if (_curUser != null)
+                _curUser = _userService.GetUserByEmail(model.Email);
+
+                if (_curUser is not null)
                 {
-                    _logger.LogInformation("Пошту знайдено");
+                    _logger.LogInformation("Email found");
                     SendCode();
                     return Json(new { success = true });
                 }
-                _logger.LogInformation("Електронна пошта не є зареєстрованою");
 
-                return Json(new {success = false, error = "Така електронна пошта не є зареєстрованою" });
+                _logger.LogInformation("Email not registered");
+                return Json(new { success = false, error = "Such email is not registered" });
             }
 
-            string error = ModelState[nameof(EmailViewModel.Email)].Errors.FirstOrDefault()?.ErrorMessage ?? "";
+            var error = ModelState[nameof(EmailViewModel.Email)].Errors.FirstOrDefault()?.ErrorMessage ?? "";
 
-            _logger.LogInformation("Дані не пройшли валідацію");
+            _logger.LogInformation("Data did not pass validation");
             return Json(new { success = false, error });
         }
 
         /// <summary>
-        /// Обробляє введений верифікаційний код для переходу до сторінки зміни пароля користувача.
+        /// Processes the entered verification code to navigate to the user password change page.
         /// </summary>
-        /// <param name="model">Модель, що містить введений користувачем верифікаційний код.</param>
-        /// <returns>Сторінка зміни пароля або сторінка введення верифікаційного коду з повідомленням про помилку.</returns>
+        /// <param name="model">The model containing the entered verification code.</param>
+        /// <returns>The password change page or the verification code entry page with an error message.</returns>
         public IActionResult ChangePassword(VerificationViewModel model)
         {
-            _logger.LogInformation("Вхід у метод верифікації коду");
+            _logger.LogInformation("Entering verification code method");
             if (ModelState.IsValid)
             {
-                StringBuilder stringBuilder = new StringBuilder();
-                _logger.LogInformation("Переходимо в цикл утворення цілісного рядка з 4 підрядків");
+                var stringBuilder = new StringBuilder();
+                _logger.LogInformation("Entering loop to construct a complete string of 4 substrings");
 
                 foreach (var digit in model.VerificationDigits)
                 {
                     if (string.IsNullOrEmpty(digit))
                     {
-                        _logger.LogInformation("Не введено всіх цифр");
-                        return Json(new { success = false, error = "Не введено всіх цифр" });
+                        _logger.LogInformation("Not all digits entered");
+                        return Json(new { success = false, error = "Not all digits entered" });
                     }
+
                     stringBuilder.Append(digit);
                 }
 
-                string temp = stringBuilder.ToString();
+                var temp = stringBuilder.ToString();
 
                 if (int.Parse(temp) != _verificationCode)
                 {
-                    _logger.LogInformation("Неправильний код підтвердження");
-
-                    return Json(new { success = false, error = "Неправильний код підтвердження" });
+                    _logger.LogInformation("Incorrect verification code");
+                    return Json(new { success = false, error = "Incorrect verification code" });
                 }
 
-                _logger.LogInformation("Успішно підтверджено можливість для користувача на зміну паролю");
-
+                _logger.LogInformation("Successfully verified user's ability to change password");
                 return Json(new { success = true });
             }
 
-            string error = ModelState[nameof(VerificationViewModel.VerificationDigits)].Errors.FirstOrDefault()?.ErrorMessage ?? "";
+            var error = ModelState[nameof(VerificationViewModel.VerificationDigits)].Errors.FirstOrDefault()?.ErrorMessage ?? "";
 
-            _logger.LogInformation("Дані не пройшли валідацію");
+            _logger.LogInformation("Data did not pass validation");
             return Json(new { success = false, error });
         }
 
         /// <summary>
-        /// Метод переходу на сторінку зміни паролю
+        /// Navigates to the password change page.
         /// </summary>
-        /// <returns>Сторінка зміни паролю</returns>
+        /// <returns>The password change page.</returns>
         public IActionResult UpdatePassword()
         {
-            _logger.LogInformation("Перехід на сторінку зміни паролю");
+            _logger.LogInformation("Navigating to the password change page");
             return View("~/Views/ForgotPassword/ChangePassword.cshtml");
         }
 
         /// <summary>
-        /// Обробляє введений новий пароль користувача.
+        /// Processes the entered new password.
         /// </summary>
-        /// <param name="model">Модель, що містить введений користувачем новий пароль.</param>
-        /// <returns>Сторінка зміни пароля або сторінка введення нового пароля з повідомленням про помилку.</returns>
+        /// <param name="model">The model containing the entered new password.</param>
+        /// <returns>The password change page or the new password entry page with an error message.</returns>
         [HttpPost]
         public IActionResult SubmitChange(ChangePasswordViewModel model)
         {
-            _logger.LogInformation("Вхід у метод зміни паролю");
+            _logger.LogInformation("Entering password change method");
+
             if (ModelState.IsValid)
             {
-                _logger.LogInformation("Дані пройшли валідацію");
+                _logger.LogInformation("Data passed validation");
 
                 _userService.UpdatePasswordOfUser(model.Password, model.ConfirmPassword, _curUser);
 
-                _logger.LogInformation("Успішно змінено пароль, переходимо на головну сторінку");
-
-                return Json(new {success = true });
-
+                _logger.LogInformation("Password changed successfully, navigating to the main page");
+                return Json(new { success = true });
             }
 
             var errors = new
@@ -161,46 +146,46 @@ namespace KursovaWork.Controllers
                 confirmPasswordError = ModelState[nameof(ChangePasswordViewModel.ConfirmPassword)].Errors.FirstOrDefault()?.ErrorMessage ?? ""
             };
 
-            _logger.LogInformation("Дані не пройшли валідацію");
-
-            return Json(new {success = false, errors });
+            _logger.LogInformation("Data did not pass validation");
+            return Json(new { success = false, errors });
         }
 
         /// <summary>
-        /// Відправляє електронний лист з верифікаційним кодом.
+        /// Sends an email with a verification code.
         /// </summary>
-        /// <returns>Сторінка введення верифікаційного коду.</returns>
+        /// <returns>The verification code entry page.</returns>
         public IActionResult SendVerificationCode()
         {
-            _logger.LogInformation("Переходимо на сторінку з введенням коду");
+            _logger.LogInformation("Navigating to the verification code entry page");
 
             return View("~/Views/ForgotPassword/ForgotPassword.cshtml");
         }
 
         /// <summary>
-        /// Відправляє заново електронний лист з новим верифікаційним кодом.
+        /// Resends an email with a new verification code.
         /// </summary>
-        /// <returns>Повідомлення про успішне надіслання коду</returns>
+        /// <returns>Success message of code resend.</returns>
         public IActionResult ReSendVerificationCode()
         {
             SendCode();
-            return Json(new { message = "Успішно надіслано код" });
+
+            return Json(new { message = "Verification code successfully sent" });
         }
 
         /// <summary>
-        /// Метод генерування коду та відправки листа
+        /// Method for generating and sending a verification code.
         /// </summary>
         public void SendCode()
         {
-            _logger.LogInformation("Вхід у метод надсилання верифікаційного коду");
+            _logger.LogInformation("Entering verification code sending method");
 
             _verificationCode = new Random().Next(1000, 9999);
 
-            string subject = "Код підтвердження";
+            var subject = "Verification Code";
 
-            string body = EmailBodyHelper.BodyTemp(_curUser.FirstName, _curUser.LastName, _verificationCode, "зміни паролю");
+            var body = EmailBodyHelper.BodyTemp(_curUser.FirstName, _curUser.LastName, _verificationCode, "password change");
 
-            _logger.LogInformation("Надсилаємо повідомлення на електронну пошту користувача");
+            _logger.LogInformation("Sending email message to user's email");
 
             EmailSender.SendEmail(_curUser.Email, subject, body);
         }

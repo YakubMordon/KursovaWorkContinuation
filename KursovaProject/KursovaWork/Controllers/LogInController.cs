@@ -3,30 +3,26 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Linq;
 using KursovaWorkBLL.Contracts;
 
 namespace KursovaWork.Controllers
 {
     /// <summary>
-    /// Контролер, що відповідає за вхід користувача в обліковий запис.
+    /// Controller responsible for user login operations.
     /// </summary>
     public class LogInController : Controller
     {
-        /// <summary>
-        /// Сервіс для роботи з користувачами
-        /// </summary>
         private readonly IUserService _userService;
-
-        /// <summary>
-        /// Об'єкт класу ILogger для логування подій 
-        /// </summary>
         private readonly ILogger<LogInController> _logger;
 
         /// <summary>
-        /// Ініціалізує новий екземпляр класу <see cref="LogInController"/>.
+        /// Initializes a new instance of the <see cref="LogInController"/> class.
         /// </summary>
-        /// <param name="userService">Сервіс для роботи з користувачами.</param>
-        /// <param name="logger">Логгер для запису логів.</param>
+        /// <param name="userService">The service interface for handling users.</param>
+        /// <param name="logger">ILogger for logging events.</param>
         public LogInController(IUserService userService, ILogger<LogInController> logger)
         {
             _userService = userService;
@@ -34,42 +30,41 @@ namespace KursovaWork.Controllers
         }
 
         /// <summary>
-        /// Отримує сторінку входу.
+        /// Retrieves the login page.
         /// </summary>
-        /// <returns>Сторінка входу.</returns>
+        /// <returns>The login page.</returns>
         public IActionResult LogIn()
         {
-            _logger.LogInformation("Перехід на сторінку входу");
+            _logger.LogInformation("Redirecting to the login page");
             return View();
         }
 
         /// <summary>
-        /// Отримує сторінку реєстрації.
+        /// Retrieves the sign-up page.
         /// </summary>
-        /// <returns>Сторінка реєстрації.</returns>
+        /// <returns>The sign-up page.</returns>
         public IActionResult SignUp()
         {
-            _logger.LogInformation("Перехід на сторінку реєстрації");
+            _logger.LogInformation("Redirecting to the sign-up page");
             return View("~/Views/SignUp/SignUp.cshtml");
         }
 
         /// <summary>
-        /// Обробляє введені користувачем дані входу та аутентифікує користувача.
+        /// Handles user login data input and authenticates the user.
         /// </summary>
-        /// <param name="model">Модель, що містить введені користувачем дані входу.</param>
-        /// <returns>Сторінка головного меню або сторінка входу з повідомленням про помилку.</returns>
+        /// <param name="model">The model containing user login input data.</param>
+        /// <returns>Main menu page or login page with error message.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult LogIn(LogInViewModel model)
         {
-            _logger.LogInformation("Вхід у метод перевірки даних входу");
+            _logger.LogInformation("Entering method to check login data");
             if (ModelState.IsValid)
             {
                 var user = _userService.ValidateUser(model.Email, model.Password);
 
-                if (user != null)
+                if (user is not null)
                 {
-
                     var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Name, user.Email),
@@ -87,16 +82,15 @@ namespace KursovaWork.Controllers
 
                     HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties).Wait();
 
-                    _logger.LogInformation("Користувач успішно ввійшов в обліковий запис");
+                    _logger.LogInformation("User successfully logged into the account");
 
                     return Json(new { success = true });
                 }
 
-                _logger.LogInformation("Електронну пошту або пароль введено неправильно");
-                var error = "Неправильна електронна пошта або пароль.";
+                _logger.LogInformation("Incorrect email or password entered");
+                var error = "Incorrect email or password.";
 
-                return Json(new { success = false, error  });
-
+                return Json(new { success = false, error });
             }
 
             var errors = new
@@ -105,11 +99,8 @@ namespace KursovaWork.Controllers
                 passwordError = ModelState[nameof(LogInViewModel.Password)].Errors.FirstOrDefault()?.ErrorMessage ?? "",
             };
 
-            _logger.LogInformation("Дані не пройшли валідацію");
+            _logger.LogInformation("Data did not pass validation");
             return Json(new { success = false, errors });
         }
-
     }
-
-
 }

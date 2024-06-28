@@ -3,53 +3,53 @@
 namespace KursovaWork.Models
 {
     /// <summary>
-    /// Модель представлення для фільтрації автомобілів.
+    /// Model for filtering cars.
     /// </summary>
     public class FilterViewModel
     {
         /// <summary>
-        /// Нижня межа ціни.
+        /// Minimum price threshold.
         /// </summary>
         public int? PriceFrom { get; set; }
 
         /// <summary>
-        /// Верхня межа ціни.
+        /// Maximum price threshold.
         /// </summary>
         public int? PriceTo { get; set; }
 
         /// <summary>
-        /// Нижня межа року виробництва.
+        /// Minimum manufacturing year.
         /// </summary>
         public int? YearFrom { get; set; }
 
         /// <summary>
-        /// Верхня межа року виробництва.
+        /// Maximum manufacturing year.
         /// </summary>
         public int? YearTo { get; set; }
 
         /// <summary>
-        /// Список обраних типів палива.
+        /// List of selected fuel types.
         /// </summary>
         public string? SelectedFuelTypes { get; set; }
 
         /// <summary>
-        /// Список обраних типів трансмісії.
+        /// List of selected transmission types.
         /// </summary>
         public string? SelectedTransmissionTypes { get; set; }
 
         /// <summary>
-        /// Список обраних марок автомобілів.
+        /// List of selected car makes.
         /// </summary>
         public string? SelectedMakes { get; set; }
 
         /// <summary>
-        /// Список моделів, на даний момент
+        /// List of current car models.
         /// </summary>
         public List<CarInfo> cars { get; set; }
 
         /// <summary>
-        /// Початковий список моделів
+        /// Initial list of car models.
         /// </summary>
-        public static List<CarInfo> origCars {  get; set; }
+        public static List<CarInfo> origCars { get; set; }
     }
 }

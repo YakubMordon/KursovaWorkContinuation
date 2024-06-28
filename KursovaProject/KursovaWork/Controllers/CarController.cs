@@ -1,29 +1,21 @@
-﻿using KursovaWorkDAL.Entity.Entities.Car;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using KursovaWorkBLL.Contracts;
 
 namespace KursovaWork.Controllers
 {
     /// <summary>
-    /// Контролер, що відповідає за обробку дій пов'язаних з автомобілями.
+    /// Controller responsible for actions related to cars.
     /// </summary>
     public class CarController : Controller
     {
-        /// <summary>
-        /// Сервіс для роботи з автомобілями
-        /// </summary>
         private readonly ICarService _carService;
-
-        /// <summary>
-        /// Об'єкт класу ILogger для логування подій 
-        /// </summary>
         private readonly ILogger<CarController> _logger;
 
         /// <summary>
-        /// Ініціалізує новий екземпляр класу <see cref="CarController"/>.
+        /// Initializes a new instance of the <see cref="CarController"/> class.
         /// </summary>
-        /// <param name="carService">Сервіс для роботи з автомобілями.</param>
-        /// <param name="logger">Логгер для запису логів.</param>
+        /// <param name="carService">The service for car operations.</param>
+        /// <param name="logger">The logger for logging.</param>
         public CarController(ICarService carService, ILogger<CarController> logger)
         {
             _carService = carService;
@@ -31,29 +23,32 @@ namespace KursovaWork.Controllers
         }
 
         /// <summary>
-        /// Отримує сторінку з детальною інформацією про автомобіль.
+        /// Retrieves the page with detailed information about a car.
         /// </summary>
-        /// <param name="param1">Параметр 1 (марка автомобіля).</param>
-        /// <param name="param2">Параметр 2 (модель автомобіля).</param>
-        /// <param name="param3">Параметр 3 (рік виробництва автомобіля).</param>
-        /// <returns>Страниця з детальною інформацією про автомобіль або сторінка помилки.</returns>
+        /// <param name="param1">Parameter 1 (car make).</param>
+        /// <param name="param2">Parameter 2 (car model).</param>
+        /// <param name="param3">Parameter 3 (car year).</param>
+        /// <returns>The page with detailed car information or an error page.</returns>
         public IActionResult Car(string param1, string param2, string param3)
         {
-            _logger.LogInformation("Вхід у метод переходу на сторінку машини");
+            _logger.LogInformation("Entering Car method");
 
-            int year = int.Parse(param3);
-
-            CarInfo car = _carService.GetCarByInfo(param1, param2, year);
-
-            if(car != null)
+            if (!int.TryParse(param3, out int year))
             {
-                _logger.LogInformation("Машину знайдено, перехід на сторінку машини");
+                _logger.LogError("Invalid year parameter");
+                return View("Error");
+            }
+
+            var car = _carService.GetCarByInfo(param1, param2, year);
+
+            if (car is not null)
+            {
+                _logger.LogInformation("Car found, navigating to car page");
                 return View(car);
             }
 
-            _logger.LogError("Машину не знайдено");
+            _logger.LogError("Car not found");
             return View("Error");
         }
-
     }
 }

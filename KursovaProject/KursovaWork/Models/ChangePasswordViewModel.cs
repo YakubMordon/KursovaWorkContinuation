@@ -3,12 +3,12 @@
 namespace KursovaWork.Models
 {
     /// <summary>
-    /// Клас для зміни паролю на новий
+    /// Model for changing password.
     /// </summary>
     public class ChangePasswordViewModel
     {
         /// <summary>
-        /// Новий пароль
+        /// New password.
         /// </summary>
 
         [Required(ErrorMessage = "Поле Пароль є обов'язковим")]
@@ -18,7 +18,7 @@ namespace KursovaWork.Models
         public string Password { get; set; }
 
         /// <summary>
-        /// Підтвердження нового паролю
+        /// Confirmation of password.
         /// </summary>
         
         [Required(ErrorMessage = "Поле Підтвердження нового пароля є обов'язковим")]

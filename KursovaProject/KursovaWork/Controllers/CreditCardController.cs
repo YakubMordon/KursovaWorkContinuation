@@ -1,31 +1,22 @@
-﻿using KursovaWorkDAL.Entity.Entities;
-using KursovaWork.Models;
+﻿using KursovaWork.Models;
 using Microsoft.AspNetCore.Mvc;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using KursovaWorkBLL.Contracts;
 
 namespace KursovaWork.Controllers
 {
     /// <summary>
-    /// Контролер, що відповідає за операції пов'язані з методами оплати.
+    /// Controller responsible for payment method operations.
     /// </summary>
     public class CreditCardController : Controller
     {
-        /// <summary>
-        /// Інтерфейс сервісу для опрацювання запиту
-        /// </summary>
         private readonly ICardService _cardService;
-
-        /// <summary>
-        /// Об'єкт класу ILogger для логування подій 
-        /// </summary>
         private readonly ILogger<CreditCardController> _logger;
 
         /// <summary>
-        /// Ініціалізує новий екземпляр класу <see cref="CreditCardController"/>.
+        /// Initializes a new instance of the <see cref="CreditCardController"/> class.
         /// </summary>
-        /// <param name="cardService">Інтерфейс сервісу для опрацювання запиту</param>
-        /// <param name="logger">Об'єкт класу ILogger для логування подій </param>
+        /// <param name="cardService">The service interface for handling requests.</param>
+        /// <param name="logger">ILogger object for logging events.</param>
         public CreditCardController(ICardService cardService, ILogger<CreditCardController> logger)
         {
             _cardService = cardService;
@@ -33,63 +24,64 @@ namespace KursovaWork.Controllers
         }
 
         /// <summary>
-        /// Перехід на сторінку методів оплати.
+        /// Transition to the payment methods page.
         /// </summary>
-        /// <returns>Сторінка методів оплати.</returns>
+        /// <returns>The payment methods page.</returns>
         public IActionResult CreditCard()
         {
-            _logger.LogInformation("Перехід до методу переходу на сторінку методів оплати");
+            _logger.LogInformation("Transitioning to payment methods page method");
 
-            _logger.LogInformation("Поля для додавання карти є виключені під час прогрузки");
+            _logger.LogInformation("Fields for adding a card are excluded during loading");
             ViewBag.Input = false;
 
             if (_cardService.CardExists())
             {
-                _logger.LogInformation("Метод оплати є підключеним у користувача");
+                _logger.LogInformation("Payment method is connected to the user");
 
                 SetCreditCardInfo();
             }
 
-            _logger.LogInformation("Перехід на сторінку методів оплати");
+            _logger.LogInformation("Transitioning to payment methods page");
             return View("~/Views/CreditCard/CreditCard.cshtml");
         }
 
         /// <summary>
-        /// Запис інформації кредитної карти у ViewBag
+        /// Records credit card information into ViewBag.
         /// </summary>
         public void SetCreditCardInfo()
         {
-            Card user = _cardService.GetByLoggedInUser();
-            string cardNumber = user.CardNumber;
+            var user = _cardService.GetByLoggedInUser();
+            var cardNumber = user.CardNumber;
+
             ViewBag.CardNumber = "···· ···· ···· " + cardNumber.Substring(cardNumber.Length - 4);
             ViewBag.CardHolderName = user.CardHolderName;
             ViewBag.Month = user.ExpirationMonth;
             ViewBag.Year = user.ExpirationYear;
             ViewBag.Card = true;
 
-            _logger.LogInformation("Заполучення всіх даних про метод оплати користувача");
+            _logger.LogInformation("Retrieving all user payment method data");
         }
 
         /// <summary>
-        /// Обробка форми додавання методу оплати.
+        /// Processes the payment method addition form.
         /// </summary>
-        /// <param name="model">Модель з даними методу оплати.</param>
-        /// <returns>Перенаправлення на головну сторінку або повторний вивід форми з помилками.</returns>
+        /// <param name="model">The payment method data model.</param>
+        /// <returns>Redirects to the main page or returns the form again with errors.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult CreditCard(CreditCardViewModel model)
         {
-            _logger.LogInformation("Вхід до методу видалення методу оплати");
+            _logger.LogInformation("Entering payment method removal method");
 
             if (ModelState.IsValid)
             {
                 _cardService.AddCard(model.ToCard());
 
-                return Json(new { success = true }); 
+                return Json(new { success = true });
             }
 
-            _logger.LogInformation("Дані не пройшли верифікацію");
-            
+            _logger.LogInformation("Data did not pass verification");
+
             var errors = new
             {
                 CardHolderName = ModelState[nameof(CreditCardViewModel.CardHolderName)].Errors.FirstOrDefault()?.ErrorMessage ?? "",
@@ -99,25 +91,25 @@ namespace KursovaWork.Controllers
                 CVV = ModelState[nameof(CreditCardViewModel.CVV)].Errors.FirstOrDefault()?.ErrorMessage ?? ""
             };
 
-            _logger.LogInformation("Показуємо поля введення зразу ж після прогрузки");
+            _logger.LogInformation("Displaying input fields immediately after loading");
             ViewBag.Input = true;
             return Json(new { success = false, errors });
         }
 
         /// <summary>
-        /// Видалення методу оплати.
+        /// Deletes the payment method.
         /// </summary>
-        /// <returns>Перенаправлення на сторінку методів оплати.</returns>
+        /// <returns>Redirects to the payment methods page.</returns>
         public IActionResult DeleteCreditCard()
         {
-            _logger.LogInformation("Вхід до методу видалення методу оплати");
+            _logger.LogInformation("Entering payment method removal method");
 
             _cardService.DeleteCard();
 
-            _logger.LogInformation("Поля для додавання карти є виключені під час прогрузки");
+            _logger.LogInformation("Fields for adding a card are excluded during loading");
             ViewBag.Input = false;
 
-            _logger.LogInformation("Перехід на сторінку методів оплати");
+            _logger.LogInformation("Transitioning to payment methods page");
             return View("~/Views/CreditCard/CreditCard.cshtml");
         }
     }

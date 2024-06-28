@@ -1,17 +1,17 @@
 namespace KursovaWork.Models
 {
     /// <summary>
-    /// Представляє модель для відображення помилки.
+    /// Model for showing error.
     /// </summary>
     public class ErrorViewModel
     {
         /// <summary>
-        /// Ідентифікатор запиту.
+        /// Id of request where error was showed.
         /// </summary>
         public string? RequestId { get; set; }
 
         /// <summary>
-        /// Визначає, чи показувати ідентифікатор запиту.
+        /// Method for checking if there's request id.
         /// </summary>
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
     }

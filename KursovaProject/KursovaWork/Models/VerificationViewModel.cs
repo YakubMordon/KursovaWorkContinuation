@@ -1,12 +1,12 @@
 ﻿namespace KursovaWork.Models
 {
     /// <summary>
-    /// Клас для получення введеного верифікаційного коду
+    /// Model for getting Verification code.
     /// </summary>
     public class VerificationViewModel
     {
         /// <summary>
-        /// Масив цифри верифікаційного коду
+        /// Array of verification code's digits.
         /// </summary>
         public string[] VerificationDigits { get; set; } = new string[4];
     }
