@@ -75,28 +75,28 @@
                                     <div class="mb-2">
                                         <h6>Тип палива:</h6>
                                         <div class="form-check">
-                                            <input class="form-check-input cursor" type="checkbox" name="SelectedFuelTypes" id="gasoline" value="Бензин" @if (!Model.SelectedFuelTypes.IsNullOrEmpty())
+                                            <input class="form-check-input cursor" type="checkbox" name="SelectedFuelTypes" id="gasoline" value="Бензин" @if (!string.IsNullOrEmpty(Model.SelectedFuelTypes))
                                                                                                                                                          {
                                                                                                                                                              @(Model.SelectedFuelTypes.Contains("Бензин") ? "checked" : "")
                                                                                                                                                          }>
                                             <label class="form-check-label cursor" for="gasoline">Бензин</label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input cursor" type="checkbox" name="SelectedFuelTypes" id="diesel" value="Дизель" @if (!Model.SelectedFuelTypes.IsNullOrEmpty())
+                                            <input class="form-check-input cursor" type="checkbox" name="SelectedFuelTypes" id="diesel" value="Дизель" @if (!string.IsNullOrEmpty(Model.SelectedFuelTypes))
                                                                                                                                                        {
                                                                                                                                                            @(Model.SelectedFuelTypes.Contains("Дизель") ? "checked" : "")
                                                                                                                                                        }>
                                             <label class="form-check-label cursor" for="diesel">Дизель</label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input cursor" type="checkbox" name="SelectedFuelTypes" id="electric" value="Електричний" @if (!Model.SelectedFuelTypes.IsNullOrEmpty())
+                                            <input class="form-check-input cursor" type="checkbox" name="SelectedFuelTypes" id="electric" value="Електричний" @if (!string.IsNullOrEmpty(Model.SelectedFuelTypes))
                                                                                                                                                               {
                                                                                                                                                                   @(Model.SelectedFuelTypes.Contains("Електричний") ? "checked" : "")
                                                                                                                                                               }>
                                             <label class="form-check-label cursor" for="electric">Електричний</label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input cursor" type="checkbox" name="SelectedFuelTypes" id="hybrid" value="Гибрид" @if (!Model.SelectedFuelTypes.IsNullOrEmpty())
+                                            <input class="form-check-input cursor" type="checkbox" name="SelectedFuelTypes" id="hybrid" value="Гибрид" @if (!string.IsNullOrEmpty(Model.SelectedFuelTypes))
                                                                                                                                                        {
                                                                                                                                                            @(Model.SelectedFuelTypes.Contains("Гибрид") ? "checked" : "")
                                                                                                                                                        }>
@@ -108,21 +108,21 @@
                                             Тип коробки передач:
                                         </h6>
                                         <div class="form-check">
-                                            <input class="form-check-input cursor" type="checkbox" name="SelectedTransmissionTypes" id="automatic" value="Автоматична" @if (!Model.SelectedTransmissionTypes.IsNullOrEmpty())
+                                            <input class="form-check-input cursor" type="checkbox" name="SelectedTransmissionTypes" id="automatic" value="Автоматична" @if (!string.IsNullOrEmpty(Model.SelectedTransmissionTypes))
                                                                                                                                                                        {
                                                                                                                                                                            @(Model.SelectedTransmissionTypes.Contains("Автоматична") ? "checked" : "")
                                                                                                                                                                        }>
                                             <label class="form-check-label cursor" for="automatic">Автоматична</label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input cursor" type="checkbox" name="SelectedTransmissionTypes" id="robotic" value="Роботична" @if (!Model.SelectedTransmissionTypes.IsNullOrEmpty())
+                                            <input class="form-check-input cursor" type="checkbox" name="SelectedTransmissionTypes" id="robotic" value="Роботична" @if (!string.IsNullOrEmpty(Model.SelectedTransmissionTypes))
                                                                                                                                                                    {
                                                                                                                                                                        @(Model.SelectedTransmissionTypes.Contains("Роботична") ? "checked" : "")
                                                                                                                                                                    }>
                                             <label class="form-check-label cursor" for="robotic">Роботична</label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input cursor" type="checkbox" name="SelectedTransmissionTypes" id="mechanic" value="Механічна" @if (!Model.SelectedTransmissionTypes.IsNullOrEmpty())
+                                            <input class="form-check-input cursor" type="checkbox" name="SelectedTransmissionTypes" id="mechanic" value="Механічна" @if (!string.IsNullOrEmpty(Model.SelectedTransmissionTypes))
                                                                                                                                                                     {
                                                                                                                                                                         @(Model.SelectedTransmissionTypes.Contains("Механічна") ? "checked" : "")
                                                                                                                                                                     }>
@@ -136,7 +136,7 @@
                                         @foreach (var make in FilterViewModel.OrigCars.Select(x => x.Make).Distinct())
                                         {
                                             <div class="form-check">
-                                                <input class="form-check-input cursor" type="checkbox" name="SelectedMakes" id="@make" value="@make" @if (!Model.SelectedMakes.IsNullOrEmpty())
+                                                <input class="form-check-input cursor" type="checkbox" name="SelectedMakes" id="@make" value="@make" @if (!string.IsNullOrEmpty(Model.SelectedMakes))
                                                                                                                                                      {
                                                                                                                                                          @(Model.SelectedMakes.Contains(@make) ? "checked" : "")
                                                                                                                                                      }>

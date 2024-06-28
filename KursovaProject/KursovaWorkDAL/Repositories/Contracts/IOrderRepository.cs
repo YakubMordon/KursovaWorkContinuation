@@ -1,24 +1,23 @@
 ﻿using KursovaWorkDAL.Entity.Entities;
 
-namespace KursovaWorkDAL.Repositories.Contracts
+namespace KursovaWorkDAL.Repositories.Contracts;
+
+/// <summary>
+/// Interface for handling orders-related queries.
+/// </summary>
+public interface IOrderRepository : IBaseRepository<Order>
 {
     /// <summary>
-    /// Interface for handling orders-related queries.
+    /// Method to retrieve an order by its identifier.
     /// </summary>
-    public interface IOrderRepository : IBaseRepository<Order>
-    {
-        /// <summary>
-        /// Method to retrieve an order by its identifier.
-        /// </summary>
-        /// <param name="id">Order identifier.</param>
-        /// <returns>The order.</returns>
-        Order GetById(int id);
+    /// <param name="id">Order identifier.</param>
+    /// <returns>The order.</returns>
+    Order GetById(int id);
 
-        /// <summary>
-        /// Method to retrieve orders associated with a specific user identifier.
-        /// </summary>
-        /// <param name="id">User identifier.</param>
-        /// <returns>List of orders.</returns>
-        IEnumerable<Order> FindAll(int id);
-    }
+    /// <summary>
+    /// Method to retrieve orders associated with a specific user identifier.
+    /// </summary>
+    /// <param name="id">User identifier.</param>
+    /// <returns>List of orders.</returns>
+    IEnumerable<Order> FindAll(int id);
 }

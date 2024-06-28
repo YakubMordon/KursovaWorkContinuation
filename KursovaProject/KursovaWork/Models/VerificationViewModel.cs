@@ -1,13 +1,12 @@
-﻿namespace KursovaWork.Models
+﻿namespace KursovaWork.Models;
+
+/// <summary>
+/// Model for getting Verification code.
+/// </summary>
+public class VerificationViewModel
 {
     /// <summary>
-    /// Model for getting Verification code.
+    /// Array of verification code's digits.
     /// </summary>
-    public class VerificationViewModel
-    {
-        /// <summary>
-        /// Array of verification code's digits.
-        /// </summary>
-        public string[] VerificationDigits { get; set; } = new string[4];
-    }
+    public string[] VerificationDigits { get; set; } = new string[4];
 }

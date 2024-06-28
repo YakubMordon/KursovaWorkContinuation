@@ -1,21 +1,21 @@
-﻿namespace KursovaWorkBLL.Services.Helpers.Static
+﻿namespace KursovaWorkBLL.Services.Helpers.Static;
+
+/// <summary>
+/// Class providing a template for creating HTML email bodies.
+/// </summary>
+public static class EmailBodyHelper
 {
     /// <summary>
-    /// Class providing a template for creating HTML email bodies.
+    /// Creates an HTML email body using the provided data.
     /// </summary>
-    public static class EmailBodyHelper
+    /// <param name="firstName">Recipient's first name.</param>
+    /// <param name="lastName">Recipient's last name.</param>
+    /// <param name="verificationCode">Verification code.</param>
+    /// <param name="purpose">Purpose of verification.</param>
+    /// <returns>HTML email body.</returns>
+    public static string BodyTemp(string firstName, string lastName, int verificationCode, string purpose)
     {
-        /// <summary>
-        /// Creates an HTML email body using the provided data.
-        /// </summary>
-        /// <param name="firstName">Recipient's first name.</param>
-        /// <param name="lastName">Recipient's last name.</param>
-        /// <param name="verificationCode">Verification code.</param>
-        /// <param name="purpose">Purpose of verification.</param>
-        /// <returns>HTML email body.</returns>
-        public static string BodyTemp(string firstName, string lastName, int verificationCode, string purpose)
-        {
-            return $@"
+        return $@"
                 <html>
                 <head>
                     <style>
@@ -35,19 +35,19 @@
                     <p>VAG Dealer</p>
                 </body>
                 </html>";
-        }
+    }
 
-        /// <summary>
-        /// Creates an HTML email body for an order using the provided data.
-        /// </summary>
-        /// <param name="userName">User's name.</param>
-        /// <param name="make">Car make.</param>
-        /// <param name="model">Car model.</param>
-        /// <param name="year">Car year.</param>
-        /// <returns>HTML email body.</returns>
-        public static string OrderBodyTemp(string userName, string make, string model, int year)
-        {
-            return $@"
+    /// <summary>
+    /// Creates an HTML email body for an order using the provided data.
+    /// </summary>
+    /// <param name="userName">User's name.</param>
+    /// <param name="make">Car make.</param>
+    /// <param name="model">Car model.</param>
+    /// <param name="year">Car year.</param>
+    /// <returns>HTML email body.</returns>
+    public static string OrderBodyTemp(string userName, string make, string model, int year)
+    {
+        return $@"
                 <html>
                 <head>
                     <style>
@@ -74,6 +74,5 @@
                     <p>VAG Dealer</p>
                 </body>
                 </html>";
-        }
     }
 }

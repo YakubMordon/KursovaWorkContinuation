@@ -3,35 +3,34 @@ using KursovaWorkDAL.Entity.Entities;
 using KursovaWorkDAL.Repositories.Contracts;
 using Microsoft.EntityFrameworkCore;
 
-namespace KursovaWorkDAL.Repositories.Implementation
+namespace KursovaWorkDAL.Repositories.Implementation;
+
+/// <summary>
+/// Implementation of the interface for handling user-related queries.
+/// </summary>
+public class UserRepository : BaseRepository<User>, IUserRepository
 {
     /// <summary>
-    /// Implementation of the interface for handling user-related queries.
+    /// Initializes a new instance of the <see cref="UserRepository"/> class.
     /// </summary>
-    public class UserRepository : BaseRepository<User>, IUserRepository
+    /// <param name="context">Context for database operations.</param>
+    public UserRepository(CarSaleContext context) : base(context) { }
+
+    public new IEnumerable<User> GetAll()
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserRepository"/> class.
-        /// </summary>
-        /// <param name="context">Context for database operations.</param>
-        public UserRepository(CarSaleContext context) : base(context) { }
+        return Context.Users
+            .Include(u => u.CreditCard);
+    }
 
-        public new IEnumerable<User> GetAll()
-        {
-            return Context.Users
-                 .Include(u => u.CreditCard);
-        }
+    public User GetByEmail(string email)
+    {
+        return Context.Users
+            .FirstOrDefault(u => u.Email == email);
+    }
 
-        public User GetByEmail(string email)
-        {
-            return Context.Users
-                .FirstOrDefault(u => u.Email == email);
-        }
-
-        public User GetById(int id)
-        {
-            return Context.Users
-                .FirstOrDefault(u => u.Id == id);
-        }
+    public User GetById(int id)
+    {
+        return Context.Users
+            .FirstOrDefault(u => u.Id == id);
     }
 }

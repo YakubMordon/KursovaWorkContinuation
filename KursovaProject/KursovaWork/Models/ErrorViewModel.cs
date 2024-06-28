@@ -1,18 +1,17 @@
-namespace KursovaWork.Models
+namespace KursovaWork.Models;
+
+/// <summary>
+/// Model for showing error.
+/// </summary>
+public class ErrorViewModel
 {
     /// <summary>
-    /// Model for showing error.
+    /// Id of request where error was showed.
     /// </summary>
-    public class ErrorViewModel
-    {
-        /// <summary>
-        /// Id of request where error was showed.
-        /// </summary>
-        public string? RequestId { get; set; }
+    public string? RequestId { get; set; }
 
-        /// <summary>
-        /// Method for checking if there's request id.
-        /// </summary>
-        public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
-    }
+    /// <summary>
+    /// Method for checking if there's request id.
+    /// </summary>
+    public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 }

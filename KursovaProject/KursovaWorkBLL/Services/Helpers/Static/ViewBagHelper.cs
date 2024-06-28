@@ -1,22 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Serilog;
 
-namespace KursovaWorkBLL.Services.Helpers.Static
+namespace KursovaWorkBLL.Services.Helpers.Static;
+
+/// <summary>
+/// Helper class for working with ViewBag.
+/// </summary>
+public static class ViewBagHelper
 {
     /// <summary>
-    /// Helper class for working with ViewBag.
+    /// Sets the IsLoggedIn value in ViewBag based on user authentication information.
     /// </summary>
-    public static class ViewBagHelper
+    /// <param name="viewContext">The ViewContext.</param>
+    public static void SetIsLoggedInInViewBag(this ViewContext viewContext)
     {
-        /// <summary>
-        /// Sets the IsLoggedIn value in ViewBag based on user authentication information.
-        /// </summary>
-        /// <param name="viewContext">The ViewContext.</param>
-        public static void SetIsLoggedInInViewBag(this ViewContext viewContext)
-        {
-            var isLoggedIn = viewContext.HttpContext.User.Identity.IsAuthenticated;
-            viewContext.ViewBag.IsLoggedIn = isLoggedIn;
-            Log.Information("Successfully checked if the user is logged in");
-        }
+        var isLoggedIn = viewContext.HttpContext.User.Identity.IsAuthenticated;
+        viewContext.ViewBag.IsLoggedIn = isLoggedIn;
+        Log.Information("Successfully checked if the user is logged in");
     }
 }

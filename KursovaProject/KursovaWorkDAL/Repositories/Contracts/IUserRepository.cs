@@ -1,24 +1,23 @@
 ﻿using KursovaWorkDAL.Entity.Entities;
 
-namespace KursovaWorkDAL.Repositories.Contracts
+namespace KursovaWorkDAL.Repositories.Contracts;
+
+/// <summary>
+/// Interface for handling user-related queries.
+/// </summary>
+public interface IUserRepository : IBaseRepository<User>
 {
     /// <summary>
-    /// Interface for handling user-related queries.
+    /// Method to retrieve a user by their identifier.
     /// </summary>
-    public interface IUserRepository : IBaseRepository<User>
-    {
-        /// <summary>
-        /// Method to retrieve a user by their identifier.
-        /// </summary>
-        /// <param name="id">User identifier.</param>
-        /// <returns>The user.</returns>
-        User GetById(int id);
+    /// <param name="id">User identifier.</param>
+    /// <returns>The user.</returns>
+    User GetById(int id);
 
-        /// <summary>
-        /// Method to retrieve a user by their email.
-        /// </summary>
-        /// <param name="email">Email address.</param>
-        /// <returns>The user.</returns>
-        User GetByEmail(string email);
-    }
+    /// <summary>
+    /// Method to retrieve a user by their email.
+    /// </summary>
+    /// <param name="email">Email address.</param>
+    /// <returns>The user.</returns>
+    User GetByEmail(string email);
 }

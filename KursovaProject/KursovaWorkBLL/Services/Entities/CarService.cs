@@ -3,139 +3,138 @@ using KursovaWorkDAL.Entity.Entities.Car;
 using KursovaWorkDAL.Repositories.Contracts;
 using Serilog;
 
-namespace KursovaWorkBLL.Services.Entities
+namespace KursovaWorkBLL.Services.Entities;
+
+/// <summary>
+/// Implementation of the ICarService interface for business logic related to cars
+/// </summary>
+public class CarService : ICarService
 {
+    private readonly ICarRepository _carRepository;
+
     /// <summary>
-    /// Implementation of the ICarService interface for business logic related to cars
+    /// Initializes a new instance of the <see cref="CarService"/> class.
     /// </summary>
-    public class CarService : ICarService
+    /// <param name="carRepository">Repository for cars.</param>
+    public CarService(ICarRepository carRepository)
     {
-        private readonly ICarRepository _carRepository;
+        _carRepository = carRepository;
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CarService"/> class.
-        /// </summary>
-        /// <param name="carRepository">Repository for cars.</param>
-        public CarService(ICarRepository carRepository)
+    public void AddCar(CarInfo car)
+    {
+        _carRepository.Add(car);
+        Log.Information("Added new car information");
+    }
+
+    public void DeleteCar(CarInfo car)
+    {
+        _carRepository.Delete(car);
+        Log.Information("Deleted car information");
+    }
+
+    public IEnumerable<CarInfo> Filtering(int? priceFrom, int? priceTo, int? yearFrom, int? yearTo, string? selectedFuelTypes, string? selectedTransmissionTypes, string? selectedMakes)
+    {
+        Log.Information("Entering car list filtering method");
+        var filteredCars = _carRepository.GetAll();
+        Log.Information("Retrieving list of all possible cars");
+
+        if (priceFrom.HasValue)
         {
-            _carRepository = carRepository;
+            filteredCars = filteredCars.Where(c => c.Price >= priceFrom.Value).ToList();
+            Log.Information("Filtering by price from a specific value");
         }
 
-        public void AddCar(CarInfo car)
+        if (priceTo.HasValue)
         {
-            _carRepository.Add(car);
-            Log.Information("Added new car information");
+            filteredCars = filteredCars.Where(c => c.Price <= priceTo.Value).ToList();
+            Log.Information("Filtering by price up to a specific value");
         }
 
-        public void DeleteCar(CarInfo car)
+        if (yearFrom.HasValue)
         {
-            _carRepository.Delete(car);
-            Log.Information("Deleted car information");
+            filteredCars = filteredCars.Where(c => c.Year >= yearFrom.Value).ToList();
+            Log.Information("Filtering by year of manufacture from a specific value");
         }
 
-        public IEnumerable<CarInfo> Filtering(int? priceFrom, int? priceTo, int? yearFrom, int? yearTo, string? selectedFuelTypes, string? selectedTransmissionTypes, string? selectedMakes)
+        if (yearTo.HasValue)
         {
-            Log.Information("Entering car list filtering method");
-            var filteredCars = _carRepository.GetAll();
-            Log.Information("Retrieving list of all possible cars");
-
-            if (priceFrom.HasValue)
-            {
-                filteredCars = filteredCars.Where(c => c.Price >= priceFrom.Value).ToList();
-                Log.Information("Filtering by price from a specific value");
-            }
-
-            if (priceTo.HasValue)
-            {
-                filteredCars = filteredCars.Where(c => c.Price <= priceTo.Value).ToList();
-                Log.Information("Filtering by price up to a specific value");
-            }
-
-            if (yearFrom.HasValue)
-            {
-                filteredCars = filteredCars.Where(c => c.Year >= yearFrom.Value).ToList();
-                Log.Information("Filtering by year of manufacture from a specific value");
-            }
-
-            if (yearTo.HasValue)
-            {
-                filteredCars = filteredCars.Where(c => c.Year <= yearTo.Value).ToList();
-                Log.Information("Filtering by year of manufacture up to a specific value");
-            }
-
-            if (selectedFuelTypes != null)
-            {
-                filteredCars = filteredCars.Where(c => selectedFuelTypes.Equals(c.Detail.FuelType)).ToList();
-                Log.Information("Filtering by selected fuel type");
-            }
-
-            if (selectedTransmissionTypes != null)
-            {
-                filteredCars = filteredCars.Where(c => selectedTransmissionTypes.Equals(c.Detail.Transmission)).ToList();
-                Log.Information("Filtering by selected transmission type");
-            }
-
-            if (selectedMakes != null)
-            {
-                filteredCars = filteredCars.Where(c => selectedMakes.Equals(c.Make)).ToList();
-                Log.Information("Filtering by selected makes");
-            }
-
-            return filteredCars;
+            filteredCars = filteredCars.Where(c => c.Year <= yearTo.Value).ToList();
+            Log.Information("Filtering by year of manufacture up to a specific value");
         }
 
-        public IEnumerable<CarInfo> GetAllCars()
+        if (selectedFuelTypes != null)
         {
-            Log.Information("Retrieved all possible car information");
-            return _carRepository.GetAll();
+            filteredCars = filteredCars.Where(c => selectedFuelTypes.Equals(c.Detail.FuelType)).ToList();
+            Log.Information("Filtering by selected fuel type");
         }
 
-        public CarInfo GetCarById(int id)
+        if (selectedTransmissionTypes != null)
         {
-            Log.Information("Retrieved car information by its identifier");
-            return _carRepository.GetById(id);
+            filteredCars = filteredCars.Where(c => selectedTransmissionTypes.Equals(c.Detail.Transmission)).ToList();
+            Log.Information("Filtering by selected transmission type");
         }
 
-        public CarInfo GetCarByInfo(string make, string model, int year)
+        if (selectedMakes != null)
         {
-            Log.Information("Retrieved car information by its make, model, and year of manufacture");
-            return _carRepository.GetByCarInfo(make, model, year);
+            filteredCars = filteredCars.Where(c => selectedMakes.Equals(c.Make)).ToList();
+            Log.Information("Filtering by selected makes");
         }
 
-        public IEnumerable<CarInfo> SortByAlphabet(IEnumerable<CarInfo> curList)
+        return filteredCars;
+    }
+
+    public IEnumerable<CarInfo> GetAllCars()
+    {
+        Log.Information("Retrieved all possible car information");
+        return _carRepository.GetAll();
+    }
+
+    public CarInfo GetCarById(int id)
+    {
+        Log.Information("Retrieved car information by its identifier");
+        return _carRepository.GetById(id);
+    }
+
+    public CarInfo GetCarByInfo(string make, string model, int year)
+    {
+        Log.Information("Retrieved car information by its make, model, and year of manufacture");
+        return _carRepository.GetByCarInfo(make, model, year);
+    }
+
+    public IEnumerable<CarInfo> SortByAlphabet(IEnumerable<CarInfo> curList)
+    {
+        Log.Information("Entering method to sort the list of models alphabetically");
+        return curList.OrderBy(o => o.Make + o.Model);
+    }
+
+    public IEnumerable<CarInfo> SortByNovelty(IEnumerable<CarInfo> curList)
+    {
+        Log.Information("Entering method to sort the list of models by novelty (year of manufacture in descending order)");
+        return curList.OrderByDescending(o => o.Year);
+    }
+
+    public IEnumerable<CarInfo> SortByPrice(IEnumerable<CarInfo> curList, string param)
+    {
+        Log.Information("Entering method to sort the list of models by price");
+
+        if (param.Equals("cheap"))
         {
-            Log.Information("Entering method to sort the list of models alphabetically");
-            return curList.OrderBy(o => o.Make + o.Model);
+            curList = curList.OrderBy(o => o.Price);
+            Log.Information("Sorting by price in ascending order");
+        }
+        else
+        {
+            curList = curList.OrderByDescending(o => o.Price);
+            Log.Information("Sorting by price in descending order");
         }
 
-        public IEnumerable<CarInfo> SortByNovelty(IEnumerable<CarInfo> curList)
-        {
-            Log.Information("Entering method to sort the list of models by novelty (year of manufacture in descending order)");
-            return curList.OrderByDescending(o => o.Year);
-        }
+        return curList;
+    }
 
-        public IEnumerable<CarInfo> SortByPrice(IEnumerable<CarInfo> curList, string param)
-        {
-            Log.Information("Entering method to sort the list of models by price");
-
-            if (param.Equals("cheap"))
-            {
-                curList = curList.OrderBy(o => o.Price);
-                Log.Information("Sorting by price in ascending order");
-            }
-            else
-            {
-                curList = curList.OrderByDescending(o => o.Price);
-                Log.Information("Sorting by price in descending order");
-            }
-
-            return curList;
-        }
-
-        public void UpdateCar(CarInfo car)
-        {
-            _carRepository.Update(car);
-            Log.Information("Updated car information");
-        }
+    public void UpdateCar(CarInfo car)
+    {
+        _carRepository.Update(car);
+        Log.Information("Updated car information");
     }
 }

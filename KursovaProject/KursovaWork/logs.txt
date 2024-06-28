@@ -16,3 +16,19 @@
 2024-06-28 18:59:24.405 +03:00 [INF] Setting all car models list as current
 2024-06-28 18:59:24.406 +03:00 [INF] Navigating to the model list page
 2024-06-28 18:59:24.413 +03:00 [INF] Successfully checked if the user is logged in
+2024-06-28 19:33:36.485 +03:00 [INF] Successfully checked if the database is created.
+2024-06-28 19:33:36.679 +03:00 [INF] Cars already exist in the database.
+2024-06-28 19:33:39.534 +03:00 [INF] Redirecting to the home page
+2024-06-28 19:33:39.614 +03:00 [INF] Successfully checked if the user is logged in
+2024-06-28 19:33:41.033 +03:00 [INF] Clearing unnecessary configurations
+2024-06-28 19:33:41.035 +03:00 [INF] Redirecting to the model list page
+2024-06-28 19:33:41.045 +03:00 [INF] Entering method to navigate to the model list page
+2024-06-28 19:33:41.046 +03:00 [INF] Retrieved all possible car information
+2024-06-28 19:33:41.229 +03:00 [INF] Fetching all possible car models
+2024-06-28 19:33:41.230 +03:00 [INF] Setting all car models list as current
+2024-06-28 19:33:41.231 +03:00 [INF] Navigating to the model list page
+2024-06-28 19:33:41.241 +03:00 [INF] Successfully checked if the user is logged in
+2024-06-28 19:33:42.802 +03:00 [INF] Entering Car method
+2024-06-28 19:33:42.803 +03:00 [INF] Retrieved car information by its make, model, and year of manufacture
+2024-06-28 19:33:42.936 +03:00 [INF] Car found, navigating to car page
+2024-06-28 19:33:42.942 +03:00 [INF] Successfully checked if the user is logged in

@@ -1,14 +1,11 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-using KursovaWorkBLL.Services.AdditionalServices;
 using KursovaWorkDAL.Entity;
 using Microsoft.AspNetCore.ResponseCompression;
 using System.IO.Compression;
-using KursovaWorkDAL.Repositories.Contracts;
-using KursovaWorkDAL.Repositories.Implementation;
-using KursovaWorkBLL.Contracts;
-using KursovaWorkBLL.Services.Entities;
 using Serilog;
+using DependencyInjectionBLL = KursovaWorkBLL.DependencyInjection;
+using DependencyInjectionDAL = KursovaWorkDAL.DependencyInjection;
 
 Console.OutputEncoding = System.Text.Encoding.UTF8;
 
@@ -45,16 +42,8 @@ builder.Services.AddDbContext<CarSaleContext>(options =>
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddScoped<IUserRepository,UserRepository>();
-builder.Services.AddScoped<ICarRepository,CarRepository>();
-builder.Services.AddScoped<ICardRepository,CardRepository>();
-builder.Services.AddScoped<IOrderRepository,OrderRepository>();
-
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<ICarService, CarService>();
-builder.Services.AddScoped<ICardService,CardService>();
-builder.Services.AddScoped<IOrderService,OrderService>();
-builder.Services.AddScoped<IdRetriever>();
+DependencyInjectionDAL.Inject(builder.Services);
+DependencyInjectionBLL.Inject(builder.Services);
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
 .AddCookie(options =>

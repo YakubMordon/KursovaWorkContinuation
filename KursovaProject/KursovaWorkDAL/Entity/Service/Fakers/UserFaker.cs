@@ -3,8 +3,14 @@ using KursovaWorkDAL.Entity.Entities;
 
 namespace KursovaWorkDAL.Entity.Service.Fakers;
 
+/// <summary>
+/// Faker for user entity.
+/// </summary>
 public sealed class UserFaker : Faker<User>
 {
+    /// <summary>
+    /// Initializes instance of <see cref="UserFaker"/>.
+    /// </summary>
     public UserFaker()
     {
         UseSeed(1994);

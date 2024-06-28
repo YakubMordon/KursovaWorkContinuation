@@ -1,9 +1,8 @@
-﻿namespace KursovaWorkDAL.Entity.Entities
+﻿namespace KursovaWorkDAL.Entity.Entities;
+
+/// <summary>
+/// Abstract class, which indicates entity.
+/// </summary>
+public abstract class BaseEntity
 {
-    /// <summary>
-    /// Abstract class, which indicates entity.
-    /// </summary>
-    public abstract class BaseEntity
-    {
-    }
 }
