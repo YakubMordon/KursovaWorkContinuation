@@ -1,6 +1,6 @@
 ﻿using KursovaWork.Domain.Entities;
 
-namespace KursovaWork.Application.Contracts.Services;
+namespace KursovaWork.Application.Contracts.Services.Entities;
 
 /// <summary>
 /// Interface for business logic related to cards

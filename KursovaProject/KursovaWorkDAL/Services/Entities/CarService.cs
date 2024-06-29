@@ -1,5 +1,5 @@
 ﻿using KursovaWork.Application.Contracts.Repositories;
-using KursovaWork.Application.Contracts.Services;
+using KursovaWork.Application.Contracts.Services.Entities;
 using KursovaWork.Domain.Entities.Car;
 using Serilog;
 

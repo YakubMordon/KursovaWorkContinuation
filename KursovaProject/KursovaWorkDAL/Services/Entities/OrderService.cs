@@ -1,8 +1,8 @@
 ﻿using KursovaWork.Application.Contracts.Repositories;
-using KursovaWork.Application.Contracts.Services;
+using KursovaWork.Application.Contracts.Services.Entities;
+using KursovaWork.Application.Contracts.Services.Helpers.Transient;
 using KursovaWork.Domain.Entities;
 using KursovaWork.Domain.Entities.Car;
-using KursovaWork.Infrastructure.Services.Helpers.Transient;
 using Serilog;
 
 namespace KursovaWork.Infrastructure.Services.Entities;
@@ -13,14 +13,14 @@ namespace KursovaWork.Infrastructure.Services.Entities;
 public class OrderService : IOrderService
 {
     private readonly IOrderRepository _orderRepository;
-    private readonly IdRetriever _idRetriever;
+    private readonly IIdRetriever _idRetriever;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="OrderService"/> class.
     /// </summary>
     /// <param name="orderRepository">Repository for orders.</param>
     /// <param name="idRetriever">Service to retrieve user identifier.</param>
-    public OrderService(IOrderRepository orderRepository, IdRetriever idRetriever)
+    public OrderService(IOrderRepository orderRepository, IIdRetriever idRetriever)
     {
         _orderRepository = orderRepository;
         _idRetriever = idRetriever;

@@ -16,11 +16,11 @@ public static class DependencyInjection
     /// <param name="services">Services collection.</param>
     public static void Inject(IServiceCollection services)
     {
+        services.AddTransientHelpers();
+
         services.AddRepositories();
 
         services.AddEntityServices();
-
-        services.AddTransientHelpers();
     }
 
     private static void AddRepositories(this IServiceCollection services)
@@ -46,7 +46,7 @@ public static class DependencyInjection
         services.Scan(scan => scan
             .FromAssemblyOf<IdRetriever>()
             .AddClasses(classes => classes.InNamespaceOf<IdRetriever>())
-            .AsSelf()
+            .AsImplementedInterfaces()
             .WithScopedLifetime());
     }
 }

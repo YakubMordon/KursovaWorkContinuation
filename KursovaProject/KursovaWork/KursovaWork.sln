@@ -11,6 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KursovaWork.Application", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KursovaWork.Domain", "..\KursovaWork.Domain\KursovaWork.Domain.csproj", "{7281D219-89A6-44CD-B1BE-ABBCD47766E2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "KursovaWork.Tests", "KursovaWork.Tests", "{40F5AD18-E709-46C0-9BC9-329E21629485}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit", "Unit", "{1B574E5C-7AD0-4DFF-81C0-F57E3F0C3CCE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +40,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1B574E5C-7AD0-4DFF-81C0-F57E3F0C3CCE} = {40F5AD18-E709-46C0-9BC9-329E21629485}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A34FE5F2-A62D-4367-BAE3-6A4EC1F4E4F6}

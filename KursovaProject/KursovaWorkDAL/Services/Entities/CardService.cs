@@ -1,8 +1,8 @@
 ﻿using Serilog;
 using KursovaWork.Domain.Entities;
-using KursovaWork.Application.Contracts.Services;
 using KursovaWork.Application.Contracts.Repositories;
-using KursovaWork.Infrastructure.Services.Helpers.Transient;
+using KursovaWork.Application.Contracts.Services.Entities;
+using KursovaWork.Application.Contracts.Services.Helpers.Transient;
 
 namespace KursovaWork.Infrastructure.Services.Entities;
 
@@ -12,14 +12,14 @@ namespace KursovaWork.Infrastructure.Services.Entities;
 public class CardService : ICardService
 {
     private readonly ICardRepository _cardRepository;
-    private readonly IdRetriever _idRetriever;
+    private readonly IIdRetriever _idRetriever;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="CardService"/> class.
     /// </summary>
     /// <param name="cardRepository">Repository for credit cards.</param>
     /// <param name="idRetriever">Service to retrieve user identifier.</param>
-    public CardService(ICardRepository cardRepository, IdRetriever idRetriever)
+    public CardService(ICardRepository cardRepository, IIdRetriever idRetriever)
     {
         _cardRepository = cardRepository;
         _idRetriever = idRetriever;

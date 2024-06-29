@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Serilog;
-using KursovaWork.Application.Contracts.Services;
 using KursovaWork.Domain.Models;
 using KursovaWork.Infrastructure.Mappers.Entities;
+using KursovaWork.Application.Contracts.Services.Entities;
 
 namespace KursovaWork.UI.Controllers;
 

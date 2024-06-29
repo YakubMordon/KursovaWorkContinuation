@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Serilog;
 using System.Security.Claims;
+using KursovaWork.Application.Contracts.Services.Helpers.Transient;
 
 namespace KursovaWork.Infrastructure.Services.Helpers.Transient;
 
 /// <summary>
 /// Class for retrieving user ID.
 /// </summary>
-public class IdRetriever
+public class IdRetriever : IIdRetriever
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
 
@@ -20,10 +21,6 @@ public class IdRetriever
         _httpContextAccessor = httpContextAccessor;
     }
 
-    /// <summary>
-    /// Retrieves the ID of the logged-in user.
-    /// </summary>
-    /// <returns>The user ID, or 0 if the user is not logged in.</returns>
     public int GetLoggedInUserId()
     {
         var claimsPrincipal = _httpContextAccessor.HttpContext.User;

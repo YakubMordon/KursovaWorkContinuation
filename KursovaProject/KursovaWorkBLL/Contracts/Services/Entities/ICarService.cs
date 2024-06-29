@@ -1,6 +1,6 @@
 ﻿using KursovaWork.Domain.Entities.Car;
 
-namespace KursovaWork.Application.Contracts.Services;
+namespace KursovaWork.Application.Contracts.Services.Entities;
 
 /// <summary>
 /// Interface for business logic related to cars

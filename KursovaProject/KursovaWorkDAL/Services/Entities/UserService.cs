@@ -1,9 +1,9 @@
 ﻿using Serilog;
 using KursovaWork.Infrastructure.Services.DB;
 using KursovaWork.Domain.Entities;
-using KursovaWork.Infrastructure.Services.Helpers.Transient;
-using KursovaWork.Application.Contracts.Services;
 using KursovaWork.Application.Contracts.Repositories;
+using KursovaWork.Application.Contracts.Services.Entities;
+using KursovaWork.Application.Contracts.Services.Helpers.Transient;
 
 namespace KursovaWork.Infrastructure.Services.Entities;
 
@@ -13,14 +13,14 @@ namespace KursovaWork.Infrastructure.Services.Entities;
 public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
-    private readonly IdRetriever _idRetriever;
+    private readonly IIdRetriever _idRetriever;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="UserService"/> class.
     /// </summary>
     /// <param name="userRepository">Repository for users.</param>
     /// <param name="idRetriever">Service to retrieve user identifier.</param>
-    public UserService(IUserRepository userRepository, IdRetriever idRetriever)
+    public UserService(IUserRepository userRepository, IIdRetriever idRetriever)
     {
         _userRepository = userRepository;
         _idRetriever = idRetriever;

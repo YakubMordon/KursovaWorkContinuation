@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Serilog;
-using KursovaWork.Application.Contracts.Services;
 using KursovaWork.Domain.Models;
+using KursovaWork.Application.Contracts.Services.Entities;
 
 namespace KursovaWork.UI.Controllers;
 

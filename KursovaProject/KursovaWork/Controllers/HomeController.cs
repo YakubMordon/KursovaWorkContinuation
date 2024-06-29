@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Serilog;
-using KursovaWork.Application.Contracts.Services;
+using KursovaWork.Application.Contracts.Services.Entities;
 
 namespace KursovaWork.UI.Controllers;
 
@@ -19,7 +19,7 @@ public class HomeController : Controller
     /// Initializes a new instance of the <see cref="HomeController"/> class.
     /// </summary>
     /// <param name="orderService">The service interface for handling orders.</param>
-    public HomeController(IOrderService orderService, ILogger<HomeController> logger)
+    public HomeController(IOrderService orderService)
     {
         _orderService = orderService;
     }
@@ -78,7 +78,9 @@ public class HomeController : Controller
     {
         Log.Information("Entering method to redirect to the order list page");
 
-        var orders = _orderService.FindAllLoggedIn().ToList();
+        var orders = _orderService
+                        .FindAllLoggedIn()
+                        .ToList();
 
         Log.Information("Redirecting to the order list page");
 
