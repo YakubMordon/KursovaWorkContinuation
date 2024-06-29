@@ -2,6 +2,7 @@
 using Serilog;
 using KursovaWork.Application.Contracts.Services;
 using KursovaWork.Domain.Models;
+using KursovaWork.Infrastructure.Mappers.Entities;
 
 namespace KursovaWork.UI.Controllers;
 
@@ -73,7 +74,11 @@ public class CreditCardController : Controller
 
         if (ModelState.IsValid)
         {
-            _cardService.AddCard(model.ToCard());
+            var mapper = new CardMapper();
+
+            var entity = mapper.ModelToEntity(model);
+
+            _cardService.AddCard(entity);
 
             return Json(new { success = true });
         }

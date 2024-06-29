@@ -5,6 +5,7 @@ using KursovaWork.Application.Contracts.Services;
 using KursovaWork.Domain.Entities;
 using KursovaWork.Domain.Models;
 using KursovaWork.Infrastructure.Services.Helpers.Static;
+using KursovaWork.Infrastructure.Mappers.Entities;
 
 namespace KursovaWork.UI.Controllers;
 
@@ -62,7 +63,7 @@ public class SignUpController : Controller
         {
             var user = _userService.GetUserByEmail(model.Email);
 
-            if (user != null)
+            if (user is not null)
             {
                 errors["emailError"] = "User with this email already exists.";
                 ModelState.AddModelError("Email", "User with this email already exists.");
@@ -70,7 +71,9 @@ public class SignUpController : Controller
                 return Json(new { success = false, errors });
             }
 
-            _curUser = model.ToUser();
+            var mapper = new UserMapper();
+
+            _curUser = mapper.ModelToEntity(model);
 
             Log.Information("Successfully checked if email already exists");
 

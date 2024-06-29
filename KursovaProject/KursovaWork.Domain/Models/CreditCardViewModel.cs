@@ -55,21 +55,4 @@ public class CreditCardViewModel
     [StringLength(3, MinimumLength = 3, ErrorMessage = "Довжина CVV повинна бути мінімум 3")]
     [RegularExpression(@"^(?:\d{3})$", ErrorMessage = "Неправильний номер CVV")]
     public string Cvv { get; set; }
-
-    /// <summary>
-    /// Method for mapping from <see cref="CreditCardViewModel"> to <see cref="Card"/>.
-    /// </summary>
-    /// <returns>Mapped <see cref="Card"> entity.</returns>
-    public Card ToCard()
-    {
-        // TODO: Create mapper for Card.
-        return new Card
-        {
-            CardNumber = CardNumber,
-            CardHolderName = CardHolderName,
-            ExpirationMonth = ExpirationMonth,
-            ExpirationYear = ExpirationYear,
-            Cvv = Cvv
-        };
-    }
 }

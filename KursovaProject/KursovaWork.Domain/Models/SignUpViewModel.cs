@@ -49,22 +49,4 @@ public class SignUpViewModel
     [Compare("Password", ErrorMessage = "Поле Підтвердження паролю та Пароль повинні бути одинакові")]
     [Display(Name = "Підтвердження пароля")]
     public string ConfirmPassword { get; set; }
-
-    /// <summary>
-    /// Method for mapping from <see cref="SignUpViewModel"/> to <see cref="User">.
-    /// </summary>
-    /// <returns>Mapped <see cref="User"/> Entity.</returns>
-    public User ToUser()
-    {
-        // TODO: Create mapper for User.
-        return new User
-        {
-            FirstName = FirstName,
-            LastName = LastName,
-            Email = Email,
-            Password = Password,
-            ConfirmPassword = ConfirmPassword
-        };
-    }
-
 }

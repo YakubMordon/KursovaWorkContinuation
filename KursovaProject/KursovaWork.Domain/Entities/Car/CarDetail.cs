@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using KursovaWork.Domain.Entities;
 
 namespace KursovaWork.Domain.Entities.Car;
 
