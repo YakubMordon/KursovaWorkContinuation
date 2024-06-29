@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <TypeScriptTarget>ES6</TypeScriptTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <TypeScriptTarget>ES6</TypeScriptTarget>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="wwwroot\lib\inputmask\**" />
+    <Content Remove="wwwroot\lib\inputmask\**" />
+    <EmbeddedResource Remove="wwwroot\lib\inputmask\**" />
+    <None Remove="wwwroot\lib\inputmask\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Content\Images\a3.jpg" />
+    <None Include="wwwroot\Content\Images\q5.jpg" />
+    <None Include="wwwroot\Content\Images\r8.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
+    <PackageReference Include="Serilog" Version="4.0.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\Content\Fonts\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\KursovaWorkBLL\KursovaWork.Application.csproj" />
+    <ProjectReference Include="..\KursovaWorkDAL\KursovaWork.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

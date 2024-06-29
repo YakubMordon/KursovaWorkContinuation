@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using KursovaWorkBLL.Contracts;
 using Serilog;
+using KursovaWork.Application.Contracts.Services;
 
-namespace KursovaWork.Controllers;
+namespace KursovaWork.UI.Controllers;
 
 /// <summary>
 /// Controller responsible for actions related to cars.

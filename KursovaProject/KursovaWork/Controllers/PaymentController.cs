@@ -1,10 +1,10 @@
-﻿using KursovaWorkDAL.Entity.Entities.Car;
-using Microsoft.AspNetCore.Mvc;
-using KursovaWorkBLL.Contracts;
+﻿using Microsoft.AspNetCore.Mvc;
 using Serilog;
-using KursovaWorkBLL.Services.Helpers.Static;
+using KursovaWork.Application.Contracts.Services;
+using KursovaWork.Domain.Entities.Car;
+using KursovaWork.Infrastructure.Services.Helpers.Static;
 
-namespace KursovaWork.Controllers;
+namespace KursovaWork.UI.Controllers;
 
 /// <summary>
 /// Controller for handling payments.

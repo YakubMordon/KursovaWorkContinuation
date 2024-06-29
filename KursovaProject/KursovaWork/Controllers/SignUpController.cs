@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using KursovaWork.Models;
-using KursovaWorkDAL.Entity.Entities;
 using System.Text;
-using KursovaWorkBLL.Contracts;
 using Serilog;
-using KursovaWorkBLL.Services.Helpers.Static;
+using KursovaWork.Application.Contracts.Services;
+using KursovaWork.Domain.Entities;
+using KursovaWork.Domain.Models;
+using KursovaWork.Infrastructure.Services.Helpers.Static;
 
-namespace KursovaWork.Controllers;
+namespace KursovaWork.UI.Controllers;
 
 /// <summary>
 /// Controller responsible for user registration.

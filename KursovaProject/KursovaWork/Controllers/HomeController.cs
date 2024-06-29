@@ -1,12 +1,12 @@
-﻿using KursovaWork.Models;
+﻿using KursovaWork.Domain.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using KursovaWorkBLL.Contracts;
 using Serilog;
+using KursovaWork.Application.Contracts.Services;
 
-namespace KursovaWork.Controllers;
+namespace KursovaWork.UI.Controllers;
 
 /// <summary>
 /// Controller responsible for main actions on the home page.
@@ -31,7 +31,7 @@ public class HomeController : Controller
     public IActionResult Index()
     {
         Log.Information("Redirecting to the home page");
-        return View();
+        return View("~/Views/Home/Index.cshtml");
     }
 
     /// <summary>

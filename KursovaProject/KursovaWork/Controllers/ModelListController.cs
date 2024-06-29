@@ -1,10 +1,10 @@
-﻿using KursovaWorkDAL.Entity.Entities.Car;
-using KursovaWork.Models;
-using Microsoft.AspNetCore.Mvc;
-using KursovaWorkBLL.Contracts;
+﻿using Microsoft.AspNetCore.Mvc;
 using Serilog;
+using KursovaWork.Application.Contracts.Services;
+using KursovaWork.Domain.Entities.Car;
+using KursovaWork.Domain.Models;
 
-namespace KursovaWork.Controllers;
+namespace KursovaWork.UI.Controllers;
 
 /// <summary>
 /// Controller responsible for displaying the list of car models.

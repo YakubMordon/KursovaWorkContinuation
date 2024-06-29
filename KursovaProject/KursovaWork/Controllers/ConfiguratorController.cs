@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using KursovaWorkDAL.Entity.Entities;
-using KursovaWorkBLL.Contracts;
 using Serilog;
+using KursovaWork.Application.Contracts.Services;
+using KursovaWork.Domain.Entities;
 
-namespace KursovaWork.Controllers;
+namespace KursovaWork.UI.Controllers;
 
 /// <summary>
 /// Controller responsible for handling car configuration actions.

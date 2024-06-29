@@ -1,10 +1,12 @@
-﻿using KursovaWorkDAL.Repositories.Implementation;
+﻿using KursovaWork.Infrastructure.Repositories;
+using KursovaWork.Infrastructure.Services.Entities;
+using KursovaWork.Infrastructure.Services.Helpers.Transient;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace KursovaWorkDAL;
+namespace KursovaWork.Infrastructure;
 
 /// <summary>
-/// Class for dependency injection in KursovaWorkDAL.
+/// Class for dependency injection in KursovaWork.Infrastructure Layer.
 /// </summary>
 public static class DependencyInjection
 {
@@ -15,6 +17,10 @@ public static class DependencyInjection
     public static void Inject(IServiceCollection services)
     {
         services.AddRepositories();
+
+        services.AddEntityServices();
+
+        services.AddTransientHelpers();
     }
 
     private static void AddRepositories(this IServiceCollection services)
@@ -23,6 +29,24 @@ public static class DependencyInjection
             .FromAssemblyOf<UserRepository>()
             .AddClasses(classes => classes.InNamespaceOf<UserRepository>())
             .AsImplementedInterfaces()
+            .WithScopedLifetime());
+    }
+
+    private static void AddEntityServices(this IServiceCollection services)
+    {
+        services.Scan(scan => scan
+            .FromAssemblyOf<UserService>()
+            .AddClasses(classes => classes.InNamespaceOf<UserService>())
+            .AsImplementedInterfaces()
+            .WithScopedLifetime());
+    }
+
+    private static void AddTransientHelpers(this IServiceCollection services)
+    {
+        services.Scan(scan => scan
+            .FromAssemblyOf<IdRetriever>()
+            .AddClasses(classes => classes.InNamespaceOf<IdRetriever>())
+            .AsSelf()
             .WithScopedLifetime());
     }
 }

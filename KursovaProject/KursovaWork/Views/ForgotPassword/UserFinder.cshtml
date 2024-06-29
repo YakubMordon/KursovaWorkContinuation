@@ -1,9 +1,9 @@
-﻿@{
+﻿@using KursovaWork.Domain.Models
+@using KursovaWork.Infrastructure.Services.Helpers.Static
+@{
     ViewBagHelper.SetIsLoggedInInViewBag(ViewContext);
     ViewBag.Title = "Підтвердження реєстрації";
 }
-@using KursovaWorkBLL.Services.Helpers.Static
-@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model EmailViewModel;
 
 <script>

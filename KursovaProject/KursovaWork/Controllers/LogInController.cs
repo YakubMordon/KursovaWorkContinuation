@@ -1,12 +1,12 @@
-﻿using KursovaWork.Models;
-using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using KursovaWorkBLL.Contracts;
 using Serilog;
+using KursovaWork.Application.Contracts.Services;
+using KursovaWork.Domain.Models;
 
-namespace KursovaWork.Controllers;
+namespace KursovaWork.UI.Controllers;
 
 /// <summary>
 /// Controller responsible for user login operations.

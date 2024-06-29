@@ -1,10 +1,9 @@
-﻿@{
+﻿@using KursovaWork.Domain.Models
+@using KursovaWork.Infrastructure.Services.Helpers.Static
+@{
     ViewBag.Title = "Моделі";
     ViewBagHelper.SetIsLoggedInInViewBag(ViewContext);
 }
-
-@using KursovaWorkBLL.Services.Helpers.Static
-@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model FilterViewModel
 
 <div class="modelBody">

@@ -1,11 +1,9 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-using KursovaWorkDAL.Entity;
 using Microsoft.AspNetCore.ResponseCompression;
 using System.IO.Compression;
 using Serilog;
-using DependencyInjectionBLL = KursovaWorkBLL.DependencyInjection;
-using DependencyInjectionDAL = KursovaWorkDAL.DependencyInjection;
+using KursovaWork.Infrastructure;
 
 Console.OutputEncoding = System.Text.Encoding.UTF8;
 
@@ -42,18 +40,17 @@ builder.Services.AddDbContext<CarSaleContext>(options =>
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
 
-DependencyInjectionDAL.Inject(builder.Services);
-DependencyInjectionBLL.Inject(builder.Services);
+DependencyInjection.Inject(builder.Services);
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-.AddCookie(options =>
-{
-    options.LoginPath = "/Home/Index";
-    options.LogoutPath = "/Home/Index";
-    options.Cookie.HttpOnly = true;
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
-    options.SlidingExpiration = true;
-});
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Home/Index";
+        options.LogoutPath = "/Home/Index";
+        options.Cookie.HttpOnly = true;
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+        options.SlidingExpiration = true;
+    });
 
 var app = builder.Build();
 
