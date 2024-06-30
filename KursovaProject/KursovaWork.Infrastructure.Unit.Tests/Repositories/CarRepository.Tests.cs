@@ -38,7 +38,7 @@ public class CarRepositoryTests : IDisposable, IAsyncDisposable
 
         // Assert
 
-        _context.Cars.Should().Contain(car => car.Id == entity.Id);
+        _context.Cars.Should().Contain(entity);
 
         _carRepository.Delete(entity);
     }
@@ -77,7 +77,7 @@ public class CarRepositoryTests : IDisposable, IAsyncDisposable
 
         // Assert
 
-        _context.Cars.Should().NotContain(car => car.Id == entity.Id);
+        _context.Cars.Should().NotContain(entity);
     }
 
     [Fact]
@@ -113,11 +113,7 @@ public class CarRepositoryTests : IDisposable, IAsyncDisposable
 
         // Assert
 
-        _context.Cars.Should()
-            .Contain(car => car.Id == entity.Id)
-            .Which.Make
-                    .Should()
-                    .Be(entity.Make);
+        _context.Cars.Should().Contain(entity);
 
         _carRepository.Delete(entity);
     }

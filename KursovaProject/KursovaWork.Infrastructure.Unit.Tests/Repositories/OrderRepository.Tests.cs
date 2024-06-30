@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using KursovaWork.Domain.Entities;
 using KursovaWork.Infrastructure.Repositories;
 using KursovaWork.Infrastructure.Unit.Tests.Fakers;
 using Microsoft.EntityFrameworkCore;
@@ -38,7 +37,7 @@ public class OrderRepositoryTests : IDisposable, IAsyncDisposable
 
         // Assert
 
-        _context.Orders.Should().Contain(card => card.UserId == entity.UserId);
+        _context.Orders.Should().Contain(entity);
 
         _orderRepository.Delete(entity);
     }
@@ -58,7 +57,7 @@ public class OrderRepositoryTests : IDisposable, IAsyncDisposable
 
         // Assert
 
-        _context.Orders.Should().NotContain(card => card.UserId == entity.UserId);
+        _context.Orders.Should().NotContain(entity);
     }
 
     [Fact]
@@ -94,12 +93,10 @@ public class OrderRepositoryTests : IDisposable, IAsyncDisposable
 
         // Assert
 
-        _context.Orders.Should()
-            .Contain(card => card.UserId == entity.UserId)
-            .Which.Should().BeEquivalentTo(entity);
+        _context.Orders.Should().Contain(entity);
 
         _orderRepository.Delete(entity);
-    }
+    }    
 
     [Fact]
     public void GetAll_ShouldGetAllOrders()

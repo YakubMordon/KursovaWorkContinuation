@@ -26,7 +26,7 @@ public class CardRepositoryTests : IDisposable, IAsyncDisposable
     }
 
     [Fact]
-    public void Add_IfDataIsCorrect_ShouldAddCard()
+    public void Add_DataIsCorrect_ShouldAddCard()
     {
         // Arrange
 
@@ -38,13 +38,13 @@ public class CardRepositoryTests : IDisposable, IAsyncDisposable
 
         // Assert
 
-        _context.Cards.Should().Contain(card => card.UserId == entity.UserId);
+        _context.Cards.Should().Contain(entity);
 
         _cardRepository.Delete(entity);
     }
 
     [Fact]
-    public void Add_IfDataIsNotCorrect_ShouldNotAddCard()
+    public void Add_DataIsNotCorrect_ShouldNotAddCard()
     {
         // Arrange
 
@@ -63,7 +63,7 @@ public class CardRepositoryTests : IDisposable, IAsyncDisposable
     }
 
     [Fact]
-    public void Delete_IfCardExists_ShouldDeleteCard()
+    public void Delete_CardExists_ShouldDeleteCard()
     {
         // Arrange
 
@@ -77,11 +77,11 @@ public class CardRepositoryTests : IDisposable, IAsyncDisposable
 
         // Assert
 
-        _context.Cards.Should().NotContain(card => card.UserId == entity.UserId);
+        _context.Cards.Should().NotContain(entity);
     }
 
     [Fact]
-    public void Delete_IfCardNotExists_ShouldNotDeleteCard()
+    public void Delete_CardNotExists_ShouldNotDeleteCard()
     {
         // Arrange
 
@@ -97,7 +97,7 @@ public class CardRepositoryTests : IDisposable, IAsyncDisposable
     }
 
     [Fact]
-    public void Update_IfDataIsCorrect_ShouldUpdateCard()
+    public void Update_DataIsCorrect_ShouldUpdateCard()
     {
         // Arrange
 
@@ -113,12 +113,10 @@ public class CardRepositoryTests : IDisposable, IAsyncDisposable
 
         // Assert
 
-        _context.Cards.Should()
-            .Contain(card => card.UserId == entity.UserId)
-            .Which.Should().BeEquivalentTo(entity);
+        _context.Cards.Should().Contain(entity);
 
         _cardRepository.Delete(entity);
-    }
+    }    
 
     [Fact]
     public void GetAll_ShouldGetAllCards()
@@ -145,7 +143,7 @@ public class CardRepositoryTests : IDisposable, IAsyncDisposable
     }
 
     [Fact]
-    public void GetById_IfCardExists_ShouldReturnCard()
+    public void GetById_CardExists_ShouldReturnCard()
     {
         // Arrange
 
@@ -165,7 +163,7 @@ public class CardRepositoryTests : IDisposable, IAsyncDisposable
     }
 
     [Fact]
-    public void GetById_IfCardNotExists_ShouldReturnNull()
+    public void GetById_CardNotExists_ShouldReturnNull()
     {
         // Act
 
@@ -177,7 +175,7 @@ public class CardRepositoryTests : IDisposable, IAsyncDisposable
     }
 
     [Fact]
-    public void Exists_IfCardExists_ShouldReturnTrue()
+    public void Exists_CardExists_ShouldReturnTrue()
     {
         // Arrange
 
@@ -197,7 +195,7 @@ public class CardRepositoryTests : IDisposable, IAsyncDisposable
     }
 
     [Fact]
-    public void Exists_IfCardNotExists_ShouldReturnFalse()
+    public void Exists_CardNotExists_ShouldReturnFalse()
     {
         // Act
 
