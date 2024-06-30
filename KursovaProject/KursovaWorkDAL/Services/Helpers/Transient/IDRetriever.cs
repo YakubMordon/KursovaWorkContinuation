@@ -26,7 +26,7 @@ public class IdRetriever : IIdRetriever
         var claimsPrincipal = _httpContextAccessor.HttpContext.User;
         var userIdClaim = claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier);
 
-        if (userIdClaim != null && int.TryParse(userIdClaim.Value, out var userId))
+        if (userIdClaim is not null && int.TryParse(userIdClaim.Value, out var userId))
         {
             Log.Information("User is logged in");
             return userId;
