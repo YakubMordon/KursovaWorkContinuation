@@ -1,6 +1,5 @@
 ﻿using Bogus;
 using KursovaWork.Domain.Entities;
-using KursovaWork.Domain.Entities.Car;
 
 namespace KursovaWork.Infrastructure.Unit.Tests.Fakers;
 
