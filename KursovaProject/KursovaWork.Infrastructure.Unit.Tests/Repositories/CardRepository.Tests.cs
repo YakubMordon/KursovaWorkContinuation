@@ -15,7 +15,6 @@ public class CardRepositoryTests : IDisposable, IAsyncDisposable
 
     public CardRepositoryTests()
     {
-        // Initialize Bogus faker
         _cardFaker = new Faker<Card>()
             .RuleFor(c => c.UserId, f => f.Random.Number(1, 100))
             .RuleFor(c => c.CardNumber, f => f.Finance.CreditCardNumber())
@@ -25,7 +24,6 @@ public class CardRepositoryTests : IDisposable, IAsyncDisposable
             .RuleFor(c => c.Cvv, f => f.Finance.CreditCardCvv())
             .UseSeed(1994);
 
-        // Налаштовуємо In-Memory базу даних
         _dbContextOptions = new DbContextOptionsBuilder<CarSaleContext>()
             .UseInMemoryDatabase(databaseName: "TestDatabase_Cards")
             .Options;

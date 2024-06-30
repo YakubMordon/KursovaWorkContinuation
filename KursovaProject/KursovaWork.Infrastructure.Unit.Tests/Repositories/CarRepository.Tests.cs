@@ -16,7 +16,6 @@ public class CarRepositoryTests : IDisposable, IAsyncDisposable
 
     public CarRepositoryTests()
     {
-        // Initialize Bogus faker
         _carFaker = new Faker<Car>()
             .RuleFor(c => c.Id, f => f.Random.Number(1, 100))
             .RuleFor(c => c.Make, f => f.Vehicle.Manufacturer())
@@ -26,7 +25,6 @@ public class CarRepositoryTests : IDisposable, IAsyncDisposable
             .RuleFor(c => c.Description, f => f.Commerce.ProductDescription())
             .UseSeed(1994);
 
-        // Налаштовуємо In-Memory базу даних
         _dbContextOptions = new DbContextOptionsBuilder<CarSaleContext>()
             .UseInMemoryDatabase(databaseName: "TestDatabase_Cars")
             .Options;
