@@ -72,7 +72,7 @@
 
                             <div class="form-group">
                                 <p class="fs-6">Підтвердіть пароль</p>
-                                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control-custom", placeholder = "Підтвердіть пароль", required = "required" })
+                                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control-custom", type = "password", placeholder = "Підтвердіть пароль", required = "required" })
                                 @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger", @id = "confirmPasswordError" })
                             </div>
 

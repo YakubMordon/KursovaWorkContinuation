@@ -23,11 +23,15 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity>
     public void Add(TEntity entity)
     {
         Context.Set<TEntity>().Add(entity);
+
+        Context.SaveChanges();
     }
 
     public void Delete(TEntity entity)
     {
         Context.Set<TEntity>().Remove(entity);
+
+        Context.SaveChanges();
     }
 
     public IEnumerable<TEntity> GetAll()
@@ -38,5 +42,7 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity>
     public void Update(TEntity entity)
     {
         Context.Set<TEntity>().Update(entity);
+
+        Context.SaveChanges();
     }
 }

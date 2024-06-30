@@ -20,7 +20,7 @@ public static class DbInitializer
 
         if (context.Cars.Any())
         {
-            Log.Information("Cars already exist in the database.");
+            Log.Information("Data already exists in the database.");
             return;
         }
 
