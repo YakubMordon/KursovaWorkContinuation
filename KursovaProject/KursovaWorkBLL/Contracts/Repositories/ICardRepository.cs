@@ -19,5 +19,5 @@ public interface ICardRepository : IBaseRepository<Card>
     /// </summary>
     /// <param name="id">User identifier.</param>
     /// <returns>True if found, otherwise False.</returns>
-    bool IsExisting(int id);
+    bool Exists(int id);
 }

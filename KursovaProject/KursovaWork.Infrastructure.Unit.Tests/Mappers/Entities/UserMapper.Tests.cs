@@ -1,17 +1,17 @@
 ﻿using FluentAssertions;
 using KursovaWork.Domain.Entities;
 using KursovaWork.Domain.Models;
-using Mapper = KursovaWork.Infrastructure.Mappers.Entities.UserMapper;
+using KursovaWork.Infrastructure.Mappers.Entities;
 
 namespace KursovaWork.Infrastructure.Unit.Tests.Mappers.Entities;
 
-public class UserMapper
+public class UserMapperTests
 {
-    private readonly Mapper _mapper;
+    private readonly UserMapper _mapper;
 
-    public UserMapper()
+    public UserMapperTests()
     {
-        _mapper = new Mapper();
+        _mapper = new UserMapper();
     }
 
     [Fact]

@@ -1,17 +1,17 @@
 ﻿using FluentAssertions;
 using KursovaWork.Domain.Entities;
 using KursovaWork.Domain.Models;
-using Mapper = KursovaWork.Infrastructure.Mappers.Entities.CardMapper;
+using KursovaWork.Infrastructure.Mappers.Entities;
 
 namespace KursovaWork.Infrastructure.Unit.Tests.Mappers.Entities;
 
-public class CardMapper
+public class CardMapperTests
 {
-    private readonly Mapper _mapper;
+    private readonly CardMapper _mapper;
 
-    public CardMapper()
+    public CardMapperTests()
     {
-        _mapper = new Mapper();
+        _mapper = new CardMapper();
     }
 
     [Fact]

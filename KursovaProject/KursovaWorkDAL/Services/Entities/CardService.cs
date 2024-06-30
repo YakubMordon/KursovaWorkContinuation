@@ -84,6 +84,6 @@ public class CardService : ICardService
         var loggedInUserId = _idRetriever.GetLoggedInUserId();
 
         Log.Information("Checking if the user has a connected payment method");
-        return _cardRepository.IsExisting(loggedInUserId);
+        return _cardRepository.Exists(loggedInUserId);
     }
 }

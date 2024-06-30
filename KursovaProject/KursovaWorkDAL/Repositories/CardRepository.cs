@@ -18,7 +18,8 @@ public class CardRepository : BaseRepository<Card>, ICardRepository
     {
         return Context.Cards.FirstOrDefault(c => c.UserId == id);
     }
-    public bool IsExisting(int id)
+
+    public bool Exists(int id)
     {
         return Context.Cards.Any(u => u.UserId == id);
     }
