@@ -1,7 +1,7 @@
-﻿using Bogus;
-using FluentAssertions;
+﻿using FluentAssertions;
 using KursovaWork.Domain.Entities;
 using KursovaWork.Infrastructure.Repositories;
+using KursovaWork.Infrastructure.Unit.Tests.Fakers;
 using Microsoft.EntityFrameworkCore;
 
 namespace KursovaWork.Infrastructure.Unit.Tests.Repositories;
@@ -11,18 +11,11 @@ public class CardRepositoryTests : IDisposable, IAsyncDisposable
     private DbContextOptions<CarSaleContext> _dbContextOptions;
     private CarSaleContext _context;
     private CardRepository _cardRepository;
-    private Faker<Card> _cardFaker;
+    private CardFaker _cardFaker;
 
     public CardRepositoryTests()
     {
-        _cardFaker = new Faker<Card>()
-            .RuleFor(c => c.UserId, f => f.Random.Number(1, 100))
-            .RuleFor(c => c.CardNumber, f => f.Finance.CreditCardNumber())
-            .RuleFor(c => c.CardHolderName, f => f.Name.FullName())
-            .RuleFor(c => c.ExpirationMonth, f => f.Random.Number(1, 12).ToString())
-            .RuleFor(c => c.ExpirationYear, f => f.Random.Number(24, 30).ToString())
-            .RuleFor(c => c.Cvv, f => f.Finance.CreditCardCvv())
-            .UseSeed(1994);
+        _cardFaker = new CardFaker();
 
         _dbContextOptions = new DbContextOptionsBuilder<CarSaleContext>()
             .UseInMemoryDatabase(databaseName: "TestDatabase_Cards")

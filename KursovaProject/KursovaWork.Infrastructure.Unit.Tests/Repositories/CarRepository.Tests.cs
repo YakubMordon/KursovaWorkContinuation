@@ -1,8 +1,7 @@
-﻿using Bogus;
-using FluentAssertions;
-using KursovaWork.Domain.Entities;
+﻿using FluentAssertions;
 using KursovaWork.Domain.Entities.Car;
 using KursovaWork.Infrastructure.Repositories;
+using KursovaWork.Infrastructure.Unit.Tests.Fakers;
 using Microsoft.EntityFrameworkCore;
 
 namespace KursovaWork.Infrastructure.Unit.Tests.Repositories;
@@ -12,18 +11,11 @@ public class CarRepositoryTests : IDisposable, IAsyncDisposable
     private DbContextOptions<CarSaleContext> _dbContextOptions;
     private CarSaleContext _context;
     private CarRepository _carRepository;
-    private Faker<Car> _carFaker;
+    private CarFaker _carFaker;
 
     public CarRepositoryTests()
     {
-        _carFaker = new Faker<Car>()
-            .RuleFor(c => c.Id, f => f.Random.Number(1, 100))
-            .RuleFor(c => c.Make, f => f.Vehicle.Manufacturer())
-            .RuleFor(c => c.Model, f => f.Vehicle.Model())
-            .RuleFor(c => c.Year, f => f.Random.Number(1900, 2100))
-            .RuleFor(c => c.Price, f => f.Random.Decimal(100000, 500000))
-            .RuleFor(c => c.Description, f => f.Commerce.ProductDescription())
-            .UseSeed(1994);
+        _carFaker = new CarFaker();
 
         _dbContextOptions = new DbContextOptionsBuilder<CarSaleContext>()
             .UseInMemoryDatabase(databaseName: "TestDatabase_Cars")
@@ -34,7 +26,7 @@ public class CarRepositoryTests : IDisposable, IAsyncDisposable
     }
 
     [Fact]
-    public void Add_IfDataIsCorrect_ShouldAddCar()
+    public void Add_DataIsCorrect_ShouldAddCar()
     {
         // Arrange
 
@@ -52,7 +44,7 @@ public class CarRepositoryTests : IDisposable, IAsyncDisposable
     }
 
     [Fact]
-    public void Add_IfDataIsNotCorrect_ShouldNotAddCar()
+    public void Add_DataIsNotCorrect_ShouldNotAddCar()
     {
         // Arrange
 
@@ -71,7 +63,7 @@ public class CarRepositoryTests : IDisposable, IAsyncDisposable
     }
 
     [Fact]
-    public void Delete_IfCarExists_ShouldDeleteCar()
+    public void Delete_CarExists_ShouldDeleteCar()
     {
         // Arrange
 
@@ -89,7 +81,7 @@ public class CarRepositoryTests : IDisposable, IAsyncDisposable
     }
 
     [Fact]
-    public void Delete_IfCarNotExists_ShouldNotDeleteCar()
+    public void Delete_CarNotExists_ShouldNotDeleteCar()
     {
         // Arrange
 
@@ -105,7 +97,7 @@ public class CarRepositoryTests : IDisposable, IAsyncDisposable
     }
 
     [Fact]
-    public void Update_IfDataIsCorrect_ShouldUpdateCar()
+    public void Update_DataIsCorrect_ShouldUpdateCar()
     {
         // Arrange
 
@@ -155,7 +147,7 @@ public class CarRepositoryTests : IDisposable, IAsyncDisposable
     }
 
     [Fact]
-    public void GetById_IfCarExists_ShouldReturnCar()
+    public void GetById_CarExists_ShouldReturnCar()
     {
         // Arrange
 
@@ -175,7 +167,7 @@ public class CarRepositoryTests : IDisposable, IAsyncDisposable
     }
 
     [Fact]
-    public void GetById_IfCarNotExists_ShouldReturnNull()
+    public void GetById_CarNotExists_ShouldReturnNull()
     {
         // Act
 
@@ -187,7 +179,7 @@ public class CarRepositoryTests : IDisposable, IAsyncDisposable
     }
 
     [Fact]
-    public void GetByCarInfo_IfCarExists_ShouldReturnCar()
+    public void GetByCarInfo_CarExists_ShouldReturnCar()
     {
         // Arrange
 
@@ -207,7 +199,7 @@ public class CarRepositoryTests : IDisposable, IAsyncDisposable
     }
 
     [Fact]
-    public void GetByCarInfo_IfCarNotExists_ShouldReturnNull()
+    public void GetByCarInfo_CarNotExists_ShouldReturnNull()
     {
         // Act
 

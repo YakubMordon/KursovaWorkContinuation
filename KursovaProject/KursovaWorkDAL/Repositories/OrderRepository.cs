@@ -21,11 +21,11 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
             .FirstOrDefault(o => o.Id == id);
     }
 
-    public IEnumerable<Order> FindAll(int id)
+    public IEnumerable<Order> FindByUserId(int id)
     {
         return Context.Orders
             .Include(o => o.Car)
-            .ThenInclude(c => c.Detail)
+                .ThenInclude(c => c.Detail)
             .Include(o => o.ConfiguratorOptions)
             .Where(o => o.UserId == id);
     }
@@ -33,7 +33,7 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
     {
         return Context.Orders
             .Include(o => o.Car)
-            .ThenInclude(c => c.Detail)
+                .ThenInclude(c => c.Detail)
             .Include(o => o.ConfiguratorOptions);
     }
 }

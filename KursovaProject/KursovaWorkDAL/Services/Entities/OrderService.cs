@@ -68,7 +68,7 @@ public class OrderService : IOrderService
     public IEnumerable<Order> FindAll(int id)
     {
         Log.Information("Retrieving orders associated with user");
-        return _orderRepository.FindAll(id);
+        return _orderRepository.FindByUserId(id);
     }
 
     public IEnumerable<Order> FindAllLoggedIn()
@@ -77,7 +77,7 @@ public class OrderService : IOrderService
         var loggedInId = _idRetriever.GetLoggedInUserId();
 
         Log.Information("Retrieving orders associated with logged-in user");
-        return _orderRepository.FindAll(loggedInId);
+        return _orderRepository.FindByUserId(loggedInId);
     }
 
     public IEnumerable<Order> GetAll()

@@ -19,5 +19,5 @@ public interface IOrderRepository : IBaseRepository<Order>
     /// </summary>
     /// <param name="id">User identifier.</param>
     /// <returns>List of orders.</returns>
-    IEnumerable<Order> FindAll(int id);
+    IEnumerable<Order> FindByUserId(int id);
 }
