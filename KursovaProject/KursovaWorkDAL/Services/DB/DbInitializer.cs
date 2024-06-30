@@ -18,7 +18,13 @@ public static class DbInitializer
 
         Log.Information("Successfully checked if the database is created.");
 
-        if (context.Cars.Any())
+        if (context.Cars.Count() > 0 ||
+            context.CarImages.Count() > 0 ||
+            context.CarDetails.Count() > 0 ||
+            context.Users.Count() > 0 ||
+            context.Orders.Count() > 0   ||
+            context.Cards.Count() > 0 ||
+            context.ConfiguratorOptions.Count() > 0)
         {
             Log.Information("Data already exists in the database.");
             return;
