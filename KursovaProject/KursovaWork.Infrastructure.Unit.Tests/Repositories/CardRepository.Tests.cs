@@ -124,9 +124,7 @@ public class CardRepositoryTests : IDisposable, IAsyncDisposable
 
         _context.Cards.Should()
             .Contain(card => card.UserId == entity.UserId)
-            .Which.CardHolderName
-                    .Should()
-                    .Be(entity.CardHolderName);
+            .Which.Should().BeEquivalentTo(entity);
 
         _cardRepository.Delete(entity);
     }
