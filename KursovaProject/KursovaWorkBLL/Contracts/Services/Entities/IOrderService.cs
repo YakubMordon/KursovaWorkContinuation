@@ -27,7 +27,7 @@ public interface IOrderService
     /// <param name="curCar">Car chosen by the user</param>
     /// <param name="configurator">Car configuration options if chosen through configurator</param>
     /// <returns>Order number</returns>
-    int AddOrderLoggedIn(Car curCar, ConfiguratorOptions? configurator);
+    int AddOrderLoggedIn(Car curCar, ConfiguratorOptions? configurator = null);
 
     /// <summary>
     /// Method to update an order in the database

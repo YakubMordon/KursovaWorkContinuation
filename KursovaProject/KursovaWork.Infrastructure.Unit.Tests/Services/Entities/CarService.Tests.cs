@@ -5,7 +5,6 @@ using KursovaWork.Domain.Entities.Car;
 using KursovaWork.Infrastructure.Services.Entities;
 using KursovaWork.Infrastructure.Unit.Tests.Fakers;
 using Moq;
-using System.Diagnostics;
 
 namespace KursovaWork.Infrastructure.Unit.Tests.Services.Entities;
 
@@ -91,7 +90,7 @@ public class CarServiceTests
     }
 
     [Fact]
-    public void UpdateCard_ShouldSucceed()
+    public void UpdateCar_ShouldSucceed()
     {
         // Arrange
         var carToUpdate = _carFaker.Generate();
@@ -104,7 +103,7 @@ public class CarServiceTests
     }
 
     [Fact]
-    public void DeleteCard_ShouldSucceed()
+    public void DeleteCar_ShouldSucceed()
     {
         // Arrange
         var carToDelete = _carFaker.Generate();
@@ -117,7 +116,7 @@ public class CarServiceTests
     }
 
     [Fact]
-    public void GetAllCards_ShouldReturnAllCards()
+    public void GetAllCars_ShouldReturnAllCars()
     {
         // Arrange
         var expectedCars = _carFaker.Generate(5);

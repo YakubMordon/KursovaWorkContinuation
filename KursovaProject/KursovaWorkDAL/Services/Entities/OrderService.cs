@@ -32,7 +32,7 @@ public class OrderService : IOrderService
         Log.Information("Order successfully added");
     }
 
-    public int AddOrderLoggedIn(Car curCar, ConfiguratorOptions? configurator)
+    public int AddOrderLoggedIn(Car curCar, ConfiguratorOptions? configurator = null)
     {
         Log.Information("Retrieving user identifier");
         var loggedInUserId = _idRetriever.GetLoggedInUserId();
@@ -47,7 +47,7 @@ public class OrderService : IOrderService
 
         Log.Information("Creating car order");
 
-        if (configurator != null)
+        if (configurator is not null)
         {
             order.ConfiguratorOptions = configurator;
             Log.Information("Car selected in configurator");
