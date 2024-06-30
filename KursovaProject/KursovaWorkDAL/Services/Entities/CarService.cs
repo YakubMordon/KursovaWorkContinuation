@@ -21,19 +21,19 @@ public class CarService : ICarService
         _carRepository = carRepository;
     }
 
-    public void AddCar(CarInfo car)
+    public void AddCar(Car car)
     {
         _carRepository.Add(car);
         Log.Information("Added new car information");
     }
 
-    public void DeleteCar(CarInfo car)
+    public void DeleteCar(Car car)
     {
         _carRepository.Delete(car);
         Log.Information("Deleted car information");
     }
 
-    public IEnumerable<CarInfo> Filtering(int? priceFrom, int? priceTo, int? yearFrom, int? yearTo, string? selectedFuelTypes, string? selectedTransmissionTypes, string? selectedMakes)
+    public IEnumerable<Car> Filtering(int? priceFrom, int? priceTo, int? yearFrom, int? yearTo, string? selectedFuelTypes, string? selectedTransmissionTypes, string? selectedMakes)
     {
         Log.Information("Entering car list filtering method");
         var filteredCars = _carRepository.GetAll();
@@ -84,37 +84,37 @@ public class CarService : ICarService
         return filteredCars;
     }
 
-    public IEnumerable<CarInfo> GetAllCars()
+    public IEnumerable<Car> GetAllCars()
     {
         Log.Information("Retrieved all possible car information");
         return _carRepository.GetAll();
     }
 
-    public CarInfo GetCarById(int id)
+    public Car GetCarById(int id)
     {
         Log.Information("Retrieved car information by its identifier");
         return _carRepository.GetById(id);
     }
 
-    public CarInfo GetCarByInfo(string make, string model, int year)
+    public Car GetCarByInfo(string make, string model, int year)
     {
         Log.Information("Retrieved car information by its make, model, and year of manufacture");
         return _carRepository.GetByCarInfo(make, model, year);
     }
 
-    public IEnumerable<CarInfo> SortByAlphabet(IEnumerable<CarInfo> curList)
+    public IEnumerable<Car> SortByAlphabet(IEnumerable<Car> curList)
     {
         Log.Information("Entering method to sort the list of models alphabetically");
         return curList.OrderBy(o => o.Make + o.Model);
     }
 
-    public IEnumerable<CarInfo> SortByNovelty(IEnumerable<CarInfo> curList)
+    public IEnumerable<Car> SortByNovelty(IEnumerable<Car> curList)
     {
         Log.Information("Entering method to sort the list of models by novelty (year of manufacture in descending order)");
         return curList.OrderByDescending(o => o.Year);
     }
 
-    public IEnumerable<CarInfo> SortByPrice(IEnumerable<CarInfo> curList, string param)
+    public IEnumerable<Car> SortByPrice(IEnumerable<Car> curList, string param)
     {
         Log.Information("Entering method to sort the list of models by price");
 
@@ -132,7 +132,7 @@ public class CarService : ICarService
         return curList;
     }
 
-    public void UpdateCar(CarInfo car)
+    public void UpdateCar(Car car)
     {
         _carRepository.Update(car);
         Log.Information("Updated car information");

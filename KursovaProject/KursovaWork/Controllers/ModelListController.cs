@@ -12,7 +12,7 @@ namespace KursovaWork.UI.Controllers;
 public class ModelListController : Controller
 {
     private readonly ICarService _carService;
-    private static List<CarInfo> _curList;
+    private static List<Car> _curList;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ModelListController"/> class.

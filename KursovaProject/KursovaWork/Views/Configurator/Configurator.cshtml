@@ -1,6 +1,6 @@
 ﻿@using KursovaWork.Domain.Entities.Car
 @using KursovaWork.Infrastructure.Services.Helpers.Static
-@model CarInfo;
+@model Car;
 @{
     ViewBag.Title = Model.Make + " " + Model.Model + " - Конфігуратор";
     ViewBagHelper.SetIsLoggedInInViewBag(ViewContext);
@@ -13,7 +13,7 @@
         @foreach(var image in Model.Images)
         {
             <div class="carousel-cell">
-                <img src="@image.ImageUrl"/>
+                <img src="@image.Url"/>
             </div>
         }
 

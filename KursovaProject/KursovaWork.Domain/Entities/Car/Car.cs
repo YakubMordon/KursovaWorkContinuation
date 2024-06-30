@@ -1,15 +1,19 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KursovaWork.Domain.Entities.Car;
 
 /// <summary>
 /// Class representing car information.
 /// </summary>
-public class CarInfo : BaseEntity
+[Table("cars")]
+public class Car : BaseEntity
 {
     /// <summary>
     /// Unique identifier for the car.
     /// </summary>
+    [Key]
+    [Column("id")]
     public int Id { get; set; }
 
     /// <summary>
@@ -17,6 +21,7 @@ public class CarInfo : BaseEntity
     /// </summary>
     [Required]
     [StringLength(50)]
+    [Column("make")]
     public string Make { get; set; }
 
     /// <summary>
@@ -24,6 +29,7 @@ public class CarInfo : BaseEntity
     /// </summary>
     [Required]
     [StringLength(50)]
+    [Column("model")]
     public string Model { get; set; }
 
     /// <summary>
@@ -31,6 +37,7 @@ public class CarInfo : BaseEntity
     /// </summary>
     [Required]
     [Range(1900, 2100)]
+    [Column("year")]
     public int Year { get; set; }
 
     /// <summary>
@@ -38,12 +45,14 @@ public class CarInfo : BaseEntity
     /// </summary>
     [Required]
     [Range(0, double.MaxValue)]
+    [Column("price")]
     public decimal Price { get; set; }
 
     /// <summary>
     /// Description of the car.
     /// </summary>
     [StringLength(500)]
+    [Column("description")]
     public string Description { get; set; }
 
     /// <summary>

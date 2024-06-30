@@ -26,9 +26,9 @@ public static class DbInitializer
 
         Log.Information("No data is existing in the database.");
 
-        var carInfos = new List<CarInfo>
+        var carInfos = new List<Car>
         {
-            new CarInfo
+            new Car
             {
                 Make = "Volkswagen",
                 Model = "Arteon",
@@ -45,19 +45,19 @@ public static class DbInitializer
                 {
                     new CarImage()
                     {
-                        ImageUrl = "https://cdn.motor1.com/images/mgl/yK3PG/s3/2020-vw-arteon-r-line-edition.jpg"
+                        Url = "https://cdn.motor1.com/images/mgl/yK3PG/s3/2020-vw-arteon-r-line-edition.jpg"
                     },
                     new CarImage()
                     {
-                        ImageUrl = "https://i.ytimg.com/vi/oAIervGLG9Q/maxresdefault.jpg"
+                        Url = "https://i.ytimg.com/vi/oAIervGLG9Q/maxresdefault.jpg"
                     },
                     new CarImage()
                     {
-                        ImageUrl = "https://cdn.motor1.com/images/mgl/JPV9A/s3/2020-vw-arteon-r-line-edition.webp"
+                        Url = "https://cdn.motor1.com/images/mgl/JPV9A/s3/2020-vw-arteon-r-line-edition.webp"
                     }
                 }
             },
-            new CarInfo
+            new Car
             {
                 Make = "Porsche",
                 Model = "Taycan",
@@ -74,19 +74,19 @@ public static class DbInitializer
                 {
                     new CarImage()
                     {
-                        ImageUrl = "https://cdn.motor1.com/images/mgl/8ww1J/s3/2021-porsche-taycan-turbo-s.jpg"
+                        Url = "https://cdn.motor1.com/images/mgl/8ww1J/s3/2021-porsche-taycan-turbo-s.jpg"
                     },
                     new CarImage()
                     {
-                        ImageUrl = "https://cdn.motor1.com/images/mgl/QEmQB/s3/2020-porsche-taycan.jpg"
+                        Url = "https://cdn.motor1.com/images/mgl/QEmQB/s3/2020-porsche-taycan.jpg"
                     },
                     new CarImage()
                     {
-                        ImageUrl = "https://gaadiwaadi.com/wp-content/uploads/2020/04/Porche-taycan2-1280x720.jpg"
+                        Url = "https://gaadiwaadi.com/wp-content/uploads/2020/04/Porche-taycan2-1280x720.jpg"
                     }
                 }
             },
-            new CarInfo
+            new Car
             {
                 Make = "Audi",
                 Model = "Q8",
@@ -103,19 +103,19 @@ public static class DbInitializer
                 {
                     new CarImage()
                     {
-                        ImageUrl = "https://uzr.com.ua/wp-content/uploads/2018/08/Audi-Q8-8.jpg"
+                        Url = "https://uzr.com.ua/wp-content/uploads/2018/08/Audi-Q8-8.jpg"
                     },
                     new CarImage()
                     {
-                        ImageUrl = "https://cdn.car-recalls.eu/wp-content/uploads/2020/07/Audi-Q8-2020-automatic-gearbox-oil-leak.jpg"
+                        Url = "https://cdn.car-recalls.eu/wp-content/uploads/2020/07/Audi-Q8-2020-automatic-gearbox-oil-leak.jpg"
                     },
                     new CarImage()
                     {
-                        ImageUrl = "https://pictures.dealer.com/a/audisanjuan1001eexpressway83aoa/0618/0112a064facce92a80125844c7371be2x.jpg"
+                        Url = "https://pictures.dealer.com/a/audisanjuan1001eexpressway83aoa/0618/0112a064facce92a80125844c7371be2x.jpg"
                     }
                 }
             },
-            new CarInfo
+            new Car
             {
                 Make = "Volkswagen",
                 Model = "Golf",
@@ -132,19 +132,19 @@ public static class DbInitializer
                 {
                     new CarImage()
                     {
-                        ImageUrl = "https://i.ytimg.com/vi/JtIuMVXBYlY/maxresdefault.jpg"
+                        Url = "https://i.ytimg.com/vi/JtIuMVXBYlY/maxresdefault.jpg"
                     },
                     new CarImage()
                     {
-                        ImageUrl = "https://a.d-cd.net/To5JJbC-UBCTAHadHDFZ7Zu4PEM-1920.jpg"
+                        Url = "https://a.d-cd.net/To5JJbC-UBCTAHadHDFZ7Zu4PEM-1920.jpg"
                     },
                     new CarImage()
                     {
-                        ImageUrl = "https://autoua.net/media/uploads2/volkswagen/volkswagen-golf_r-2022-1280-20.jpg"
+                        Url = "https://autoua.net/media/uploads2/volkswagen/volkswagen-golf_r-2022-1280-20.jpg"
                     }
                 }
             },
-            new CarInfo
+            new Car
             {
                 Make = "Lamborghini",
                 Model = "Huracan",
@@ -161,19 +161,19 @@ public static class DbInitializer
                 {
                     new CarImage()
                     {
-                        ImageUrl = "https://i.ytimg.com/vi/7IQCZxi7Mwk/maxresdefault.jpg"
+                        Url = "https://i.ytimg.com/vi/7IQCZxi7Mwk/maxresdefault.jpg"
                     },
                     new CarImage()
                     {
-                        ImageUrl = "https://renty.ae/cdn-cgi/image/format=auto,fit=contain/https://renty.ae/uploads/car/photos/l/red_lamborghini-evo-spyder_2021_7856_abe1ff80b1f4cd65bf3347c209736e48.jpg"
+                        Url = "https://renty.ae/cdn-cgi/image/format=auto,fit=contain/https://renty.ae/uploads/car/photos/l/red_lamborghini-evo-spyder_2021_7856_abe1ff80b1f4cd65bf3347c209736e48.jpg"
                     },
                     new CarImage()
                     {
-                        ImageUrl = "https://www.topgear.com/sites/default/files/cars-car/image/2019/01/tom_5734.jpg?w=1280&h=720"
+                        Url = "https://www.topgear.com/sites/default/files/cars-car/image/2019/01/tom_5734.jpg?w=1280&h=720"
                     }
                 }
             },
-            new CarInfo
+            new Car
             {
                 Make = "Audi",
                 Model = "A4",
@@ -190,19 +190,19 @@ public static class DbInitializer
                 {
                     new CarImage()
                     {
-                        ImageUrl = "https://img.automoto.ua/thumb/1280-720/d/3/2/f/1/b/audi-a4-2022.jpg?url=aHR0cHM6Ly9hdXRvbW90by51YS91cGxvYWRzL2ZpbGUvM2IvYzkvYmEvZGYvQTQuanBn"
+                        Url = "https://img.automoto.ua/thumb/1280-720/d/3/2/f/1/b/audi-a4-2022.jpg?url=aHR0cHM6Ly9hdXRvbW90by51YS91cGxvYWRzL2ZpbGUvM2IvYzkvYmEvZGYvQTQuanBn"
                     },
                     new CarImage()
                     {
-                        ImageUrl = "https://i.ytimg.com/vi/y09RWxyx288/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGFsgWyhbMA8=&rs=AOn4CLALycU5RW9apLZElHc2_e7H8y0yMg"
+                        Url = "https://i.ytimg.com/vi/y09RWxyx288/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGFsgWyhbMA8=&rs=AOn4CLALycU5RW9apLZElHc2_e7H8y0yMg"
                     },
                     new CarImage()
                     {
-                        ImageUrl = "https://www.autopediame.com/storage/images/Audi/A4%202023/a4%20exterior.jpg"
+                        Url = "https://www.autopediame.com/storage/images/Audi/A4%202023/a4%20exterior.jpg"
                     }
                 }
             },
-            new CarInfo
+            new Car
             {
                 Make = "Lamborghini",
                 Model = "Aventador",
@@ -219,15 +219,15 @@ public static class DbInitializer
                 {
                     new CarImage()
                     {
-                        ImageUrl = "https://i.ytimg.com/vi/2RKG2HqRy8U/maxresdefault.jpg"
+                        Url = "https://i.ytimg.com/vi/2RKG2HqRy8U/maxresdefault.jpg"
                     },
                     new CarImage()
                     {
-                        ImageUrl = "https://i.ytimg.com/vi/RWNpWW8MZUM/maxresdefault.jpg"
+                        Url = "https://i.ytimg.com/vi/RWNpWW8MZUM/maxresdefault.jpg"
                     },
                     new CarImage()
                     {
-                        ImageUrl = "https://i0.wp.com/namastecar.com/wp-content/uploads/2022/06/Lamborghini-Aventador-LP-780-4-Ultimae-Roadster-2022-video-review-specs-details-in-Hindi-1.jpeg?ssl=1"
+                        Url = "https://i0.wp.com/namastecar.com/wp-content/uploads/2022/06/Lamborghini-Aventador-LP-780-4-Ultimae-Roadster-2022-video-review-specs-details-in-Hindi-1.jpeg?ssl=1"
                     }
                 }
             }

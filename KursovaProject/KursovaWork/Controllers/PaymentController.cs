@@ -15,7 +15,7 @@ public class PaymentController : Controller
     private readonly ICardService _cardService;
     private readonly IOrderService _orderService;
     private readonly IUserService _userService;
-    private static CarInfo _curCar;
+    private static Car _curCar;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="PaymentController"/> class.

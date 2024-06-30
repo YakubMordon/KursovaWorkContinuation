@@ -6,11 +6,14 @@ namespace KursovaWork.Domain.Entities;
 /// <summary>
 /// Represents a user.
 /// </summary>
+[Table("user")]
 public class User : BaseEntity
 {
     /// <summary>
     /// The unique identifier for the user.
     /// </summary>
+    [Key]
+    [Column("id")]
     public int Id { get; set; }
 
     /// <summary>
@@ -18,6 +21,7 @@ public class User : BaseEntity
     /// </summary>
     [Required]
     [StringLength(50)]
+    [Column("first_name")]
     public string FirstName { get; set; }
 
     /// <summary>
@@ -25,6 +29,7 @@ public class User : BaseEntity
     /// </summary>
     [Required]
     [StringLength(50)]
+    [Column("last_name")]
     public string LastName { get; set; }
 
     /// <summary>
@@ -32,6 +37,7 @@ public class User : BaseEntity
     /// </summary>
     [Required]
     [EmailAddress]
+    [Column("email")]
     public string Email { get; set; }
 
     /// <summary>
@@ -40,6 +46,7 @@ public class User : BaseEntity
     [Required]
     [DataType(DataType.Password)]
     [StringLength(100, MinimumLength = 6)]
+    [Column("password")]
     public string Password { get; set; }
 
     /// <summary>
@@ -47,12 +54,14 @@ public class User : BaseEntity
     /// </summary>
     [Required]
     [DataType(DataType.Password)]
-    [Compare("Password")]
+    [Compare(nameof(Password))]
+    [Column("confirm_password")]
     public string ConfirmPassword { get; set; }
 
     /// <summary>
     /// The date and time the user was created.
     /// </summary>
+    [Column("created_at")]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     /// <summary>
@@ -63,6 +72,5 @@ public class User : BaseEntity
     /// <summary>
     /// The user's credit card (one-to-one relationship).
     /// </summary>
-    [ForeignKey("UserId")]
     public virtual Card CreditCard { get; set; }
 }

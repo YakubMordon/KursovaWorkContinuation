@@ -45,10 +45,10 @@ public class FilterViewModel
     /// <summary>
     /// List of current car models.
     /// </summary>
-    public List<CarInfo> Cars { get; set; }
+    public List<Car> Cars { get; set; }
 
     /// <summary>
     /// Initial list of car models.
     /// </summary>
-    public static List<CarInfo> OrigCars { get; set; }
+    public static List<Car> OrigCars { get; set; }
 }

@@ -8,7 +8,7 @@
         <div class="col-md-4 mb-2 card-background">
             <a class="text-decoration-none" asp-action="Car" asp-controller="Car" asp-route-param1="@car.Make" asp-route-param2="@car.Model" asp-route-param3="@car.Year">
                 <div class="card">
-                    <img src="@car.Images.FirstOrDefault()?.ImageUrl" class="card-img-top" alt="Car Image">
+                    <img src="@car.Images.FirstOrDefault()?.Url" class="card-img-top" alt="Car Image">
                     <div class="card-body">
                         <h5 class="card-title-car">@car.Make @car.Model</h5>
                         <p class="card-text text-color">@car.Description</p>

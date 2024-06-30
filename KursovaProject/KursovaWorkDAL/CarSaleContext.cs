@@ -27,7 +27,7 @@ public class CarSaleContext : DbContext
     /// <summary>
     /// Represents the table of cars in the database.
     /// </summary>
-    public DbSet<CarInfo> Cars { get; set; }
+    public DbSet<Car> Cars { get; set; }
 
     /// <summary>
     /// Represents the table of car images in the database.
@@ -65,12 +65,12 @@ public class CarSaleContext : DbContext
     /// <param name="modelBuilder">Object used to build the model.</param>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<CarInfo>()
+        modelBuilder.Entity<Car>()
             .HasMany(c => c.Images)
             .WithOne(ci => ci.Car)
             .HasForeignKey(ci => ci.CarId);
 
-        modelBuilder.Entity<CarInfo>()
+        modelBuilder.Entity<Car>()
             .HasOne(c => c.Detail)
             .WithOne(cd => cd.Car)
             .HasForeignKey<CarDetail>(cd => cd.CarId);

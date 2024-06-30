@@ -32,7 +32,7 @@ public class OrderService : IOrderService
         Log.Information("Order successfully added");
     }
 
-    public int AddOrderLoggedIn(CarInfo curCar, ConfiguratorOptions? configurator)
+    public int AddOrderLoggedIn(Car curCar, ConfiguratorOptions? configurator)
     {
         Log.Information("Retrieving user identifier");
         var loggedInUserId = _idRetriever.GetLoggedInUserId();

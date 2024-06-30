@@ -12,7 +12,7 @@ public interface ICarService
     /// </summary>
     /// <param name="id">Car identifier</param>
     /// <returns>Car information</returns>
-    CarInfo GetCarById(int id);
+    Car GetCarById(int id);
 
     /// <summary>
     /// Method to get car information by its make, model, and year of manufacture
@@ -21,38 +21,38 @@ public interface ICarService
     /// <param name="model">Car model</param>
     /// <param name="year">Car year of manufacture</param>
     /// <returns>Car information</returns>
-    CarInfo GetCarByInfo(string make, string model, int year);
+    Car GetCarByInfo(string make, string model, int year);
 
     /// <summary>
     /// Method to add car information to the database
     /// </summary>
     /// <param name="car">Car information</param>
-    void AddCar(CarInfo car);
+    void AddCar(Car car);
 
     /// <summary>
     /// Method to update car information in the database
     /// </summary>
     /// <param name="car">Car information</param>
-    void UpdateCar(CarInfo car);
+    void UpdateCar(Car car);
 
     /// <summary>
     /// Method to delete car information from the database
     /// </summary>
     /// <param name="car">Car information</param>
-    void DeleteCar(CarInfo car);
+    void DeleteCar(Car car);
 
     /// <summary>
     /// Method to get all possible car information
     /// </summary>
     /// <returns>List of all possible car information</returns>
-    IEnumerable<CarInfo> GetAllCars();
+    IEnumerable<Car> GetAllCars();
 
     /// <summary>
     /// Method to sort the list of models alphabetically.
     /// </summary>
     /// <param name="curList">List of cars</param>
     /// <returns>Sorted list</returns>
-    IEnumerable<CarInfo> SortByAlphabet(IEnumerable<CarInfo> curList);
+    IEnumerable<Car> SortByAlphabet(IEnumerable<Car> curList);
 
     /// <summary>
     /// Method to sort the list of models by price.
@@ -60,14 +60,14 @@ public interface ICarService
     /// <param name="curList">List of cars</param>
     /// <param name="param">Sorting parameter (cheap or expensive).</param>
     /// <returns>Sorted list</returns>
-    IEnumerable<CarInfo> SortByPrice(IEnumerable<CarInfo> curList, string param);
+    IEnumerable<Car> SortByPrice(IEnumerable<Car> curList, string param);
 
     /// <summary>
     /// Method to sort the list of models by novelty (year of manufacture).
     /// </summary>
     /// <param name="curList">List of cars</param>
     /// <returns>Sorted list</returns>
-    IEnumerable<CarInfo> SortByNovelty(IEnumerable<CarInfo> curList);
+    IEnumerable<Car> SortByNovelty(IEnumerable<Car> curList);
 
     /// <summary>
     /// Method to filter the list of models
@@ -80,5 +80,5 @@ public interface ICarService
     /// <param name="selectedTransmissionTypes">List of selected transmission types.</param>
     /// <param name="selectedMakes">List of selected car makes.</param>
     /// <returns>Filtered list of models</returns>
-    IEnumerable<CarInfo> Filtering(int? priceFrom, int? priceTo, int? yearFrom, int? yearTo, string? selectedFuelTypes, string? selectedTransmissionTypes, string? selectedMakes);
+    IEnumerable<Car> Filtering(int? priceFrom, int? priceTo, int? yearFrom, int? yearTo, string? selectedFuelTypes, string? selectedTransmissionTypes, string? selectedMakes);
 }
