@@ -1,12 +1,10 @@
 ﻿using FluentAssertions;
 using KursovaWork.Application.Contracts.Services.Entities;
-using KursovaWork.Domain.Entities.Car;
 using KursovaWork.Domain.Models;
 using KursovaWork.UI.Controllers;
 using KursovaWork.UI.Unit.Tests.Fakers;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System.Collections.Generic;
 
 namespace KursovaWork.UI.Unit.Tests.Controllers;
 
@@ -50,10 +48,9 @@ public class ModelListControllerTests
         // Arrange
         var unsortedCars = _carFaker.Generate(5);
 
-        var type = _controller.GetType();
+        _mockCarService.Setup(s => s.GetAllCars()).Returns(unsortedCars);
 
-        type.GetProperty("_curList")
-            .SetValue(_controller, unsortedCars);
+        _controller.ModelList();
 
         var sortedCars = unsortedCars.OrderBy(o => o.Make + o.Model);
 
@@ -77,10 +74,9 @@ public class ModelListControllerTests
         // Arrange
         var unsortedCars = _carFaker.Generate(5);
 
-        var type = _controller.GetType();
+        _mockCarService.Setup(s => s.GetAllCars()).Returns(unsortedCars);
 
-        type.GetProperty("_curList")
-            .SetValue(_controller, unsortedCars);
+        _controller.ModelList();
 
         var sortedCars = unsortedCars.OrderByDescending(o => o.Year).ToList();
 
@@ -106,10 +102,9 @@ public class ModelListControllerTests
         // Arrange
         var unsortedCars = _carFaker.Generate(5);
 
-        var type = _controller.GetType();
+        _mockCarService.Setup(s => s.GetAllCars()).Returns(unsortedCars);
 
-        type.GetProperty("_curList")
-            .SetValue(_controller, unsortedCars);
+        _controller.ModelList();
 
         var sortedCars = param.Equals("cheap")
             ? unsortedCars.OrderBy(o => o.Price).ToList()
@@ -140,10 +135,9 @@ public class ModelListControllerTests
             PriceFrom = 20000
         };
 
-        var type = _controller.GetType();
+        _mockCarService.Setup(s => s.GetAllCars()).Returns(unfilteredCars);
 
-        type.GetProperty("_curList")
-            .SetValue(_controller, unfilteredCars);
+        _controller.ModelList();
 
         var filteredCars = unfilteredCars.Where(o => o.Price >= filter.PriceFrom);
 
@@ -174,10 +168,9 @@ public class ModelListControllerTests
             PriceTo = 30000
         };
 
-        var type = _controller.GetType();
+        _mockCarService.Setup(s => s.GetAllCars()).Returns(unfilteredCars);
 
-        type.GetProperty("_curList")
-            .SetValue(_controller, unfilteredCars);
+        _controller.ModelList();
 
         var filteredCars = unfilteredCars.Where(o => o.Price <= filter.PriceTo);
 
@@ -208,10 +201,9 @@ public class ModelListControllerTests
             YearFrom = 2010
         };
 
-        var type = _controller.GetType();
+        _mockCarService.Setup(s => s.GetAllCars()).Returns(unfilteredCars);
 
-        type.GetProperty("_curList")
-            .SetValue(_controller, unfilteredCars);
+        _controller.ModelList();
 
         var filteredCars = unfilteredCars.Where(o => o.Year >= filter.YearFrom);
 
@@ -242,10 +234,9 @@ public class ModelListControllerTests
             YearTo = 2015
         };
 
-        var type = _controller.GetType();
+        _mockCarService.Setup(s => s.GetAllCars()).Returns(unfilteredCars);
 
-        type.GetProperty("_curList")
-            .SetValue(_controller, unfilteredCars);
+        _controller.ModelList();
 
         var filteredCars = unfilteredCars.Where(o => o.Year >= filter.YearTo);
 
@@ -276,10 +267,9 @@ public class ModelListControllerTests
             SelectedFuelTypes = "Gasoline"
         };
 
-        var type = _controller.GetType();
+        _mockCarService.Setup(s => s.GetAllCars()).Returns(unfilteredCars);
 
-        type.GetProperty("_curList")
-            .SetValue(_controller, unfilteredCars);
+        _controller.ModelList();
 
         var filteredCars = unfilteredCars.Where(c => c.Detail.FuelType == filter.SelectedFuelTypes);
 
@@ -310,10 +300,9 @@ public class ModelListControllerTests
             SelectedTransmissionTypes = "Automatic"
         };
 
-        var type = _controller.GetType();
+        _mockCarService.Setup(s => s.GetAllCars()).Returns(unfilteredCars);
 
-        type.GetProperty("_curList")
-            .SetValue(_controller, unfilteredCars);
+        _controller.ModelList();
 
         var filteredCars = unfilteredCars.Where(c => c.Detail.Transmission == filter.SelectedTransmissionTypes);
 
@@ -344,10 +333,9 @@ public class ModelListControllerTests
             SelectedMakes = "Toyota"
         };
 
-        var type = _controller.GetType();
+        _mockCarService.Setup(s => s.GetAllCars()).Returns(unfilteredCars);
 
-        type.GetProperty("_curList")
-            .SetValue(_controller, unfilteredCars);
+        _controller.ModelList();
 
         var filteredCars = unfilteredCars.Where(c => c.Detail.Transmission == filter.SelectedTransmissionTypes);
 

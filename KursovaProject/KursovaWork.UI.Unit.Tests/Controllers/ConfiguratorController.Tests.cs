@@ -2,7 +2,6 @@
 using KursovaWork.Application.Contracts.Services.Entities;
 using KursovaWork.Domain.Entities.Car;
 using KursovaWork.UI.Controllers;
-using KursovaWork.UI.Unit.Tests.Fakers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;

@@ -21,6 +21,7 @@ public class ModelListController : Controller
     public ModelListController(ICarService carService)
     {
         _carService = carService;
+        _curList = new List<Car>();
     }
 
     /// <summary>
