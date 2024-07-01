@@ -87,11 +87,11 @@ public class CreditCardController : Controller
 
         var errors = new
         {
-            CardHolderName = ModelState[nameof(CreditCardViewModel.CardHolderName)].Errors.FirstOrDefault()?.ErrorMessage ?? "",
-            CardNumber = ModelState[nameof(CreditCardViewModel.CardNumber)].Errors.FirstOrDefault()?.ErrorMessage ?? "",
-            ExpirationMonth = ModelState[nameof(CreditCardViewModel.ExpirationMonth)].Errors.FirstOrDefault()?.ErrorMessage ?? "",
-            ExpirationYear = ModelState[nameof(CreditCardViewModel.ExpirationYear)].Errors.FirstOrDefault()?.ErrorMessage ?? "",
-            CVV = ModelState[nameof(CreditCardViewModel.Cvv)].Errors.FirstOrDefault()?.ErrorMessage ?? ""
+            CardHolderName = ModelState[nameof(CreditCardViewModel.CardHolderName)]?.Errors.FirstOrDefault()?.ErrorMessage ?? "",
+            CardNumber = ModelState[nameof(CreditCardViewModel.CardNumber)]?.Errors.FirstOrDefault()?.ErrorMessage ?? "",
+            ExpirationMonth = ModelState[nameof(CreditCardViewModel.ExpirationMonth)]?.Errors.FirstOrDefault()?.ErrorMessage ?? "",
+            ExpirationYear = ModelState[nameof(CreditCardViewModel.ExpirationYear)]?.Errors.FirstOrDefault()?.ErrorMessage ?? "",
+            CVV = ModelState[nameof(CreditCardViewModel.Cvv)]?.Errors.FirstOrDefault()?.ErrorMessage ?? ""
         };
 
         Log.Information("Displaying input fields immediately after loading");
