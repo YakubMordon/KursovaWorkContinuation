@@ -59,7 +59,7 @@ public class ChangePasswordController : Controller
             return Json(new { success = false, error = "Such email is not registered" });
         }
 
-        var error = ModelState[nameof(EmailViewModel.Email)].Errors.FirstOrDefault()?.ErrorMessage ?? "";
+        var error = ModelState[nameof(EmailViewModel.Email)]?.Errors.FirstOrDefault()?.ErrorMessage ?? "";
 
         Log.Information("Data did not pass validation");
         return Json(new { success = false, error });
@@ -101,7 +101,7 @@ public class ChangePasswordController : Controller
             return Json(new { success = true });
         }
 
-        var error = ModelState[nameof(VerificationViewModel.VerificationDigits)].Errors.FirstOrDefault()?.ErrorMessage ?? "";
+        var error = ModelState[nameof(VerificationViewModel.VerificationDigits)]?.Errors.FirstOrDefault()?.ErrorMessage ?? "";
 
         Log.Information("Data did not pass validation");
         return Json(new { success = false, error });
@@ -139,8 +139,8 @@ public class ChangePasswordController : Controller
 
         var errors = new
         {
-            passwordError = ModelState[nameof(ChangePasswordViewModel.Password)].Errors.FirstOrDefault()?.ErrorMessage ?? "",
-            confirmPasswordError = ModelState[nameof(ChangePasswordViewModel.ConfirmPassword)].Errors.FirstOrDefault()?.ErrorMessage ?? ""
+            passwordError = ModelState[nameof(ChangePasswordViewModel.Password)]?.Errors.FirstOrDefault()?.ErrorMessage ?? "",
+            confirmPasswordError = ModelState[nameof(ChangePasswordViewModel.ConfirmPassword)]?.Errors.FirstOrDefault()?.ErrorMessage ?? ""
         };
 
         Log.Information("Data did not pass validation");

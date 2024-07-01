@@ -2,6 +2,7 @@
 using KursovaWork.Application.Contracts.Services.Entities;
 using KursovaWork.Domain.Models;
 using KursovaWork.UI.Controllers;
+using KursovaWork.UI.Unit.Tests.Fakers;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Newtonsoft.Json.Linq;
@@ -108,13 +109,22 @@ public class SignUpControllerTests
         var success = (bool)jsonResult["success"];
         var error = (string)jsonResult["error"];
 
-        success.Should().BeTrue();
+        success.Should().BeFalse();
         error.Should().Be("Incorrect verification code");
     }
 
     [Fact]
     public void ReSendVerificationCode_SendsNewCode_ReturnsJsonWithMessage()
     {
+        // Arrange
+        var userFaker = new UserFaker();
+
+        var user = userFaker.Generate();
+        var verificationCode = 1234;
+        SignUpController.VerificationCode = verificationCode;
+
+        SignUpController.CurUser = user;
+
         // Act
         var result = _controller.ReSendVerificationCode() as JsonResult;
 

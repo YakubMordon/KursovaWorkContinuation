@@ -82,11 +82,11 @@ public class SignUpController : Controller
             return Json(new { success = true });
         }
 
-        errors["firstNameError"] = ModelState[nameof(SignUpViewModel.FirstName)].Errors.FirstOrDefault()?.ErrorMessage ?? "";
-        errors["lastNameError"] = ModelState[nameof(SignUpViewModel.LastName)].Errors.FirstOrDefault()?.ErrorMessage ?? "";
-        errors["emailError"] = ModelState[nameof(SignUpViewModel.Email)].Errors.FirstOrDefault()?.ErrorMessage ?? "";
-        errors["passwordError"] = ModelState[nameof(SignUpViewModel.Password)].Errors.FirstOrDefault()?.ErrorMessage ?? "";
-        errors["confirmPasswordError"] = ModelState[nameof(SignUpViewModel.ConfirmPassword)].Errors.FirstOrDefault()?.ErrorMessage ?? "";
+        errors["firstNameError"] = ModelState[nameof(SignUpViewModel.FirstName)]?.Errors.FirstOrDefault()?.ErrorMessage ?? "";
+        errors["lastNameError"] = ModelState[nameof(SignUpViewModel.LastName)]?.Errors.FirstOrDefault()?.ErrorMessage ?? "";
+        errors["emailError"] = ModelState[nameof(SignUpViewModel.Email)]?.Errors.FirstOrDefault()?.ErrorMessage ?? "";
+        errors["passwordError"] = ModelState[nameof(SignUpViewModel.Password)]?.Errors.FirstOrDefault()?.ErrorMessage ?? "";
+        errors["confirmPasswordError"] = ModelState[nameof(SignUpViewModel.ConfirmPassword)]?.Errors.FirstOrDefault()?.ErrorMessage ?? "";
 
         Log.Information("Data did not pass validation");
         return Json(new { success = false, errors });
@@ -133,7 +133,7 @@ public class SignUpController : Controller
             return Json(new { success = true });
         }
 
-        var error = ModelState[nameof(VerificationViewModel.VerificationDigits)].Errors.FirstOrDefault()?.ErrorMessage ?? "";
+        var error = ModelState[nameof(VerificationViewModel.VerificationDigits)]?.Errors.FirstOrDefault()?.ErrorMessage ?? "";
 
         Log.Information("Data did not pass validation");
         return Json(new { success = false, error });
