@@ -14,8 +14,8 @@ namespace KursovaWork.UI.Controllers;
 public class ChangePasswordController : Controller
 {
     private readonly IUserService _userService;
-    private static User? _curUser;
-    private static int _verificationCode;
+    public static User? CurUser;
+    public static int VerificationCode;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ChangePasswordController"/> class.
@@ -46,9 +46,9 @@ public class ChangePasswordController : Controller
         Log.Information("Entering email verification method");
         if (ModelState.IsValid)
         {
-            _curUser = _userService.GetUserByEmail(model.Email);
+            CurUser = _userService.GetUserByEmail(model.Email);
 
-            if (_curUser is not null)
+            if (CurUser is not null)
             {
                 Log.Information("Email found");
                 SendCode();
@@ -91,7 +91,7 @@ public class ChangePasswordController : Controller
 
             var temp = stringBuilder.ToString();
 
-            if (int.Parse(temp) != _verificationCode)
+            if (int.Parse(temp) != VerificationCode)
             {
                 Log.Information("Incorrect verification code");
                 return Json(new { success = false, error = "Incorrect verification code" });
@@ -131,7 +131,7 @@ public class ChangePasswordController : Controller
         {
             Log.Information("Data passed validation");
 
-            _userService.UpdatePasswordOfUser(model.Password, model.ConfirmPassword, _curUser);
+            _userService.UpdatePasswordOfUser(model.Password, model.ConfirmPassword, CurUser);
 
             Log.Information("Password changed successfully, navigating to the main page");
             return Json(new { success = true });
@@ -176,14 +176,14 @@ public class ChangePasswordController : Controller
     {
         Log.Information("Entering verification code sending method");
 
-        _verificationCode = new Random().Next(1000, 9999);
+        VerificationCode = new Random().Next(1000, 9999);
 
         var subject = "Verification Code";
 
-        var body = EmailBodyHelper.BodyTemp(_curUser.FirstName, _curUser.LastName, _verificationCode, "password change");
+        var body = EmailBodyHelper.BodyTemp(CurUser.FirstName, CurUser.LastName, VerificationCode, "password change");
 
         Log.Information("Sending email message to user's email");
 
-        EmailSenderHelper.SendEmail(_curUser.Email, subject, body);
+        EmailSenderHelper.SendEmail(CurUser.Email, subject, body);
     }
 }

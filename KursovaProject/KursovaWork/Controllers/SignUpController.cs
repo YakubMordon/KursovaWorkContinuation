@@ -15,8 +15,8 @@ namespace KursovaWork.UI.Controllers;
 public class SignUpController : Controller
 {
     private readonly IUserService _userService;
-    private static User? _curUser;
-    private static int _verificationCode;
+    public static User? CurUser;
+    public static int VerificationCode;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SignUpController"/> class.
@@ -73,7 +73,7 @@ public class SignUpController : Controller
 
             var mapper = new UserMapper();
 
-            _curUser = mapper.ModelToEntity(model);
+            CurUser = mapper.ModelToEntity(model);
 
             Log.Information("Successfully checked if email already exists");
 
@@ -119,15 +119,15 @@ public class SignUpController : Controller
 
             var temp = stringBuilder.ToString();
 
-            if (int.Parse(temp) != _verificationCode)
+            if (int.Parse(temp) != VerificationCode)
             {
                 Log.Information("Incorrect verification code");
 
                 return Json(new { success = false, error = "Incorrect verification code" });
             }
 
-            _userService.AddUser(_curUser);
-            _curUser = null;
+            _userService.AddUser(CurUser);
+            CurUser = null;
             Log.Information("User successfully registered, redirecting to the main page");
 
             return Json(new { success = true });
@@ -177,13 +177,13 @@ public class SignUpController : Controller
     {
         Log.Information("Entering method to send verification code");
 
-        _verificationCode = new Random().Next(1000, 9999);
+        VerificationCode = new Random().Next(1000, 9999);
 
         var subject = "Verification Code";
-        var body = EmailBodyHelper.BodyTemp(_curUser.FirstName, _curUser.LastName, _verificationCode, "registration");
+        var body = EmailBodyHelper.BodyTemp(CurUser.FirstName, CurUser.LastName, VerificationCode, "registration");
 
         Log.Information("Sending email notification to user's email");
 
-        EmailSenderHelper.SendEmail(_curUser.Email, subject, body);
+        EmailSenderHelper.SendEmail(CurUser.Email, subject, body);
     }
 }
