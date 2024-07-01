@@ -4,7 +4,6 @@ using KursovaWork.Domain.Entities;
 using KursovaWork.UI.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System.Reflection;
 using FluentAssertions;
 using KursovaWork.UI.Unit.Tests.Fakers;
 
