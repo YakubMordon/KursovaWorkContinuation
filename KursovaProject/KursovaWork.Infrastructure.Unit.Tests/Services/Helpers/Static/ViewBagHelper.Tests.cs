@@ -2,7 +2,6 @@
 using KursovaWork.Infrastructure.Services.Helpers.Static;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Moq;
 using System.Security.Claims;
 
 namespace KursovaWork.Infrastructure.Unit.Tests.Services.Helpers.Static;

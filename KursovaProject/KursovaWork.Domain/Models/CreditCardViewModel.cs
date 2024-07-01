@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using KursovaWork.Domain.Entities;
 using KursovaWork.Domain.Attributes;
 
 namespace KursovaWork.Domain.Models;

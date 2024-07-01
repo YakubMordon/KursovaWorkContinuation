@@ -3,7 +3,6 @@ using KursovaWork.Application.Contracts.Repositories;
 using KursovaWork.Application.Contracts.Services.Entities;
 using KursovaWork.Application.Contracts.Services.Helpers.Transient;
 using KursovaWork.Domain.Entities;
-using KursovaWork.Domain.Entities.Car;
 using KursovaWork.Infrastructure.Services.Entities;
 using KursovaWork.Infrastructure.Unit.Tests.Fakers;
 using Moq;
