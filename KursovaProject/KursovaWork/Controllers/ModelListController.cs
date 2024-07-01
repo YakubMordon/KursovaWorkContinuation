@@ -40,7 +40,7 @@ public class ModelListController : Controller
         model.Cars = _curList;
 
         Log.Information("Navigating to the model list page");
-        return View(model);
+        return View("~/Views/ModelList/ModelList.cshtml", model);
     }
 
     /// <summary>

@@ -34,7 +34,7 @@ public class SignUpController : Controller
     public IActionResult SignUp()
     {
         Log.Information("Navigating to the registration page");
-        return View();
+        return View("~/Views/SignUp/SignUp.cshtml");
     }
 
     /// <summary>

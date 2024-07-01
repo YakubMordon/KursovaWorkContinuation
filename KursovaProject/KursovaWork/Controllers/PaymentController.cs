@@ -72,7 +72,7 @@ public class PaymentController : Controller
 
             Log.Information("Redirecting to payment confirmation");
 
-            return View(car);
+            return View("~/Views/Payment/Payment.cshtml", car);
         }
 
         Log.Warning("Model not found");

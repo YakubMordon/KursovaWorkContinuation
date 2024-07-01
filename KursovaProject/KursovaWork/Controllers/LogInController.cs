@@ -31,7 +31,7 @@ public class LogInController : Controller
     public IActionResult LogIn()
     {
         Log.Information("Redirecting to the login page");
-        return View();
+        return View("~/Views/LogIn/LogIn.cshtml");
     }
 
     /// <summary>
